@@ -1,0 +1,5151 @@
+{
+  "fetched_on": "2026-10-08T17:31:10.944870+00:00",
+  "onet_version": "db_31_0_excel",
+  "esco_software_developer_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+  "esco_ui_developer_uri": "http://data.europa.eu/esco/occupation/866c7813-2c03-47d7-9bdc-192cfbace57c",
+  "esco_essential": [
+    {
+      "title": "interpret technical requirements",
+      "uri": "http://data.europa.eu/esco/skill/be48353d-25c7-4f86-bea9-7b9e248fbc6e"
+    },
+    {
+      "title": "analyse software specifications",
+      "uri": "http://data.europa.eu/esco/skill/f28617ad-afdd-4041-814c-216153a38998"
+    },
+    {
+      "title": "computer programming",
+      "uri": "http://data.europa.eu/esco/skill/21d2f96d-35f7-4e3f-9745-c533d2dd6e97"
+    },
+    {
+      "title": "ICT debugging tools",
+      "uri": "http://data.europa.eu/esco/skill/6014921e-1d25-4039-adc2-04852d61880e"
+    },
+    {
+      "title": "tools for software configuration management",
+      "uri": "http://data.europa.eu/esco/skill/9d2e926f-53d9-41f5-98f3-19dfaa687f3f"
+    },
+    {
+      "title": "define technical requirements",
+      "uri": "http://data.europa.eu/esco/skill/d9e5349e-8791-49c2-8ba4-839fdd1606c2"
+    },
+    {
+      "title": "debug software",
+      "uri": "http://data.europa.eu/esco/skill/2522a6ce-3202-4ac8-9f5b-b9cb5a3a83a1"
+    },
+    {
+      "title": "develop automated migration methods",
+      "uri": "http://data.europa.eu/esco/skill/0b0335f3-0aa1-491e-895e-81fc8774a300"
+    },
+    {
+      "title": "develop software prototype",
+      "uri": "http://data.europa.eu/esco/skill/797a4416-0b8d-44f3-8fcd-eb10bd0be6b4"
+    },
+    {
+      "title": "utilise computer-aided software engineering tools",
+      "uri": "http://data.europa.eu/esco/skill/172020d1-e151-445b-8173-e2a5fb16fe51"
+    },
+    {
+      "title": "perform scientific research",
+      "uri": "http://data.europa.eu/esco/skill/4fabca9a-7435-4f33-b1da-3cdb00340fdc"
+    },
+    {
+      "title": "integrated development environment software",
+      "uri": "http://data.europa.eu/esco/skill/925463a7-d51f-4d5b-9f79-4d28cf30acde"
+    },
+    {
+      "title": "identify customer requirements",
+      "uri": "http://data.europa.eu/esco/skill/0e0c9c11-b39e-43cf-ba95-2fe646f5de64"
+    },
+    {
+      "title": "technical drawings",
+      "uri": "http://data.europa.eu/esco/skill/59ea80e1-463a-4dba-82c6-d0b6d577d532"
+    },
+    {
+      "title": "project management",
+      "uri": "http://data.europa.eu/esco/skill/7111b95d-0ce3-441a-9d92-4c75d05c4388"
+    },
+    {
+      "title": "use software libraries",
+      "uri": "http://data.europa.eu/esco/skill/8b94aa1e-89c9-459d-b3b4-1dfab8dec2df"
+    },
+    {
+      "title": "provide technical documentation",
+      "uri": "http://data.europa.eu/esco/skill/04dfd9fb-e0cf-40f6-96c6-9d2280c4347e"
+    },
+    {
+      "title": "manage engineering project",
+      "uri": "http://data.europa.eu/esco/skill/6a899482-8bcf-40ca-ae67-579a1cc467ab"
+    },
+    {
+      "title": "create flowchart diagram",
+      "uri": "http://data.europa.eu/esco/skill/901105f8-3a08-453e-b1dc-23619e317fd3"
+    },
+    {
+      "title": "use technical drawing software",
+      "uri": "http://data.europa.eu/esco/skill/541561bc-510c-4a99-881c-2d8bf5a85462"
+    },
+    {
+      "title": "use software design patterns",
+      "uri": "http://data.europa.eu/esco/skill/2b7a79e5-84d8-4880-be66-3d9bb05bea17"
+    },
+    {
+      "title": "engineering processes",
+      "uri": "http://data.europa.eu/esco/skill/72a74f69-5cf1-43c5-99b9-62a444578919"
+    },
+    {
+      "title": "engineering principles",
+      "uri": "http://data.europa.eu/esco/skill/209a5498-3449-4689-8ed9-bd08cab4fd78"
+    }
+  ],
+  "esco_optional": [
+    {
+      "title": "Common Lisp",
+      "uri": "http://data.europa.eu/esco/skill/0cd6dcf1-5778-42a5-b685-4d01ae4a4871"
+    },
+    {
+      "title": "Xcode",
+      "uri": "http://data.europa.eu/esco/skill/449d119b-2d66-43a9-9230-7d27f16afbb6"
+    },
+    {
+      "title": "Ansible",
+      "uri": "http://data.europa.eu/esco/skill/6f8a40d6-f9ce-43ec-a72f-d4213a53f3ed"
+    },
+    {
+      "title": "SAS language",
+      "uri": "http://data.europa.eu/esco/skill/04f1b938-d4d4-4cb1-a863-982af76b9d93"
+    },
+    {
+      "title": "COBOL",
+      "uri": "http://data.europa.eu/esco/skill/def007fa-5fed-4a5f-91a2-b0d7e3db1be1"
+    },
+    {
+      "title": "R",
+      "uri": "http://data.europa.eu/esco/skill/51586df8-1c46-4b47-8583-773cb63bf00b"
+    },
+    {
+      "title": "Puppet (tools for software configuration management)",
+      "uri": "http://data.europa.eu/esco/skill/6417a4cc-6f61-4459-a114-761a7fa0279d"
+    },
+    {
+      "title": "use object-oriented programming",
+      "uri": "http://data.europa.eu/esco/skill/5b9cde20-f1b9-4adc-bfb3-dbf70b14138d"
+    },
+    {
+      "title": "TypeScript",
+      "uri": "http://data.europa.eu/esco/skill/867137fb-ff1b-4ca3-99f3-cb6969aa2c68"
+    },
+    {
+      "title": "Ruby (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/0ccdfe98-f845-4598-84a1-3dca66e9d9a3"
+    },
+    {
+      "title": "MATLAB",
+      "uri": "http://data.europa.eu/esco/skill/c3a03c5a-c260-4c26-9b9a-873abb396f4d"
+    },
+    {
+      "title": "Erlang",
+      "uri": "http://data.europa.eu/esco/skill/034c29fa-c3ba-45ea-b8f3-bf8e3705e386"
+    },
+    {
+      "title": "use logic programming",
+      "uri": "http://data.europa.eu/esco/skill/2c4e11ef-da18-4e19-816b-e6bc19e12424"
+    },
+    {
+      "title": "C#",
+      "uri": "http://data.europa.eu/esco/skill/4c016b68-4116-468c-9dc6-42710c239e4a"
+    },
+    {
+      "title": "Smalltalk (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/42ed3bfb-1a01-4c8b-9758-fc6438865734"
+    },
+    {
+      "title": "Scala",
+      "uri": "http://data.europa.eu/esco/skill/ffddfc7c-a9dd-449f-9e96-882dc447c8b6"
+    },
+    {
+      "title": "Lisp",
+      "uri": "http://data.europa.eu/esco/skill/0de61385-de6d-4146-ba32-1cc1bc102220"
+    },
+    {
+      "title": "Microsoft Visual C++",
+      "uri": "http://data.europa.eu/esco/skill/8369ede5-4200-4a44-be2e-bc60ef959259"
+    },
+    {
+      "title": "C++",
+      "uri": "http://data.europa.eu/esco/skill/b633eb55-8f1f-4ae6-ab4c-2022ffe2cb7f"
+    },
+    {
+      "title": "use automatic programming",
+      "uri": "http://data.europa.eu/esco/skill/7d10fcb2-b368-48ab-996b-7c9fafcf68ed"
+    },
+    {
+      "title": "Swift (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/be80acfc-b6f2-4411-9b8d-b19d9cd2556a"
+    },
+    {
+      "title": "utilise machine learning",
+      "uri": "http://data.europa.eu/esco/skill/8369c2d6-c100-4cf6-bd83-9668d8678433"
+    },
+    {
+      "title": "Haskell",
+      "uri": "http://data.europa.eu/esco/skill/000f1d3d-220f-4789-9c0a-cc742521fb02"
+    },
+    {
+      "title": "APL",
+      "uri": "http://data.europa.eu/esco/skill/58d7a289-dafd-4363-833f-d1dc4140885e"
+    },
+    {
+      "title": "STAF",
+      "uri": "http://data.europa.eu/esco/skill/69f0167e-75d9-46cf-847f-72a592880ebb"
+    },
+    {
+      "title": "software anomalies",
+      "uri": "http://data.europa.eu/esco/skill/438ff259-d086-4004-acda-1ec3e1631bc6"
+    },
+    {
+      "title": "KDevelop",
+      "uri": "http://data.europa.eu/esco/skill/013441c1-1f13-47e9-80c4-9a53e8e1bc05"
+    },
+    {
+      "title": "CoffeeScript",
+      "uri": "http://data.europa.eu/esco/skill/993b1e23-f2de-4bd8-b33f-f86dde1c8e9d"
+    },
+    {
+      "title": "VBScript",
+      "uri": "http://data.europa.eu/esco/skill/dcdd5ddf-82a6-4ac3-8edc-d4b23cae9a88"
+    },
+    {
+      "title": "Eclipse (integrated development environment software)",
+      "uri": "http://data.europa.eu/esco/skill/6b6a9252-2ed7-4862-a02f-1578f4a532ea"
+    },
+    {
+      "title": "World Wide Web Consortium standards",
+      "uri": "http://data.europa.eu/esco/skill/8696aff0-18c0-4ba6-a4d0-9a21861b3e5e"
+    },
+    {
+      "title": "use concurrent programming",
+      "uri": "http://data.europa.eu/esco/skill/25b291b5-8245-4d9d-b391-86a8a31d7109"
+    },
+    {
+      "title": "ASP.NET",
+      "uri": "http://data.europa.eu/esco/skill/56a7f561-1d55-43c9-9cd7-36a0a9bc6c50"
+    },
+    {
+      "title": "ABAP",
+      "uri": "http://data.europa.eu/esco/skill/eb0e5615-1575-4a86-a1a2-7d39595033c5"
+    },
+    {
+      "title": "Prolog (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/2bde42ae-e776-41c1-9ded-b07b30bfe985"
+    },
+    {
+      "title": "Jenkins (tools for software configuration management)",
+      "uri": "http://data.europa.eu/esco/skill/f47a1998-0beb-43be-9f46-380aa4d183da"
+    },
+    {
+      "title": "Java (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/19a8293b-8e95-4de3-983f-77484079c389"
+    },
+    {
+      "title": "OpenEdge Advanced Business Language",
+      "uri": "http://data.europa.eu/esco/skill/300d432b-f457-4cd3-9cb1-1858c7d14954"
+    },
+    {
+      "title": "ICT security legislation",
+      "uri": "http://data.europa.eu/esco/skill/7814e88f-c133-4c3b-b27f-857afa145d42"
+    },
+    {
+      "title": "Pascal (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/e8b89eb6-51e8-4c3a-babb-88b2e110376b"
+    },
+    {
+      "title": "AJAX",
+      "uri": "http://data.europa.eu/esco/skill/b4dc6e4f-dc7d-445f-8ce2-d7b9d225e282"
+    },
+    {
+      "title": "Salt (tools for software configuration management)",
+      "uri": "http://data.europa.eu/esco/skill/c7451027-8249-405a-bb1b-342ff0f3fb3b"
+    },
+    {
+      "title": "SAP R3",
+      "uri": "http://data.europa.eu/esco/skill/bb99af26-71ff-4dca-bde7-1eb1f6194426"
+    },
+    {
+      "title": "JavaScript",
+      "uri": "http://data.europa.eu/esco/skill/3cd569a2-4f88-4c1e-9995-8dce8c5e51a7"
+    },
+    {
+      "title": "PHP",
+      "uri": "http://data.europa.eu/esco/skill/4350c38d-0fe9-4ca7-bab9-40ed7f72b04f"
+    },
+    {
+      "title": "Internet of Things",
+      "uri": "http://data.europa.eu/esco/skill/f049d050-12da-4e40-813a-2b5eb6df6b51"
+    },
+    {
+      "title": "object-oriented modelling",
+      "uri": "http://data.europa.eu/esco/skill/5be3d306-6cf1-4b49-aa1d-01651dd4ba4c"
+    },
+    {
+      "title": "Apache Maven",
+      "uri": "http://data.europa.eu/esco/skill/0d168770-4d9c-4096-b048-a6577818d306"
+    },
+    {
+      "title": "integrate system components",
+      "uri": "http://data.europa.eu/esco/skill/ed8de897-adbe-4f0e-b4d2-534953e64c72"
+    },
+    {
+      "title": "Groovy",
+      "uri": "http://data.europa.eu/esco/skill/52cf3037-ab53-4806-85ed-7fd21ea7f6a1"
+    },
+    {
+      "title": "use functional programming",
+      "uri": "http://data.europa.eu/esco/skill/d31fab87-2a7d-485c-b699-2901ca294b15"
+    },
+    {
+      "title": "Python (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/ccd0a1d9-afda-43d9-b901-96344886e14d"
+    },
+    {
+      "title": "Scratch (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/d56fc2b5-4b0a-4e7e-9bde-a33736f6ff18"
+    },
+    {
+      "title": "Perl",
+      "uri": "http://data.europa.eu/esco/skill/401eb8d8-6daa-4f8b-90ad-60afc71eb4f8"
+    },
+    {
+      "title": "Objective-C",
+      "uri": "http://data.europa.eu/esco/skill/9973a5a2-7822-4161-99e9-95c781eb63f8"
+    },
+    {
+      "title": "ML (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/a4d336a6-9ffd-402a-91cc-f359716ba4e0"
+    },
+    {
+      "title": "adapt to changes in technological development plans",
+      "uri": "http://data.europa.eu/esco/skill/f5308e60-d763-4ead-be95-88c96fb3e02b"
+    },
+    {
+      "title": "Visual Studio .NET",
+      "uri": "http://data.europa.eu/esco/skill/13bdd41a-2a18-441f-96db-41252c519413"
+    },
+    {
+      "title": "Assembly (computer programming)",
+      "uri": "http://data.europa.eu/esco/skill/47b9bbcf-356c-4782-83a4-7f5a1b2b51a3"
+    },
+    {
+      "title": "collect customer feedback on applications",
+      "uri": "http://data.europa.eu/esco/skill/71746a0b-e58d-4dc4-ad03-bd84082eae21"
+    },
+    {
+      "title": "migrate existing data",
+      "uri": "http://data.europa.eu/esco/skill/020918ef-4b55-47c1-8430-ab7b8f6a7377"
+    },
+    {
+      "title": "design user interface",
+      "uri": "http://data.europa.eu/esco/skill/fd33c66c-70c4-40e6-b87c-5495bd3bf26e"
+    },
+    {
+      "title": "develop creative ideas",
+      "uri": "http://data.europa.eu/esco/skill/8c4c49d4-9708-433f-8ca7-bf2c5211ee49"
+    }
+  ],
+  "esco_alt_labels": [
+    "application developer",
+    "application programmer",
+    "solutions developer",
+    "programmer",
+    "software specialist",
+    "application software developer",
+    "software developers",
+    "software engineer",
+    "applications engineer",
+    "soft developer",
+    "developer of software"
+  ],
+  "onet_tasks": {
+    "15-1254.00": [
+      {
+        "task_id": "14707",
+        "task": "Write supporting code for Web applications or Web sites.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14694",
+        "task": "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14698",
+        "task": "Back up files from Web sites to local directories for instant recovery in case of problems.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14711",
+        "task": "Select programming languages, design tools, or applications.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14700",
+        "task": "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14704",
+        "task": "Develop databases that support Web applications and Web sites.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14710",
+        "task": "Perform Web site tests according to planned schedules, or after any Web site or product revision.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14695",
+        "task": "Perform or direct Web site updates.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14701",
+        "task": "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14702",
+        "task": "Analyze user needs to determine technical requirements.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14713",
+        "task": "Respond to user email inquiries, or set up automated systems to send responses.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14705",
+        "task": "Renew domain name registrations.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14697",
+        "task": "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14708",
+        "task": "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14706",
+        "task": "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14726",
+        "task": "Document test plans, testing procedures, or test results.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14717",
+        "task": "Establish appropriate server directory trees.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14719",
+        "task": "Recommend and implement performance improvements.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14728",
+        "task": "Document technical factors such as server load, bandwidth, database performance, and browser and device types.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14714",
+        "task": "Develop or implement procedures for ongoing Web site revision.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14724",
+        "task": "Create Web models or prototypes that include physical, interface, logical, or data models.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14722",
+        "task": "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14725",
+        "task": "Evaluate or recommend server hardware or software.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "14723",
+        "task": "Monitor security system performance logs to identify problems and notify security specialists when problems occur.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "14729",
+        "task": "Install and configure hypertext transfer protocol (HTTP) servers and associated operating systems.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "14727",
+        "task": "Research, document, rate, or select alternatives for Web architecture or technologies.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "14730",
+        "task": "Develop system interaction or sequence diagrams.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21683",
+        "task": "Design and implement Web site security measures, such as firewalls and message encryption.",
+        "task_type": NaN
+      },
+      {
+        "task_id": "21684",
+        "task": "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, and legal issues including accessibility and privacy.",
+        "task_type": NaN
+      }
+    ],
+    "15-1252.00": [
+      {
+        "task_id": "21662",
+        "task": "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21669",
+        "task": "Develop or direct software system testing or validation procedures, programming, or documentation.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21664",
+        "task": "Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21670",
+        "task": "Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21673",
+        "task": "Prepare reports or correspondence concerning project specifications, activities, or status.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21661",
+        "task": "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21676",
+        "task": "Store, retrieve, and manipulate data for analysis of system capabilities and requirements.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21667",
+        "task": "Design, develop and modify software systems, using scientific analysis and mathematical models to predict and measure outcomes and consequences of design.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21668",
+        "task": "Determine system performance standards.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21665",
+        "task": "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21663",
+        "task": "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
+        "task_type": "Core"
+      },
+      {
+        "task_id": "21671",
+        "task": "Monitor functioning of equipment to ensure system operates in conformance with specifications.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21666",
+        "task": "Coordinate installation of software system.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21678",
+        "task": "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21677",
+        "task": "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21672",
+        "task": "Obtain and evaluate information on factors such as reporting formats required, costs, or security needs to determine hardware configuration.",
+        "task_type": "Supplemental"
+      },
+      {
+        "task_id": "21679",
+        "task": "Train users to use new or modified equipment.",
+        "task_type": "Supplemental"
+      }
+    ]
+  },
+  "onet_tech": {
+    "15-1254.00": [
+      {
+        "example": "3M Post-it App",
+        "commodity_title": "Word processing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Acrobat",
+        "commodity_title": "Document management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe ActionScript",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe After Effects",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Creative Cloud software",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Dreamweaver",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Flex",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Illustrator",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe InDesign",
+        "commodity_title": "Desktop publishing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Photoshop",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Advanced business application programming ABAP",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Airtable",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "AJAX",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon DynamoDB",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Elastic Compute Cloud EC2",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Kinesis",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Redshift",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Simple Storage Service S3",
+        "commodity_title": "Storage networking software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Web Services AWS CloudFormation",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Web Services AWS software",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Ansible software",
+        "commodity_title": "Expert system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Ant",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Cassandra",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Groovy",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Hadoop",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Hive",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache HTTP Server",
+        "commodity_title": "Portal server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Kafka",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Apache Maven",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Pig",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Solr",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Spark",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Struts",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Subversion SVN",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Tomcat",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apple Cocoa",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apple Final Cut Pro",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apple Keynote",
+        "commodity_title": "Presentation software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apple macOS",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Bamboo",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Bitbucket",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Confluence",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian HipChat",
+        "commodity_title": "Instant messaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian JIRA",
+        "commodity_title": "Content workflow software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Backbone.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Bash",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Blackboard software",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Blink",
+        "commodity_title": "Instant messaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Bootstrap",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "C",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "C#",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "C++",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Cascading style sheets CSS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Chef",
+        "commodity_title": "Configuration management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Cisco Webex",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Common business oriented language COBOL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Common gateway interface CGI",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Customer information control system CICS",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Delphi Technology",
+        "commodity_title": "Financial analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Django",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Docker",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Dropbox",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Drupal",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Dynamic hypertext markup language DHTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Eclipse IDE",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Elasticsearch",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Enterprise JavaBeans",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Epic Systems",
+        "commodity_title": "Medical software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "ESRI ArcGIS software",
+        "commodity_title": "Geographic information system",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Evernote",
+        "commodity_title": "Word processing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Ext JS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible hypertext markup language XHTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible markup language XML",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible stylesheet language transformations XSLT",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible stylesheet language XSL",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Facebook",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Figma",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "FileMaker Pro",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "FlexBox",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Flipgrid",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Geographic information system GIS software",
+        "commodity_title": "Geographic information system",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Git",
+        "commodity_title": "File versioning software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "GitHub",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Go",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Google Ads",
+        "commodity_title": "Sales and marketing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Analytics",
+        "commodity_title": "Data mining software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Android",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Angular",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Google Cloud software",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Docs",
+        "commodity_title": "Word processing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Drive",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Meet",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Sites",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Slides",
+        "commodity_title": "Presentation software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "GraphQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "HashiCorp Vagrant",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hewlett Packard HP-UX",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hewlett Packard LoadRunner",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hibernate ORM",
+        "commodity_title": "Object oriented data base management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "HubSpot software",
+        "commodity_title": "Sales and marketing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Hypertext markup language HTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "IBM Cognos Impromptu",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Domino",
+        "commodity_title": "Communications server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Informix",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM InfoSphere DataStage",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Notes",
+        "commodity_title": "Electronic mail software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Power Systems software",
+        "commodity_title": "Enterprise system management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational Rose XDE",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM SPSS Statistics",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "IBM WebSphere",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Integrated development environment IDE software",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "InVision software",
+        "commodity_title": "Process mapping and design software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JamBoard",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JavaScript",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "JavaScript framework software",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": true
+      },
+      {
+        "example": "JavaScript Object Notation JSON",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Jekyll",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Jenkins CI",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Jest",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JetBrains PhpStorm",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Job control language JCL",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "jQuery",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "JUnit",
+        "commodity_title": "Program testing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Jupyter Notebook",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Kapwing",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "KornShell",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Kubernetes",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "LAMP Stack",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LinkedIn",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Linux",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Marketo Marketing Automation",
+        "commodity_title": "Sales and marketing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "MarkLogic",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MeteorJS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microservices Architecture",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft .NET Framework",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Access",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Active Server Pages ASP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ActiveX",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ASP.NET",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ASP.NET Core MVC",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Azure software",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Microsoft Commerce Server",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Dynamics",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Excel",
+        "commodity_title": "Spreadsheet software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Internet Information Services (IIS)",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Office software",
+        "commodity_title": "Office suite software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft PowerShell",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Project",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Publisher",
+        "commodity_title": "Desktop publishing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SharePoint",
+        "commodity_title": "Document management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server Integration Services SSIS",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server Reporting Services SSRS",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visio",
+        "commodity_title": "Process mapping and design software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic for Applications VBA",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic Scripting Edition VBScript",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic.NET",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual C# .NET",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual InterDev",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual SourceSafe",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Studio",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Windows",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Windows Server",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "MicroStrategy",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MongoDB",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Moodle",
+        "commodity_title": "Computer based training software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MySQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Nagios",
+        "commodity_title": "Network monitoring software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "NetSuite ERP",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Node.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "NortonLifeLock cybersecurity software",
+        "commodity_title": "Transaction security and virus protection software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "NoSQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Nunjucks",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Objective C",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Business Intelligence Enterprise Edition",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Database",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Eloqua",
+        "commodity_title": "Customer relationship management CRM software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Fusion Applications",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Fusion Middleware",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Java",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Oracle Java 2 Platform Enterprise Edition J2EE",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JavaServer Pages JSP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JD Edwards EnterpriseOne",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JDBC",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle PL/SQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Solaris",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle WebLogic Server",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Perforce Helix software",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Perl",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "PhantomJS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "PHP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "PostgreSQL",
+        "commodity_title": "Object oriented data base management software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Puppet",
+        "commodity_title": "Configuration management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Python",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Qlik Tech QlikView",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Quest Erwin Data Modeler",
+        "commodity_title": "Metadata management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "R",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "React",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "React Redux",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat Enterprise Linux",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat OpenShift",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat WildFly",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Redis",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Relational database management software",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Relational database management system software",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "RequireJS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "RESTful API",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": true
+      },
+      {
+        "example": "Ruby",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Ruby on Rails",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Salesforce software",
+        "commodity_title": "Customer relationship management CRM software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Salesforce Visualforce",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Business Objects",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Crystal Reports",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP software",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "SAS",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Scala",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Screencast-O-Matic",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Screencastify",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Selenium",
+        "commodity_title": "Program testing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Shell script",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Sitecore CMS",
+        "commodity_title": "Content workflow software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Skype",
+        "commodity_title": "Desktop communications software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Slack",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "SmugMug Flickr",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Social media sites",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Splunk Enterprise",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Spring Boot",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Spring Framework",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Structured query language SQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Swift",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Syntactically awesome style sheets SASS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Tableau",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Teradata Database",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "The MathWorks MATLAB",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Transact-SQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Travis",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Trimble SketchUp Pro",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "TypeScript",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Ubuntu",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Unified modeling language UML",
+        "commodity_title": "Requirements analysis and system architecture software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "UNIX",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "UNIX Shell",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Vue.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Web application software",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": true
+      },
+      {
+        "example": "Web content management system CMS software",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "webpack",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Wireshark",
+        "commodity_title": "Network monitoring software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "WordPress",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "YouTube",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Zend Framework",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      }
+    ],
+    "15-1252.00": [
+      {
+        "example": "3M Post-it App",
+        "commodity_title": "Word processing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "A programming language APL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "ABC Compiler",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "ABC: the AspectBench Compiler for AspectJ",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Ada",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "ADO.NET",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Acrobat",
+        "commodity_title": "Document management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe ActionScript",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe After Effects",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Creative Cloud software",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Dreamweaver",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Flex",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Illustrator",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe InDesign",
+        "commodity_title": "Desktop publishing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Adobe Photoshop",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Advanced business application programming ABAP",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Airtable",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "AJAX",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Algorithmic language ALGOL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Allaire ColdFusion",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Alteryx software",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon DynamoDB",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Elastic Compute Cloud EC2",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Kinesis",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Redshift",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Simple Storage Service S3",
+        "commodity_title": "Storage networking software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Web Services AWS CloudFormation",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Amazon Web Services AWS software",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "American National Standards Institute ANSI C",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Ansible software",
+        "commodity_title": "Expert system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Airflow",
+        "commodity_title": "Procedure management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Ant",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Avro",
+        "commodity_title": "Information retrieval or search software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Cassandra",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Flume",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Groovy",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Hadoop",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache HBase",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Hive",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache HTTP Server",
+        "commodity_title": "Portal server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Kafka",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Apache Maven",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Oozie",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Pig",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Solr",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Spark",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Struts",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Subversion SVN",
+        "commodity_title": "File versioning software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apache Tomcat",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apple iOS",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Apple macOS",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Bamboo",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Bitbucket",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian Confluence",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Atlassian JIRA",
+        "commodity_title": "Content workflow software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Automated installation software",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "AWK",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "B-Method",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Backbone.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Backup and archival software",
+        "commodity_title": "Backup or archival software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Bash",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Beginner's all-purpose symbolic instruction code BASIC",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Bigloo Scheme",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Blackbaud The Raiser's Edge",
+        "commodity_title": "Customer relationship management CRM software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Blackboard software",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Blink",
+        "commodity_title": "Instant messaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Bootstrap",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Border Gateway Protocol BGP",
+        "commodity_title": "Switch or router software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "C",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "C#",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "C++",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Call-processing language CPL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Canu",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Cascading style sheets CSS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Chef",
+        "commodity_title": "Configuration management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Cisco IOS",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Cisco Webex",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Citrix cloud computing software",
+        "commodity_title": "Access software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Collaborative Application Markup Language CAML",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Common business oriented language COBOL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Common Lisp Object System CLOS",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Component object model COM software",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Component-based Scalable Logical Architecture CSLA",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Computer Associates integrated data management system CA-IDMS",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Computer On-line Real-time Applications Language CORAL 66",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Customer information control system CICS",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Data analysis software",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Data definition language DDL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Data manipulation language DML",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "DataVision",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Defect tracking software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Delphi Technology",
+        "commodity_title": "Financial analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Deployment software",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Disk operating system DOS",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Distributed component object model DCOM software",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Distributed database management software",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Django",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Docker",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Document management system software",
+        "commodity_title": "Document management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Document Object Model DOM Scripting",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Dropbox",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Drupal",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Dynamic analysis software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Dynamic hypertext markup language DHTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Dynamic modeling software",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "E++ pattern language",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Eclipse IDE",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Eclipse Jersey",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Eiffel",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Elasticsearch",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Embarcadero Delphi",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Embarcadero JBuilder",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Embedded systems development software",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Emerald Software Group Emerald Green Office",
+        "commodity_title": "Content workflow software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Encryption software",
+        "commodity_title": "Transaction security and virus protection software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Enterprise application integration EAI software",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Enterprise JavaBeans",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "ESRI ArcGIS software",
+        "commodity_title": "Map creation software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Event-driven State-machines Programming",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Evernote",
+        "commodity_title": "Word processing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Ext JS",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible hypertext markup language XHTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible markup language XML",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Extensible stylesheet language transformations XSLT",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "FaceTime",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Fault testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Figma",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "File server software",
+        "commodity_title": "Filesystem software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "FileMaker Pro",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Firewall software",
+        "commodity_title": "Network security and virtual private network VPN equipment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Flipgrid",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Formula translation/translator FORTRAN",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Forth",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Functional testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Gambit Scheme",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Git",
+        "commodity_title": "File versioning software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "GitHub",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "GitLab",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "GNU Image Manipulation Program GIMP",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Go",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Google Analytics",
+        "commodity_title": "Data mining software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Android",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Angular",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Google Cloud software",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Docs",
+        "commodity_title": "Word processing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Drive",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Gmail",
+        "commodity_title": "Electronic mail software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Looker Analytics",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Meet",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Sheets",
+        "commodity_title": "Spreadsheet software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Google Sites",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Google Slides",
+        "commodity_title": "Presentation software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Gradle",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Grafana Labs Grafana Cloud",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Graphical user interface GUI builder software",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Graphical user interface GUI design software",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "GraphQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "GroupMe",
+        "commodity_title": "Instant messaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Haskell",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hewlett Packard HP-UX",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hewlett Packard LoadRunner",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Hibernate ORM",
+        "commodity_title": "Object oriented data base management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Hypertext markup language HTML",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "IBM AIX",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Cognos Impromptu",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM DB2",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Domino",
+        "commodity_title": "Communications server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM InfoSphere DataStage",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Middleware",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Notes",
+        "commodity_title": "Electronic mail software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Power Systems software",
+        "commodity_title": "Enterprise system management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational ClearCase",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational ClearQuest",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational PurifyPlus",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational RequisitePro",
+        "commodity_title": "Requirements analysis and system architecture software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Rational Rose XDE",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM SPSS Statistics",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "IBM Terraform",
+        "commodity_title": "Configuration management software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "IBM WebSphere",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IBM WebSphere MQ",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "IBM z/OS operating systems",
+        "commodity_title": "Network operation system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "ICON programming language",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "IEA Software Emerald",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Informatica software",
+        "commodity_title": "Metadata management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Integrated development environment IDE software",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Integration testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Interface definition language IDL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Interoperability testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Interstate connection ICON",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "J",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JamBoard",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JavaScript",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "JavaScript framework software",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "JavaScript Object Notation JSON",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Jenkins CI",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "JFrog Artifactory",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Job control language JCL",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "jQuery",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "JUnit",
+        "commodity_title": "Program testing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Jupyter Notebook",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "KornShell",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Kotlin",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Kubernetes",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "LAMP Stack",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LexisNexis",
+        "commodity_title": "Information retrieval or search software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LibreOffice",
+        "commodity_title": "Office suite software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LinkedIn",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Linux",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "List processing language LISP",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Load testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LogMeIn GoToMeeting",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "LogMeIn GoToWebinar",
+        "commodity_title": "Network conferencing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Loom",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Magellan Firmware",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Management information systems MIS",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Marketo Marketing Automation",
+        "commodity_title": "Sales and marketing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "MathWorks Simulink",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "McAfee",
+        "commodity_title": "Transaction security and virus protection software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microservices Architecture",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft .NET Framework",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Access",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Active Directory",
+        "commodity_title": "Internet directory services software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Active Server Pages ASP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ActiveX",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ASP.NET",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ASP.NET Core MVC",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Azure DevOps Services",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Azure software",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Microsoft DirectX",
+        "commodity_title": "Device drivers or system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Dynamics",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Dynamics GP",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft ESP SDK",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Excel",
+        "commodity_title": "Spreadsheet software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Exchange",
+        "commodity_title": "Electronic mail software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Internet Information Services (IIS)",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Office software",
+        "commodity_title": "Office suite software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft OneNote",
+        "commodity_title": "Word processing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Outlook",
+        "commodity_title": "Electronic mail software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Power Automate",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Power BI",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Power Platform software",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft PowerPoint",
+        "commodity_title": "Presentation software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft PowerShell",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Project",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Publisher",
+        "commodity_title": "Desktop publishing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SharePoint",
+        "commodity_title": "Document management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server Integration Services SSIS",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft SQL Server Reporting Services SSRS",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Team Foundation Server",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Teams",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft transact-structural query language T-SQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visio",
+        "commodity_title": "Process mapping and design software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic for Applications VBA",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic Scripting Edition VBScript",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Basic.NET",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual C# .NET",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Visual Studio",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Windows",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Windows Server",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Microsoft Word",
+        "commodity_title": "Word processing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "MicroStrategy",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Migration software",
+        "commodity_title": "Platform interconnectivity software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Migration testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Minitab",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Modula",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MongoDB",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Moodle",
+        "commodity_title": "Computer based training software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MuleSoft software",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MUMPS M",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Mutation testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "MySQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Nagios",
+        "commodity_title": "Network monitoring software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "National Instruments LabVIEW",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "NetSuite ERP",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Node.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "NortonLifeLock cybersecurity software",
+        "commodity_title": "Transaction security and virus protection software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "NoSQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Oberon",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Object Management Group Object Request Broker",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Objective C",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Objective Caml",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Open Graphics Library OpenGL",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "OpenAI ChatGPT",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Operating system shells",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Application Server",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Business Intelligence Discoverer",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Business Intelligence Enterprise Edition",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Business Intelligence Suite",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Cloud software",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Database",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle E-Business Suite Financials",
+        "commodity_title": "Financial analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Eloqua",
+        "commodity_title": "Customer relationship management CRM software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Fusion Applications",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Fusion Middleware",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Hyperion",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Java",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Oracle Java 2 Platform Enterprise Edition J2EE",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Java Message Service JMS",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JavaServer Pages JSP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JD Edwards EnterpriseOne",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle JDBC",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle PeopleSoft",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle PeopleSoft Financials",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle PL/SQL",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Primavera Enterprise Project Portfolio Management",
+        "commodity_title": "Project management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Reports",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle Solaris",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle SQL Developer",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Oracle WebLogic Server",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Pascal",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Patch management software",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Perforce Helix software",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Perl",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "PHP",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Platform as a service PaaS",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "PostgreSQL",
+        "commodity_title": "Object oriented data base management software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Programming language one PL/I",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Prolog",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Prometheus",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Puppet",
+        "commodity_title": "Configuration management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "PuTTY",
+        "commodity_title": "Access software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Python",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "PyTorch",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Qlik Tech QlikView",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "QNX",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Quest Erwin Data Modeler",
+        "commodity_title": "Metadata management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "R",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "RabbitMQ",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "React",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "React Native",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "React Redux",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Real time operating system RTOS software",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Recovery testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat Ansible Engine",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat Enterprise Linux",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat OpenShift",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Red Hat WildFly",
+        "commodity_title": "Application server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Redis",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Regression testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Relational database management software",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Requirements management software",
+        "commodity_title": "Requirements analysis and system architecture software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "RESTful API",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": true
+      },
+      {
+        "example": "Restructured extended executor REXX",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Ruby",
+        "commodity_title": "Development environment software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Ruby on Rails",
+        "commodity_title": "Web platform development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Salesforce software",
+        "commodity_title": "Customer relationship management CRM software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Salesforce Visualforce",
+        "commodity_title": "Graphical user interface development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Adaptive Server Enterprise",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Business Intelligence",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Business Objects",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP Crystal Reports",
+        "commodity_title": "Data base reporting software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP ERP",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "SAP NetWeaver",
+        "commodity_title": "Enterprise application integration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP PowerBuilder",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SAP software",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "SAS",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Scala",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Scheme",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Screencastify",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Security testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Selenium",
+        "commodity_title": "Program testing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "ServiceNow",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Shell script",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Simple API for XML SAX",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Simulation program with integrated circuit emphasis SPICE",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Single sign-on SSO",
+        "commodity_title": "Authentication server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Skype",
+        "commodity_title": "Desktop communications software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Slack",
+        "commodity_title": "Cloud-based data access and sharing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Smalltalk",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SmugMug Flickr",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Snowflake",
+        "commodity_title": "Data mining software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Social media sites",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Software development tools",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Software distribution management software",
+        "commodity_title": "Administration software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Software libraries",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "SonarQube",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Source code editor software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Splunk Enterprise",
+        "commodity_title": "Cloud-based management software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Spring Boot",
+        "commodity_title": "Application server software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Spring Framework",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "StataCorp Stata",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Static analysis software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Storage area network SAN software",
+        "commodity_title": "Storage networking software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Stress testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "String oriented symbolic language SNOBOL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Structured query language SQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Structured Query Report SQR",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Sun Microsystems Java Persistence API",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Swift",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Symantec Visual Cafe",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "System testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Tableau",
+        "commodity_title": "Business intelligence and data analysis software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Talend Big Data Integration",
+        "commodity_title": "Data base management system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Talend Data Fabric",
+        "commodity_title": "Metadata management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "TensorFlow",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Teradata Database",
+        "commodity_title": "Data base management system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Test design software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Test implementation software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "The MathWorks MATLAB",
+        "commodity_title": "Analytical or scientific software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Transact-SQL",
+        "commodity_title": "Data base user interface and query software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Trimble SketchUp Pro",
+        "commodity_title": "Graphics or photo imaging software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "TypeScript",
+        "commodity_title": "Object or component oriented development software",
+        "hot_technology": true,
+        "in_demand": true
+      },
+      {
+        "example": "Ubuntu",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Unified modeling language UML",
+        "commodity_title": "Requirements analysis and system architecture software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Unit testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "UNIX",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "UNIX Shell",
+        "commodity_title": "Operating system software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Usability testing software",
+        "commodity_title": "Program testing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Verilog",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Veritas NetBackup",
+        "commodity_title": "Backup or archival software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Version control software",
+        "commodity_title": "File versioning software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Virtual private networking VPN software",
+        "commodity_title": "Network security and virtual private network VPN equipment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Visible Razor",
+        "commodity_title": "Configuration management software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "VMware",
+        "commodity_title": "Clustering software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Voice over internet protocol VoIP system software",
+        "commodity_title": "Internet protocol IP multimedia subsystem software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Vue.js",
+        "commodity_title": "Web platform development software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Web application software",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Web server software",
+        "commodity_title": "Transaction server software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Web service definition language WDSL",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Win CE",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Wind River VxWorks",
+        "commodity_title": "Operating system software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Wireshark",
+        "commodity_title": "Network monitoring software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "WordPress",
+        "commodity_title": "Web page creation and editing software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Workday software",
+        "commodity_title": "Enterprise resource planning ERP software",
+        "hot_technology": true,
+        "in_demand": false
+      },
+      {
+        "example": "Xcode",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "XML Path Language XPATH",
+        "commodity_title": "Development environment software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "YouTube",
+        "commodity_title": "Video creation and editing software",
+        "hot_technology": false,
+        "in_demand": false
+      },
+      {
+        "example": "Zoom",
+        "commodity_title": "Video conferencing software",
+        "hot_technology": true,
+        "in_demand": false
+      }
+    ]
+  },
+  "onet_titles": {
+    "15-1254.00": [
+      {
+        "title": "Back End Developer"
+      },
+      {
+        "title": "Back End Engineer"
+      },
+      {
+        "title": "Back End Software Engineer"
+      },
+      {
+        "title": "Back-End Web Developer"
+      },
+      {
+        "title": "Computer Graphic Artist"
+      },
+      {
+        "title": "Computer Graphic Designer"
+      },
+      {
+        "title": "Front End Developer"
+      },
+      {
+        "title": "Front End Engineer"
+      },
+      {
+        "title": "Front End React Developer"
+      },
+      {
+        "title": "Front End Software Engineer"
+      },
+      {
+        "title": "Front End Web Developer"
+      },
+      {
+        "title": "Full Stack Developer"
+      },
+      {
+        "title": "Full Stack Web Developer"
+      },
+      {
+        "title": "HTML Developer (HyperText Markup Language Developer)"
+      },
+      {
+        "title": "Interface Designer"
+      },
+      {
+        "title": "Internet Application Developer"
+      },
+      {
+        "title": "Internet Architect"
+      },
+      {
+        "title": "Internet Developer"
+      },
+      {
+        "title": "Internet Site Designer"
+      },
+      {
+        "title": "Internet Specialist"
+      },
+      {
+        "title": "Intranet Developer"
+      },
+      {
+        "title": "JavaScript Developer"
+      },
+      {
+        "title": "jQuery Developer"
+      },
+      {
+        "title": "Node.js Developer"
+      },
+      {
+        "title": "PHP Developer (Personal Home Page Developer)"
+      },
+      {
+        "title": "PHP Web Developer (Personal Home Page Web Developer)"
+      },
+      {
+        "title": "PHP Website Developer"
+      },
+      {
+        "title": "React.js Developer"
+      },
+      {
+        "title": "Ruby on Rails Developer"
+      },
+      {
+        "title": "Salesforce Developer"
+      },
+      {
+        "title": "Tableau Developer"
+      },
+      {
+        "title": "Technology Applications Engineer"
+      },
+      {
+        "title": "UI Developer (User Interface Developer)"
+      },
+      {
+        "title": "Web Application Developer"
+      },
+      {
+        "title": "Web Applications Developer"
+      },
+      {
+        "title": "Web Architect"
+      },
+      {
+        "title": "Web Consultant"
+      },
+      {
+        "title": "Web Content Developer"
+      },
+      {
+        "title": "Web Design Specialist"
+      },
+      {
+        "title": "Web Developer"
+      },
+      {
+        "title": "Web Engineer"
+      },
+      {
+        "title": "Web Infrastructure Developer"
+      },
+      {
+        "title": "Web Page Developer"
+      },
+      {
+        "title": "Web Producer"
+      },
+      {
+        "title": "Web Programmer"
+      },
+      {
+        "title": "Web Site Designer"
+      },
+      {
+        "title": "Web Site Developer"
+      },
+      {
+        "title": "Web Site Specialist"
+      },
+      {
+        "title": "Web Software Engineer"
+      },
+      {
+        "title": "Web Specialist"
+      },
+      {
+        "title": "Web Technician"
+      },
+      {
+        "title": "Webmaster"
+      },
+      {
+        "title": "Webmaster Analyst"
+      },
+      {
+        "title": "Website Manager"
+      },
+      {
+        "title": "Websphere Administrator"
+      },
+      {
+        "title": "WordPress Developer"
+      },
+      {
+        "title": "XML Developer (Extensible Markup Language Developer)"
+      }
+    ],
+    "15-1252.00": [
+      {
+        "title": "AI Specialist (Artificial Intelligence Specialist)"
+      },
+      {
+        "title": "Application Analyst"
+      },
+      {
+        "title": "Application Architect"
+      },
+      {
+        "title": "Application Developer"
+      },
+      {
+        "title": "Application Engineer"
+      },
+      {
+        "title": "Application Integration Engineer"
+      },
+      {
+        "title": "Application Integrator"
+      },
+      {
+        "title": "Application Programmer"
+      },
+      {
+        "title": "Application Software Engineering IT Specialist (Application Software Engineering Information Technology Specialist)"
+      },
+      {
+        "title": "Application Support Engineer"
+      },
+      {
+        "title": "Application Systems Analyst"
+      },
+      {
+        "title": "Application Systems Architect"
+      },
+      {
+        "title": "Beta Tester"
+      },
+      {
+        "title": "Business Application Developer"
+      },
+      {
+        "title": "Certified Internetwork Expert"
+      },
+      {
+        "title": "Commercial Drone Software Developer"
+      },
+      {
+        "title": "Computer Application Developer"
+      },
+      {
+        "title": "Computer Application Engineer"
+      },
+      {
+        "title": "Computer Architect"
+      },
+      {
+        "title": "Computer Consultant"
+      },
+      {
+        "title": "Computer Engineer"
+      },
+      {
+        "title": "Computer Programmer Analyst"
+      },
+      {
+        "title": "Computer Software Engineer"
+      },
+      {
+        "title": "Computer Systems Software Architect"
+      },
+      {
+        "title": "Computer Systems Software Engineer"
+      },
+      {
+        "title": "Developer"
+      },
+      {
+        "title": "DevOps Architect (Development and Operations Architect)"
+      },
+      {
+        "title": "DevOps Developer (Development and Operations Developer)"
+      },
+      {
+        "title": "DevOps Engineer (Development Operations Engineer)"
+      },
+      {
+        "title": "Drone Software Development Engineer"
+      },
+      {
+        "title": "EDP System Engineer (Electronic Data Processing System Engineer)"
+      },
+      {
+        "title": "Embedded Engineer"
+      },
+      {
+        "title": "Embedded Software Engineer"
+      },
+      {
+        "title": "Embedded Systems Software Developer"
+      },
+      {
+        "title": "Enterprise Systems Engineer"
+      },
+      {
+        "title": "Extract Transform Load Developer"
+      },
+      {
+        "title": "Full Stack Developer"
+      },
+      {
+        "title": "Full Stack Engineer"
+      },
+      {
+        "title": "Full Stack Software Engineer"
+      },
+      {
+        "title": "Game Developer"
+      },
+      {
+        "title": "Game Engineer"
+      },
+      {
+        "title": "Graphic Engineer"
+      },
+      {
+        "title": "Implementation Specialist"
+      },
+      {
+        "title": "Information Architect"
+      },
+      {
+        "title": "Infrastructure Engineer"
+      },
+      {
+        "title": "Interface Designer"
+      },
+      {
+        "title": "Internet Application Developer"
+      },
+      {
+        "title": "Internet Consultant"
+      },
+      {
+        "title": "Knowledge Management Application Developer"
+      },
+      {
+        "title": "Mainframe Systems Programmer"
+      },
+      {
+        "title": "Mobile Application Developer"
+      },
+      {
+        "title": "Mobile Device Developer"
+      },
+      {
+        "title": "Operating System Designer (OS Designer)"
+      },
+      {
+        "title": "Operating System Specialist (OS Specialist)"
+      },
+      {
+        "title": "Publishing Systems Analyst"
+      },
+      {
+        "title": "Secure Software Assessor"
+      },
+      {
+        "title": "Server Engineer"
+      },
+      {
+        "title": "Simulation Developer"
+      },
+      {
+        "title": "Site Reliability Engineer"
+      },
+      {
+        "title": "SOA Developer (Service Oriented Architecture Developer)"
+      },
+      {
+        "title": "Software Application Architect"
+      },
+      {
+        "title": "Software Application Designer"
+      },
+      {
+        "title": "Software Application Developer"
+      },
+      {
+        "title": "Software Application Engineer"
+      },
+      {
+        "title": "Software Application Specialist"
+      },
+      {
+        "title": "Software Architect"
+      },
+      {
+        "title": "Software Computer Specialist"
+      },
+      {
+        "title": "Software Design Engineer"
+      },
+      {
+        "title": "Software Designer"
+      },
+      {
+        "title": "Software Developer"
+      },
+      {
+        "title": "Software Development Engineer"
+      },
+      {
+        "title": "Software Engineer"
+      },
+      {
+        "title": "Software Engineering Systems IT Specialist (Software Engineering Systems Information Technology Specialist)"
+      },
+      {
+        "title": "Software Quality Engineer (SQE)"
+      },
+      {
+        "title": "Software Requirements Engineer (SRE)"
+      },
+      {
+        "title": "Software Systems Developer"
+      },
+      {
+        "title": "Software Systems Engineer"
+      },
+      {
+        "title": "Software Writer"
+      },
+      {
+        "title": "Solution Architect"
+      },
+      {
+        "title": "Solution Engineer"
+      },
+      {
+        "title": "Solutions Architect"
+      },
+      {
+        "title": "Systems Analyst Engineer"
+      },
+      {
+        "title": "Systems Coordinator"
+      },
+      {
+        "title": "Systems Engineer"
+      },
+      {
+        "title": "Systems Integration Engineer"
+      },
+      {
+        "title": "Systems Software Designer"
+      },
+      {
+        "title": "Systems Software Engineer"
+      },
+      {
+        "title": "Systems Software Specialist"
+      },
+      {
+        "title": "Systems Support Engineer"
+      },
+      {
+        "title": "UI Designer (User Interface Designer)"
+      },
+      {
+        "title": "Usability Engineer"
+      },
+      {
+        "title": "Video Game Engineer"
+      },
+      {
+        "title": "XML Developer (Extensible Markup Language Developer)"
+      }
+    ]
+  }
+}

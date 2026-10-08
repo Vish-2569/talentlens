@@ -1,0 +1,30 @@
+[
+  {
+    "id": "full_stack_developer",
+    "name": "Full Stack Developer",
+    "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+    "esco_complement_uri": "http://data.europa.eu/esco/occupation/866c7813-2c03-47d7-9bdc-192cfbace57c",
+    "onet_codes": [
+      "15-1254.00",
+      "15-1252.00"
+    ],
+    "levels": [
+      {
+        "code": "L1",
+        "name": "Junior"
+      },
+      {
+        "code": "L2",
+        "name": "Mid"
+      },
+      {
+        "code": "L3",
+        "name": "Senior"
+      },
+      {
+        "code": "L4",
+        "name": "Lead"
+      }
+    ]
+  }
+]

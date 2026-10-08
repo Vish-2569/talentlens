@@ -1,0 +1,87 @@
+alias,skill_id
+k8s,kubernetes
+kube,kubernetes
+reactjs,react
+react.js,react
+reactjs,react
+react js,react
+nodejs,nodejs
+node.js,nodejs
+node js,nodejs
+node,nodejs
+aws,aws
+amazon web services,aws
+amazon aws,aws
+graphql,graphql
+graph ql,graphql
+terraform,terraform
+tf,terraform
+docker,docker
+container,docker
+typescript,typescript
+ts,typescript
+javascript,javascript
+js,javascript
+ecmascript,javascript
+next.js,nextjs
+nextjs,nextjs
+next js,nextjs
+express,express
+express.js,express
+expressjs,express
+postgresql,postgresql
+postgres,postgresql
+pg,postgresql
+mongodb,mongodb
+mongo,mongodb
+redis,redis
+rest api,rest_apis
+rest apis,rest_apis
+restful,rest_apis
+restful api,rest_apis
+git,git
+github,git
+gitlab,git
+ci/cd,ci_cd
+cicd,ci_cd
+ci cd,ci_cd
+jenkins,ci_cd
+github actions,ci_cd
+jest,jest
+html/css,html_css
+html,html_css
+css,html_css
+html css,html_css
+html5,html_css
+css3,html_css
+python,python
+py,python
+java,java
+jvm,java
+kafka,kafka
+apache kafka,kafka
+linux,linux
+ubuntu,linux
+centos,linux
+debian,linux
+microservices,microservices
+micro services,microservices
+microservice,microservices
+system design,system_design
+system architecture,system_design
+hld,system_design
+lld,system_design
+angular,angular
+angularjs,angular
+angular.js,angular
+vue,vue
+vuejs,vue
+vue.js,vue
+azure,azure
+microsoft azure,azure
+gcp,gcp
+google cloud,gcp
+google cloud platform,gcp
+sql,sql
+mysql,sql
+structured query language,sql

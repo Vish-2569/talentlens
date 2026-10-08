@@ -1,0 +1,1878 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TalentLens",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analyze": {
+      "post": {
+        "summary": "Analyze",
+        "operationId": "analyze_api_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/decisions": {
+      "post": {
+        "summary": "Create Decision",
+        "operationId": "create_decision_api_decisions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Create Decision Api Decisions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalysisResult": {
+        "properties": {
+          "parsed": {
+            "$ref": "#/components/schemas/ParsedRequisition"
+          },
+          "dejareq": {
+            "$ref": "#/components/schemas/DejaReq"
+          },
+          "redline": {
+            "$ref": "#/components/schemas/Redline"
+          },
+          "ripple": {
+            "$ref": "#/components/schemas/Ripple"
+          },
+          "options": {
+            "$ref": "#/components/schemas/Options"
+          },
+          "brief": {
+            "$ref": "#/components/schemas/Brief"
+          },
+          "data_quality": {
+            "$ref": "#/components/schemas/DataQuality"
+          },
+          "tokens": {
+            "$ref": "#/components/schemas/Tokens"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "parsed",
+          "dejareq",
+          "redline",
+          "ripple",
+          "options",
+          "brief",
+          "data_quality",
+          "tokens"
+        ],
+        "title": "AnalysisResult"
+      },
+      "AnalyzeRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "AnalyzeRequest"
+      },
+      "AverageByDecision": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "avg_tenure_months": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Tenure Months"
+          },
+          "avg_cost_lpa": {
+            "type": "number",
+            "title": "Avg Cost Lpa"
+          },
+          "avg_time_to_fill_days": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Time To Fill Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "decision",
+          "count",
+          "avg_cost_lpa"
+        ],
+        "title": "AverageByDecision"
+      },
+      "Brief": {
+        "properties": {
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/BriefSection"
+            },
+            "type": "array",
+            "title": "Sections"
+          },
+          "markdown": {
+            "type": "string",
+            "title": "Markdown"
+          },
+          "html": {
+            "type": "string",
+            "title": "Html"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sections",
+          "markdown",
+          "html"
+        ],
+        "title": "Brief"
+      },
+      "BriefSection": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "markdown": {
+            "type": "string",
+            "title": "Markdown"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "title",
+          "markdown"
+        ],
+        "title": "BriefSection"
+      },
+      "ConfidenceLabel": {
+        "type": "string",
+        "enum": [
+          "stated",
+          "inferred",
+          "computed",
+          "simulated"
+        ],
+        "title": "ConfidenceLabel"
+      },
+      "Constraint": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ConstraintKind"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "phrase": {
+            "type": "string",
+            "title": "Phrase"
+          },
+          "span_start": {
+            "type": "integer",
+            "title": "Span Start"
+          },
+          "span_end": {
+            "type": "integer",
+            "title": "Span End"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ConstraintSource"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "hover_text": {
+            "type": "string",
+            "title": "Hover Text"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/ConstraintCost"
+          },
+          "relaxed_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relaxed Value"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "value",
+          "phrase",
+          "span_start",
+          "span_end",
+          "source",
+          "severity",
+          "hover_text",
+          "cost"
+        ],
+        "title": "Constraint"
+      },
+      "ConstraintCost": {
+        "properties": {
+          "supply_delta": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supply Delta"
+          },
+          "days_delta": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Delta"
+          },
+          "rupees_delta_lpa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rupees Delta Lpa"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ConstraintCost"
+      },
+      "ConstraintKind": {
+        "type": "string",
+        "enum": [
+          "location",
+          "years",
+          "skill",
+          "budget",
+          "deadline"
+        ],
+        "title": "ConstraintKind"
+      },
+      "ConstraintSource": {
+        "type": "string",
+        "enum": [
+          "stated",
+          "inferred"
+        ],
+        "title": "ConstraintSource"
+      },
+      "ContractorCard": {
+        "properties": {
+          "person_id": {
+            "type": "string",
+            "title": "Person Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "fit": {
+            "type": "number",
+            "title": "Fit"
+          },
+          "availability": {
+            "type": "string",
+            "title": "Availability"
+          },
+          "extend_cost_lpa": {
+            "type": "number",
+            "title": "Extend Cost Lpa"
+          },
+          "convert_saving_lpa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Convert Saving Lpa"
+          },
+          "conversion_signal": {
+            "type": "boolean",
+            "title": "Conversion Signal"
+          },
+          "compliance_flag": {
+            "type": "boolean",
+            "title": "Compliance Flag"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "person_id",
+          "display_name",
+          "fit",
+          "availability",
+          "extend_cost_lpa",
+          "conversion_signal",
+          "compliance_flag",
+          "evidence_ids"
+        ],
+        "title": "ContractorCard"
+      },
+      "DataQuality": {
+        "properties": {
+          "conflicts": {
+            "type": "integer",
+            "title": "Conflicts"
+          },
+          "stale": {
+            "type": "integer",
+            "title": "Stale"
+          },
+          "self_report_only": {
+            "type": "integer",
+            "title": "Self Report Only"
+          },
+          "line": {
+            "type": "string",
+            "title": "Line"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "conflicts",
+          "stale",
+          "self_report_only",
+          "line"
+        ],
+        "title": "DataQuality"
+      },
+      "DecisionRequest": {
+        "properties": {
+          "req_id": {
+            "type": "string",
+            "title": "Req Id"
+          },
+          "option_id": {
+            "type": "string",
+            "title": "Option Id"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "req_id",
+          "option_id",
+          "reason"
+        ],
+        "title": "DecisionRequest"
+      },
+      "DejaReq": {
+        "properties": {
+          "match_count": {
+            "type": "integer",
+            "title": "Match Count"
+          },
+          "banner_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Banner Text"
+          },
+          "chip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chip"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEntry"
+            },
+            "type": "array",
+            "title": "Timeline"
+          },
+          "averages_by_decision": {
+            "items": {
+              "$ref": "#/components/schemas/AverageByDecision"
+            },
+            "type": "array",
+            "title": "Averages By Decision"
+          },
+          "patterns": {
+            "items": {
+              "$ref": "#/components/schemas/Pattern"
+            },
+            "type": "array",
+            "title": "Patterns"
+          },
+          "insight_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Insight Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "match_count",
+          "timeline",
+          "averages_by_decision",
+          "patterns"
+        ],
+        "title": "DejaReq"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "cache_loaded": {
+            "type": "boolean",
+            "title": "Cache Loaded"
+          },
+          "llm_configured": {
+            "type": "boolean",
+            "title": "Llm Configured"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "ok",
+          "cache_loaded",
+          "llm_configured"
+        ],
+        "title": "Health"
+      },
+      "InternalCandidate": {
+        "properties": {
+          "person_id": {
+            "type": "string",
+            "title": "Person Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "match": {
+            "type": "number",
+            "title": "Match"
+          },
+          "band": {
+            "type": "string",
+            "title": "Band"
+          },
+          "readiness_weeks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Readiness Weeks"
+          },
+          "build_cost_lpa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Build Cost Lpa"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "person_id",
+          "display_name",
+          "match",
+          "band",
+          "evidence_ids"
+        ],
+        "title": "InternalCandidate"
+      },
+      "Level": {
+        "type": "string",
+        "enum": [
+          "junior",
+          "mid",
+          "senior",
+          "lead"
+        ],
+        "title": "Level"
+      },
+      "MarketCard": {
+        "properties": {
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "supply": {
+            "type": "integer",
+            "title": "Supply"
+          },
+          "demand": {
+            "type": "integer",
+            "title": "Demand"
+          },
+          "sal_p25": {
+            "type": "number",
+            "title": "Sal P25"
+          },
+          "sal_p50": {
+            "type": "number",
+            "title": "Sal P50"
+          },
+          "sal_p75": {
+            "type": "number",
+            "title": "Sal P75"
+          },
+          "ttf_p50": {
+            "type": "integer",
+            "title": "Ttf P50"
+          },
+          "ttf_p80": {
+            "type": "integer",
+            "title": "Ttf P80"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "location",
+          "level",
+          "supply",
+          "demand",
+          "sal_p25",
+          "sal_p50",
+          "sal_p75",
+          "ttf_p50",
+          "ttf_p80"
+        ],
+        "title": "MarketCard"
+      },
+      "MixOption": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "atoms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Atoms"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "ready_by_p80_days": {
+            "type": "integer",
+            "title": "Ready By P80 Days"
+          },
+          "year_one_cost_lpa": {
+            "type": "number",
+            "title": "Year One Cost Lpa"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "atoms",
+          "score",
+          "ready_by_p80_days",
+          "year_one_cost_lpa",
+          "reason"
+        ],
+        "title": "MixOption"
+      },
+      "NetImpact": {
+        "properties": {
+          "days_to_fill_last_gap": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days To Fill Last Gap"
+          },
+          "total_cost_lpa": {
+            "type": "number",
+            "title": "Total Cost Lpa"
+          },
+          "promotions": {
+            "type": "integer",
+            "title": "Promotions"
+          },
+          "red_flags": {
+            "type": "integer",
+            "title": "Red Flags"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "total_cost_lpa",
+          "promotions",
+          "red_flags"
+        ],
+        "title": "NetImpact"
+      },
+      "OptionCard": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "what_it_means": {
+            "type": "string",
+            "title": "What It Means"
+          },
+          "ready_by_p80_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ready By P80 Days"
+          },
+          "year_one_cost_lpa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year One Cost Lpa"
+          },
+          "fit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fit"
+          },
+          "risk_label": {
+            "type": "string",
+            "title": "Risk Label"
+          },
+          "risk_value": {
+            "type": "number",
+            "title": "Risk Value"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "what_it_means",
+          "risk_label",
+          "risk_value",
+          "reason",
+          "evidence_ids"
+        ],
+        "title": "OptionCard"
+      },
+      "OptionSummary": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "title": "Option Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "ready_by_p80_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ready By P80 Days"
+          },
+          "year_one_cost_lpa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year One Cost Lpa"
+          },
+          "panel_line": {
+            "type": "string",
+            "title": "Panel Line"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "option_id",
+          "name",
+          "panel_line"
+        ],
+        "title": "OptionSummary"
+      },
+      "OptionWeights": {
+        "properties": {
+          "speed": {
+            "type": "number",
+            "title": "Speed"
+          },
+          "cost": {
+            "type": "number",
+            "title": "Cost"
+          },
+          "fit": {
+            "type": "number",
+            "title": "Fit"
+          },
+          "risk": {
+            "type": "number",
+            "title": "Risk"
+          },
+          "strategic": {
+            "type": "number",
+            "title": "Strategic"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "speed",
+          "cost",
+          "fit",
+          "risk",
+          "strategic"
+        ],
+        "title": "OptionWeights"
+      },
+      "Options": {
+        "properties": {
+          "five": {
+            "items": {
+              "$ref": "#/components/schemas/OptionCard"
+            },
+            "type": "array",
+            "title": "Five"
+          },
+          "mixes": {
+            "items": {
+              "$ref": "#/components/schemas/MixOption"
+            },
+            "type": "array",
+            "title": "Mixes"
+          },
+          "relocate_card": {
+            "items": {
+              "$ref": "#/components/schemas/RelocateRow"
+            },
+            "type": "array",
+            "title": "Relocate Card"
+          },
+          "market_card": {
+            "$ref": "#/components/schemas/MarketCard"
+          },
+          "contractor_cards": {
+            "items": {
+              "$ref": "#/components/schemas/ContractorCard"
+            },
+            "type": "array",
+            "title": "Contractor Cards"
+          },
+          "internal_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/InternalCandidate"
+            },
+            "type": "array",
+            "title": "Internal Candidates"
+          },
+          "sourcing": {
+            "$ref": "#/components/schemas/Sourcing"
+          },
+          "decision_boundaries": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Decision Boundaries"
+          },
+          "weights": {
+            "$ref": "#/components/schemas/OptionWeights"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "five",
+          "mixes",
+          "relocate_card",
+          "market_card",
+          "contractor_cards",
+          "internal_candidates",
+          "sourcing",
+          "decision_boundaries",
+          "weights"
+        ],
+        "title": "Options"
+      },
+      "ParsedField": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span"
+          },
+          "span_start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span Start"
+          },
+          "span_end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span End"
+          },
+          "label": {
+            "$ref": "#/components/schemas/ConfidenceLabel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "title": "ParsedField"
+      },
+      "ParsedRequisition": {
+        "properties": {
+          "level": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "headcount": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "location": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "work_mode": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "min_years": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "budget_lpa": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "need_by_days": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "duration_months": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "criticality": {
+            "$ref": "#/components/schemas/ParsedField"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/ParsedSkill"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "title_normalization": {
+            "$ref": "#/components/schemas/TitleNormalization"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "level",
+          "headcount",
+          "location",
+          "work_mode",
+          "min_years",
+          "budget_lpa",
+          "need_by_days",
+          "duration_months",
+          "criticality",
+          "skills",
+          "title_normalization"
+        ],
+        "title": "ParsedRequisition"
+      },
+      "ParsedSkill": {
+        "properties": {
+          "skill_id": {
+            "type": "string",
+            "title": "Skill Id"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/SkillImportance"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "skill_id",
+          "importance",
+          "confidence"
+        ],
+        "title": "ParsedSkill"
+      },
+      "PastFinalist": {
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "stage_reached": {
+            "type": "string",
+            "title": "Stage Reached"
+          },
+          "outcome": {
+            "type": "string",
+            "title": "Outcome"
+          },
+          "decided_on": {
+            "type": "string",
+            "title": "Decided On"
+          },
+          "open_to_remote": {
+            "type": "boolean",
+            "title": "Open To Remote"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "stage_reached",
+          "outcome",
+          "decided_on",
+          "open_to_remote"
+        ],
+        "title": "PastFinalist"
+      },
+      "Pattern": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fired": {
+            "type": "boolean",
+            "title": "Fired"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "risk_option": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk Option"
+          },
+          "risk_penalty": {
+            "type": "number",
+            "title": "Risk Penalty"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "fired",
+          "text",
+          "risk_penalty"
+        ],
+        "title": "Pattern"
+      },
+      "Redline": {
+        "properties": {
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/Constraint"
+            },
+            "type": "array",
+            "title": "Constraints"
+          },
+          "constraint_order": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintKind"
+            },
+            "type": "array",
+            "title": "Constraint Order"
+          },
+          "scenarios": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ScenarioResult"
+            },
+            "type": "object",
+            "title": "Scenarios"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "constraints",
+          "constraint_order",
+          "scenarios"
+        ],
+        "title": "Redline"
+      },
+      "RelocateRow": {
+        "properties": {
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "supply": {
+            "type": "integer",
+            "title": "Supply"
+          },
+          "ttf_p50": {
+            "type": "integer",
+            "title": "Ttf P50"
+          },
+          "ttf_p80": {
+            "type": "integer",
+            "title": "Ttf P80"
+          },
+          "pay_p50_lpa": {
+            "type": "number",
+            "title": "Pay P50 Lpa"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "location",
+          "supply",
+          "ttf_p50",
+          "ttf_p80",
+          "pay_p50_lpa",
+          "score"
+        ],
+        "title": "RelocateRow"
+      },
+      "Ripple": {
+        "properties": {
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/RippleCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidates"
+        ],
+        "title": "Ripple"
+      },
+      "RippleCandidate": {
+        "properties": {
+          "person_id": {
+            "type": "string",
+            "title": "Person Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "match": {
+            "type": "number",
+            "title": "Match"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/RippleNode"
+          },
+          "net_impact": {
+            "$ref": "#/components/schemas/NetImpact"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "person_id",
+          "display_name",
+          "match",
+          "chain",
+          "net_impact"
+        ],
+        "title": "RippleCandidate"
+      },
+      "RippleNode": {
+        "properties": {
+          "seat": {
+            "type": "string",
+            "title": "Seat"
+          },
+          "person_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Id"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RippleStatus"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/RippleNode"
+            },
+            "type": "array",
+            "title": "Children"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "seat",
+          "status",
+          "reason"
+        ],
+        "title": "RippleNode"
+      },
+      "RippleStatus": {
+        "type": "string",
+        "enum": [
+          "green",
+          "red",
+          "pending"
+        ],
+        "title": "RippleStatus"
+      },
+      "ScenarioResult": {
+        "properties": {
+          "top_option_id": {
+            "type": "string",
+            "title": "Top Option Id"
+          },
+          "panel_text": {
+            "type": "string",
+            "title": "Panel Text"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/OptionSummary"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "top_option_id",
+          "panel_text",
+          "options"
+        ],
+        "title": "ScenarioResult"
+      },
+      "Severity": {
+        "type": "string",
+        "enum": [
+          "red",
+          "amber",
+          "none"
+        ],
+        "title": "Severity"
+      },
+      "SkillImportance": {
+        "type": "string",
+        "enum": [
+          "must",
+          "nice"
+        ],
+        "title": "SkillImportance"
+      },
+      "Sourcing": {
+        "properties": {
+          "channels": {
+            "items": {
+              "$ref": "#/components/schemas/SourcingChannel"
+            },
+            "type": "array",
+            "title": "Channels"
+          },
+          "past_finalists": {
+            "items": {
+              "$ref": "#/components/schemas/PastFinalist"
+            },
+            "type": "array",
+            "title": "Past Finalists"
+          },
+          "suppliers": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierRanking"
+            },
+            "type": "array",
+            "title": "Suppliers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "channels",
+          "past_finalists",
+          "suppliers"
+        ],
+        "title": "Sourcing"
+      },
+      "SourcingChannel": {
+        "properties": {
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "evidence": {
+            "type": "string",
+            "title": "Evidence"
+          },
+          "use_for": {
+            "type": "string",
+            "title": "Use For"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "channel",
+          "evidence",
+          "use_for"
+        ],
+        "title": "SourcingChannel"
+      },
+      "SupplierRanking": {
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "title": "Supplier Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fill_rate": {
+            "type": "number",
+            "title": "Fill Rate"
+          },
+          "median_days_to_submit": {
+            "type": "integer",
+            "title": "Median Days To Submit"
+          },
+          "avg_bill_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Bill Rate"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "supplier_id",
+          "name",
+          "fill_rate",
+          "median_days_to_submit"
+        ],
+        "title": "SupplierRanking"
+      },
+      "TimelineEntry": {
+        "properties": {
+          "req_id": {
+            "type": "string",
+            "title": "Req Id"
+          },
+          "opened": {
+            "type": "string",
+            "title": "Opened"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "time_to_fill_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time To Fill Days"
+          },
+          "ramp_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ramp Note"
+          },
+          "first_year_cost_lpa": {
+            "type": "number",
+            "title": "First Year Cost Lpa"
+          },
+          "outcome_text": {
+            "type": "string",
+            "title": "Outcome Text"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "req_id",
+          "opened",
+          "decision",
+          "first_year_cost_lpa",
+          "outcome_text",
+          "evidence_ids"
+        ],
+        "title": "TimelineEntry"
+      },
+      "TitleMapping": {
+        "properties": {
+          "raw_title": {
+            "type": "string",
+            "title": "Raw Title"
+          },
+          "source_system": {
+            "type": "string",
+            "title": "Source System"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Level"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "method": {
+            "$ref": "#/components/schemas/TitleMethod"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence"
+          },
+          "esco_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Esco Uri"
+          },
+          "onet_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onet Code"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw_title",
+          "source_system",
+          "role",
+          "method",
+          "confidence"
+        ],
+        "title": "TitleMapping"
+      },
+      "TitleMethod": {
+        "type": "string",
+        "enum": [
+          "esco_alt",
+          "onet",
+          "manual",
+          "fuzzy"
+        ],
+        "title": "TitleMethod"
+      },
+      "TitleNormalization": {
+        "properties": {
+          "raw_titles_count": {
+            "type": "integer",
+            "title": "Raw Titles Count"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "levels": {
+            "items": {
+              "$ref": "#/components/schemas/Level"
+            },
+            "type": "array",
+            "title": "Levels"
+          },
+          "mappings": {
+            "items": {
+              "$ref": "#/components/schemas/TitleMapping"
+            },
+            "type": "array",
+            "title": "Mappings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw_titles_count",
+          "role",
+          "levels",
+          "mappings"
+        ],
+        "title": "TitleNormalization"
+      },
+      "Tokens": {
+        "properties": {
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          },
+          "input_tokens": {
+            "type": "integer",
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "type": "integer",
+            "title": "Output Tokens"
+          },
+          "cache_hit": {
+            "type": "boolean",
+            "title": "Cache Hit"
+          },
+          "est_cost": {
+            "type": "number",
+            "title": "Est Cost"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "calls",
+          "input_tokens",
+          "output_tokens",
+          "cache_hit",
+          "est_cost"
+        ],
+        "title": "Tokens"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+id,name,esco_uri,onet_example
+react,React,,React
+nodejs,Node.js,,Node.js
+kubernetes,Kubernetes,,Kubernetes
+aws,AWS,,Amazon Web Services AWS software
+graphql,GraphQL,,GraphQL
+terraform,Terraform,,IBM Terraform
+docker,Docker,,Docker
+typescript,TypeScript,,TypeScript
+javascript,JavaScript,,JavaScript
+nextjs,Next.js,,
+express,Express,,
+postgresql,PostgreSQL,,PostgreSQL
+mongodb,MongoDB,,MongoDB
+redis,Redis,,Redis
+rest_apis,REST APIs,,RESTful API
+git,Git,,Git
+ci_cd,CI/CD,,Jenkins CI
+jest,Jest,,
+html_css,HTML/CSS,,Hypertext markup language HTML
+python,Python,,Python
+java,Java,,Oracle Java
+kafka,Kafka,,Apache Kafka
+linux,Linux,,Linux
+microservices,Microservices,,
+system_design,System Design,,
+angular,Angular,,Google Angular
+vue,Vue.js,,Vue.js
+azure,Azure,,Microsoft Azure software
+gcp,GCP,,
+sql,SQL,,Structured query language SQL

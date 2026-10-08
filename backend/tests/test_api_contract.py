@@ -1,0 +1,97 @@
+"""API contract tests: stub validation, health, and input-length enforcement (TC-19)."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+from httpx import ASGITransport, AsyncClient
+
+from backend.api.main import app
+from backend.api.schemas import AnalysisResult
+
+STUB_PATH = Path(__file__).resolve().parent / "fixtures" / "analyze_stub.json"
+
+
+# ── Stub validates against the schema ──────────────────────────────────
+
+def test_stub_validates():
+    raw = json.loads(STUB_PATH.read_text(encoding="utf-8"))
+    result = AnalysisResult.model_validate(raw)
+    assert result.parsed.title_normalization.raw_titles_count == 12
+    assert result.dejareq.match_count == 4
+    assert len(result.redline.scenarios) == 32
+    assert len(result.options.five) == 5
+
+
+def test_stub_has_all_brief_sections():
+    raw = json.loads(STUB_PATH.read_text(encoding="utf-8"))
+    result = AnalysisResult.model_validate(raw)
+    assert len(result.brief.sections) == 12
+
+
+def test_stub_demo_story_numbers():
+    raw = json.loads(STUB_PATH.read_text(encoding="utf-8"))
+    r = AnalysisResult.model_validate(raw)
+
+    assert r.options.five[0].score == 84.0  # Mix
+    assert r.options.five[1].score == 78.0  # Build
+    assert r.options.five[2].score == 71.0  # Borrow
+    assert r.options.five[3].score == 64.0  # Relocate
+    assert r.options.five[4].score == 41.0  # Buy
+
+    relocate = r.options.relocate_card
+    assert relocate[0].location == "Remote-India"
+    assert relocate[0].supply == 210
+    assert relocate[0].ttf_p50 == 28
+    assert relocate[3].location == "Bengaluru (on-site, as requested)"
+    assert relocate[3].ttf_p80 == 81
+
+
+# ── API endpoint tests ─────────────────────────────────────────────────
+
+@pytest.fixture
+def client():
+    transport = ASGITransport(app=app)
+    return AsyncClient(transport=transport, base_url="http://test")
+
+
+@pytest.mark.anyio
+async def test_health(client):
+    resp = await client.get("/api/health")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["ok"] is True
+
+
+@pytest.mark.anyio
+async def test_analyze_returns_valid(client):
+    resp = await client.post("/api/analyze", json={"text": "Senior Full Stack Developer, Bengaluru"})
+    assert resp.status_code == 200
+    AnalysisResult.model_validate(resp.json())
+
+
+@pytest.mark.anyio
+async def test_analyze_rejects_1001_chars(client):
+    resp = await client.post("/api/analyze", json={"text": "x" * 1001})
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_analyze_rejects_5000_chars(client):
+    resp = await client.post("/api/analyze", json={"text": "x" * 5000})
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_analyze_rejects_empty(client):
+    resp = await client.post("/api/analyze", json={"text": ""})
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_requires_reason(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "reason": ""
+    })
+    assert resp.status_code == 422

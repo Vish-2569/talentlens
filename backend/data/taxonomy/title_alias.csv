@@ -1,0 +1,41 @@
+raw_title,source_system,role_id,level,method,confidence
+SDE-2 (Full Stack),hris,full_stack_developer,mid,manual,1.0
+SDE-1,hris,full_stack_developer,junior,manual,1.0
+SDE-3 (Full Stack),hris,full_stack_developer,senior,manual,1.0
+Full Stack Developer III,hris,full_stack_developer,senior,manual,1.0
+Lead Full Stack Engineer,hris,full_stack_developer,lead,manual,1.0
+SDE-1 (Full Stack),hris,full_stack_developer,junior,manual,1.0
+SDE-2,hris,full_stack_developer,mid,manual,1.0
+SDE-3,hris,full_stack_developer,senior,manual,1.0
+MERN Stack Developer,ats,full_stack_developer,,manual,1.0
+Sr. Full Stack Developer,ats,full_stack_developer,senior,manual,1.0
+MEAN Stack Developer,ats,full_stack_developer,,manual,1.0
+Full Stack Developer,ats,full_stack_developer,,manual,1.0
+Junior Full Stack Developer,ats,full_stack_developer,junior,manual,1.0
+Mid Full Stack Developer,ats,full_stack_developer,mid,manual,1.0
+"Full-Stack Engineer – Contract",vms,full_stack_developer,,manual,1.0
+"Sr. Full-Stack Engineer – Contract",vms,full_stack_developer,senior,manual,1.0
+"Full Stack Developer – Contract",vms,full_stack_developer,,manual,1.0
+Web Developer,jobboard,full_stack_developer,,onet,0.90
+React + Node Developer,jobboard,full_stack_developer,,manual,1.0
+Full Stack Web Developer,jobboard,full_stack_developer,,manual,1.0
+Software Developer,jobboard,full_stack_developer,,esco_alt,0.95
+Application Developer,jobboard,full_stack_developer,,esco_alt,0.90
+Web Application Developer,jobboard,full_stack_developer,,esco_alt,0.90
+Software Engineer,jobboard,full_stack_developer,,esco_alt,0.92
+Full Stack Engineer,jobboard,full_stack_developer,,manual,1.0
+Front End Developer,jobboard,full_stack_developer,,onet,0.85
+Back End Developer,jobboard,full_stack_developer,,onet,0.85
+Node.js Developer,jobboard,full_stack_developer,,manual,1.0
+React Developer,jobboard,full_stack_developer,,manual,1.0
+JavaScript Developer,jobboard,full_stack_developer,,manual,1.0
+Web Programmer,jobboard,full_stack_developer,,onet,0.88
+Internet Developer,jobboard,full_stack_developer,,onet,0.85
+User Interface Developer,jobboard,full_stack_developer,,esco_alt,0.88
+Full-Stack Developer,ats,full_stack_developer,,manual,1.0
+Senior Software Developer,ats,full_stack_developer,senior,esco_alt,0.92
+Junior Software Developer,ats,full_stack_developer,junior,esco_alt,0.90
+Lead Software Engineer,ats,full_stack_developer,lead,esco_alt,0.90
+MERN/MEAN Full Stack Developer,ats,full_stack_developer,,manual,1.0
+Full Stack Developer (Contract),vms,full_stack_developer,,manual,1.0
+Senior Full Stack Developer,ats,full_stack_developer,senior,manual,1.0
