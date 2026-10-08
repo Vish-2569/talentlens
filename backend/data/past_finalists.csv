@@ -1,0 +1,4 @@
+candidate_id,req_role,stage_reached,outcome,decided_on,open_to_remote,opted_in_pool
+PF-01,Full Stack Developer,final,declined,2026-04-15,true,true
+PF-02,Full Stack Developer,final,closed,2026-02-10,true,true
+PF-03,Full Stack Developer,final,declined,2025-12-01,false,true

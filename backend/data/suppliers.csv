@@ -1,0 +1,4 @@
+supplier_id,name,fill_rate,median_days_to_submit,avg_bill_rate_lpa
+SUP-01,Staffing Supplier A,0.45,9,2.0
+SUP-02,Staffing Supplier B,0.3,14,2.2
+SUP-03,Staffing Supplier C,0.25,18,1.8

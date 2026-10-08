@@ -1,0 +1,17 @@
+location,level,work_mode,demand,sal_p25,sal_p50,sal_p75,ttf_p50,ttf_p80,col_index,remote_share
+bengaluru,senior,onsite,8,24,32,40,62,81,1.0,0.05
+remote_india,senior,remote,15,22,29,36,28,40,1.63,1.0
+hyderabad,senior,onsite,5,23,30,38,44,58,0.7,0.3
+pune,senior,onsite,4,20,26,33,47,62,0.78,0.15
+bengaluru,junior,onsite,20,5,7,10,21,30,1.0,0.05
+bengaluru,mid,onsite,12,14,18,24,35,50,1.0,0.05
+bengaluru,lead,onsite,3,35,42,52,76,95,1.0,0.05
+remote_india,junior,remote,30,4,6,8,18,25,1.63,1.0
+remote_india,mid,remote,20,12,16,22,30,42,1.63,1.0
+remote_india,lead,remote,5,30,38,48,65,85,1.63,1.0
+hyderabad,junior,onsite,15,4,6,9,23,32,0.7,0.3
+hyderabad,mid,onsite,10,12,17,23,38,52,0.7,0.3
+hyderabad,lead,onsite,2,32,40,50,70,90,0.7,0.3
+pune,junior,onsite,12,4,5,8,25,35,0.78,0.15
+pune,mid,onsite,8,11,15,21,40,55,0.78,0.15
+pune,lead,onsite,2,30,38,48,72,92,0.78,0.15

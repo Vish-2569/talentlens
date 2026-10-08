@@ -1,0 +1,8 @@
+project_id,name,team,is_critical,required_skills
+PROJ-01,Platform-Core,Platform,true,"terraform,kubernetes,aws,docker,linux"
+PROJ-02,Checkout-Main,Checkout,false,"react,nodejs,typescript,postgresql"
+PROJ-03,Payments-API,Payments,false,"react,nodejs,rest_apis,postgresql"
+PROJ-04,Growth-Engine,Growth,false,"react,nodejs,typescript,postgresql"
+PROJ-05,Infra-Pipeline,Infra,false,"docker,kubernetes,linux,ci_cd"
+PROJ-06,Mobile-App,Mobile,false,"react,typescript,rest_apis"
+PROJ-07,Data-Platform,Data,false,"python,postgresql,kafka,aws"
