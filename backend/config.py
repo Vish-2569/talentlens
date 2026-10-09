@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -20,6 +21,11 @@ def _int_env(key: str, default: int) -> int:
     return int(val) if val else default
 
 
+def _date_env(key: str, default: date) -> date:
+    val = os.getenv(key, "")
+    return date.fromisoformat(val) if val else default
+
+
 @dataclass(frozen=True)
 class Settings:
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
@@ -28,6 +34,7 @@ class Settings:
     llm_polish_default: bool = os.getenv("LLM_POLISH_DEFAULT", "false").lower() == "true"
     gemini_price_in_per_m: float = _float_env("GEMINI_PRICE_IN_PER_M")
     gemini_price_out_per_m: float = _float_env("GEMINI_PRICE_OUT_PER_M")
+    demo_today: date = _date_env("DEMO_TODAY", date(2026, 10, 8))
     frontend_origin: str = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
     api_host: str = os.getenv("API_HOST", "127.0.0.1")
     api_port: int = _int_env("API_PORT", 8000)

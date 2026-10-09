@@ -17,7 +17,7 @@ from faker import Faker
 
 SEED = 42
 DATA_DIR = Path(__file__).parent
-TODAY = date(2026, 9, 1)
+TODAY = date(2026, 10, 8)
 
 ALL_SKILLS = [
     "react", "nodejs", "kubernetes", "aws", "graphql", "terraform", "docker",
@@ -118,7 +118,7 @@ NAMED_CONTRACTORS = [
      "supplier_id": "SUP-01", "level": "senior",
      "location": "bengaluru", "work_mode": "onsite",
      "start_date": _d(date(2025, 7, 1)),
-     "end_date": _d(date(2026, 9, 29)),
+     "end_date": _d(date(2026, 11, 5)),
      "bill_rate_lpa": 24.0},
     {"contractor_id": "C-09", "display_name": "Suresh",
      "supplier_id": "SUP-01", "level": "senior",

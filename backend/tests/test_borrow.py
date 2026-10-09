@@ -9,7 +9,7 @@ from backend.engine.borrow import (
 )
 from backend.store import DataStore
 
-TODAY = date(2026, 9, 1)
+TODAY = date(2026, 10, 8)
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -65,7 +65,7 @@ def test_compliance_flag_true_for_critical_project(store):
 
 
 def test_availability_4_weeks():
-    text = availability_text(date(2026, 9, 29), TODAY)
+    text = availability_text(date(2026, 11, 5), TODAY)
     assert "4 weeks" in text
 
 
@@ -78,7 +78,7 @@ def test_analyze_arjun(store):
     result = analyze_contractor(
         "C-17", 24.0,
         start_date=date(2025, 7, 1),
-        end_date=date(2026, 9, 29),
+        end_date=date(2026, 11, 5),
         fit_score=84,
         project_assignments=pa,
         projects_df=projects,

@@ -17,6 +17,9 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 
 ## Design Decisions
 
+- 2026-10-09 | `_count_internal_build` excludes the key upskill skill (the must-have that removes the most external supply when required) when counting Build-eligible employees. Build candidates are expected to be upskilled on that specific skill; the count is therefore against the remaining must-skills only. This gives the correct story numbers: 1 at 5+ years, 4 at 3+ years. The key skill is chosen dynamically — it is not hard-coded as Kubernetes. | Section 5, Section 13
+- 2026-10-09 | `DEMO_TODAY` setting added to `config.py` (default `2026-10-08`, overridable via `DEMO_TODAY` env var). The API passes `settings.demo_today` as the `today` argument to every engine function. Engine functions keep `today` as an explicit parameter with no `date.today()` calls — the demo story never depends on the real calendar date. `redline.py` was the only engine module using `date.today()`; now uses `settings.demo_today` as fallback. | Section 12
+
 - 2026-10-08 | Redline `scenarios` dict uses a 5-char string of 0/1 as the mask key (constraint_order: location, years, skill, budget, deadline; 1 = relaxed). 32 keys total. | Section 5
 - 2026-10-08 | ConstraintKind enum covers the 5 demo constraints: location, years, skill, budget, deadline. Additional kinds can be added if the parser finds other constraint types. | Section 5
 - 2026-10-08 | `OptionCard.fit` is a string (not float) because the doc uses both percentage values ("82%") and qualitative labels ("Market"). | Section 7A

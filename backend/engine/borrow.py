@@ -54,7 +54,7 @@ def analyze_contractor(
     fit_score: int,
     project_assignments: dict[str, set[str]],
     projects_df: pd.DataFrame,
-    today: date = date(2026, 9, 1),
+    today: date = date(2026, 10, 8),
 ) -> dict:
     return {
         "person_id": contractor_id,
