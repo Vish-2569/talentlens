@@ -1,3 +1,4 @@
+
 """SQLite persistence — parameterized queries only. Decision is append-only.
 
 LLM cache lives separately in cache/llm_cache.sqlite (Phase 8).
