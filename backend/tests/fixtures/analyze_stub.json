@@ -363,10 +363,10 @@
       }
     ],
     "relocate_card": [
-      {"location": "Remote-India", "supply": 210, "ttf_p50": 28, "ttf_p80": 40, "pay_p50_lpa": 29.0, "score": 0.86},
-      {"location": "Hyderabad (on-site)", "supply": 31, "ttf_p50": 44, "ttf_p80": 58, "pay_p50_lpa": 30.0, "score": 0.52},
-      {"location": "Pune (on-site)", "supply": 26, "ttf_p50": 47, "ttf_p80": 62, "pay_p50_lpa": 26.0, "score": 0.49},
-      {"location": "Bengaluru (on-site, as requested)", "supply": 14, "ttf_p50": 62, "ttf_p80": 81, "pay_p50_lpa": 32.0, "score": 0.18}
+      {"location": "Remote-India", "supply": 210, "ttf_p50": 28, "ttf_p80": 40, "pay_p50_lpa": 29.0, "score": 0.79},
+      {"location": "Hyderabad (on-site)", "supply": 31, "ttf_p50": 44, "ttf_p80": 58, "pay_p50_lpa": 30.0, "score": 0.36},
+      {"location": "Pune (on-site)", "supply": 26, "ttf_p50": 47, "ttf_p80": 62, "pay_p50_lpa": 26.0, "score": 0.34},
+      {"location": "Bengaluru (on-site, as requested)", "supply": 14, "ttf_p50": 62, "ttf_p80": 81, "pay_p50_lpa": 32.0, "score": 0.0}
     ],
     "market_card": {
       "location": "bengaluru",
@@ -457,7 +457,7 @@
       {"key": "internal", "title": "Internal matches and development paths", "markdown": "- **Karthik** (Lead, Platform, 7 yrs): 88% match. Sole Terraform holder on critical project — bus factor = 1.\n- **Priya** (Mid, Checkout, 4 yrs): 82% match. Ready week 6 after Kubernetes upskill.\n- **Rahul** (Junior, Checkout): 76% ready for Mid, 3-month upskill."},
       {"key": "contractors", "title": "Contractor options", "markdown": "- **Arjun (C-17)**: 84% match, has Kubernetes. Contract ends in 4 weeks. 12-month extension ₹24L, 3-month bridge ₹6L. Conversion signal: tenure > 12 months, good rating."},
       {"key": "compensation", "title": "Compensation guidance", "markdown": "Bengaluru Senior: P25 ₹24L, P50 ₹32L, P75 ₹40L. Budget ₹28L is 12.5% below P50. Expect ~1.25× longer time to fill."},
-      {"key": "locations", "title": "Location alternatives", "markdown": "Remote-India: 210 candidates, P50 28 days, ₹29L (score 0.86). Pune: 18% lower P50 pay than Bengaluru."},
+      {"key": "locations", "title": "Location alternatives", "markdown": "Remote-India: 210 candidates, P50 28 days, ₹29L (score 0.79). Pune: 18% lower P50 pay than Bengaluru."},
       {"key": "options", "title": "Option comparison and recommendation", "markdown": "| Option | Score | Ready by | Cost | Risk |\n|---|---|---|---|---|\n| Mix (Borrow + Build) | 84 | Day 0 | ₹18L | Low |\n| Build | 78 | Week 6 | ₹12L | Low |\n| Borrow | 71 | Day 0 | ₹24L | Medium |\n| Relocate | 64 | Day 40 | ₹29L | Medium-high |\n| Buy | 41 | Day 81 | ₹32L | High |"},
       {"key": "sourcing", "title": "Sourcing channels and talent pools", "markdown": "1. Past finalists: 3 candidates (2 remote-ready)\n2. Employee referral: 38% fill rate, 34 days\n3. Staffing supplier A: 45% fill rate, 9 days to submission\n4. Job board: 22% fill rate, 52 days"},
       {"key": "actions", "title": "Recommended next actions", "markdown": "1. Extend Arjun's contract for 3 months (bridge).\n2. Start Priya's Kubernetes upskill (6 weeks).\n3. Open backfill requisition: Junior Full Stack Developer, Checkout.\n4. Contact 3 past finalists from ATS."},

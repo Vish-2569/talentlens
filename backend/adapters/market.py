@@ -13,8 +13,9 @@ class MarketAdapter:
         self._stats = pd.read_csv(data_dir / "market_stats.csv")
         for col in ("demand", "ttf_p50", "ttf_p80"):
             self._stats[col] = self._stats[col].astype(int)
-        for col in ("sal_p25", "sal_p50", "sal_p75", "col_index", "remote_share"):
-            self._stats[col] = self._stats[col].astype(float)
+        for col in ("sal_p25", "sal_p50", "sal_p75", "col_index", "remote_share", "reloc_package_lpa"):
+            if col in self._stats.columns:
+                self._stats[col] = self._stats[col].astype(float)
 
     def market_stats(self) -> pd.DataFrame:
         return self._stats.copy()

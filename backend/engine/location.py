@@ -1,18 +1,32 @@
 """Location comparison — pure functions, no I/O.
 
-score = w_supply·supply_norm + w_speed·speed_norm + w_cost·cost_norm + w_remote·remote_norm
-Each dimension ratio-to-max normalized.
+score = w_supply·supply_mm + w_speed·speed_mm + w_cost·cost_mm + w_remote·remote_mm − penalty
+
+All four dimensions min–max normalised: (x − min)/(max − min) across the candidate set.
+cost raw = 1 / (P50_pay × col_index).
+penalty = (reloc_package_lpa / max_reloc_in_set) × PENALTY_WEIGHT (see DECISIONS.md §M6).
 """
 from __future__ import annotations
 
 import pandas as pd
 
 DEFAULT_WEIGHTS = {
-    "supply": 0.34,
-    "speed": 0.21,
-    "cost": 0.30,
-    "remote": 0.15,
+    "supply": 0.35,
+    "speed": 0.30,
+    "cost": 0.25,
+    "remote": 0.10,
 }
+
+# Fraction of score range a max-package relocation costs (see DECISIONS.md).
+PENALTY_WEIGHT = 0.05
+
+
+def _minmax(values: list[float]) -> list[float]:
+    mn, mx = min(values), max(values)
+    rng = mx - mn
+    if rng == 0.0:
+        return [0.0] * len(values)
+    return [(v - mn) / rng for v in values]
 
 
 def compare_locations(
@@ -32,8 +46,10 @@ def compare_locations(
 
         supply = supplies.get(loc, 0)
         speed = 1.0 / stat["ttf_p50"] if stat["ttf_p50"] > 0 else 0.0
-        cost = 1.0 / (stat["sal_p50"] * stat["col_index"]) if stat["sal_p50"] > 0 and stat["col_index"] > 0 else 0.0
+        cost = (1.0 / (stat["sal_p50"] * stat["col_index"])
+                if stat["sal_p50"] > 0 and stat["col_index"] > 0 else 0.0)
         remote = float(stat["remote_share"])
+        reloc = float(stat["reloc_package_lpa"]) if "reloc_package_lpa" in stat.index else 0.0
 
         rows.append({
             "location": loc,
@@ -41,36 +57,34 @@ def compare_locations(
             "ttf_p50": int(stat["ttf_p50"]),
             "ttf_p80": int(stat["ttf_p80"]),
             "pay_p50_lpa": float(stat["sal_p50"]),
-            "_supply_raw": supply,
+            "_supply_raw": float(supply),
             "_speed_raw": speed,
             "_cost_raw": cost,
             "_remote_raw": remote,
+            "_reloc_raw": reloc,
         })
 
     if not rows:
         return []
 
-    max_supply = max(r["_supply_raw"] for r in rows) or 1
-    max_speed = max(r["_speed_raw"] for r in rows) or 1
-    max_cost = max(r["_cost_raw"] for r in rows) or 1
-    max_remote = max(r["_remote_raw"] for r in rows) or 1
+    supply_mm = _minmax([r["_supply_raw"] for r in rows])
+    speed_mm  = _minmax([r["_speed_raw"]  for r in rows])
+    cost_mm   = _minmax([r["_cost_raw"]   for r in rows])
+    remote_mm = _minmax([r["_remote_raw"] for r in rows])
 
-    for r in rows:
-        supply_n = r["_supply_raw"] / max_supply
-        speed_n = r["_speed_raw"] / max_speed
-        cost_n = r["_cost_raw"] / max_cost
-        remote_n = r["_remote_raw"] / max_remote
+    reloc_vals = [r["_reloc_raw"] for r in rows]
+    max_reloc = max(reloc_vals) if max(reloc_vals) > 0 else 1.0
 
-        raw = (w["supply"] * supply_n
-               + w["speed"] * speed_n
-               + w["cost"] * cost_n
-               + w["remote"] * remote_n)
-        r["score"] = round(raw, 2)
+    for i, r in enumerate(rows):
+        raw = (w["supply"] * supply_mm[i]
+               + w["speed"]  * speed_mm[i]
+               + w["cost"]   * cost_mm[i]
+               + w["remote"] * remote_mm[i])
+        penalty = (reloc_vals[i] / max_reloc) * PENALTY_WEIGHT
+        r["score"] = round(max(0.0, raw - penalty), 2)
 
-        del r["_supply_raw"]
-        del r["_speed_raw"]
-        del r["_cost_raw"]
-        del r["_remote_raw"]
+        for k in ("_supply_raw", "_speed_raw", "_cost_raw", "_remote_raw", "_reloc_raw"):
+            del r[k]
 
     rows.sort(key=lambda r: r["score"], reverse=True)
     return rows

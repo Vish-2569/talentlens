@@ -91,10 +91,10 @@ talentlens/
 
 | Location | Matching supply | P50 / P80 time-to-fill | P50 pay | Location score |
 |----------|----------------|------------------------|---------|----------------|
-| Remote-India | 210 | 28 / 40 days | ₹29L | 0.86 |
-| Hyderabad (on-site) | 31 | 44 / 58 days | ₹30L | 0.52 |
-| Pune (on-site) | 26 | 47 / 62 days | ₹26L | 0.49 |
-| Bengaluru (on-site, as requested) | 14 | 62 / 81 days | ₹32L | 0.18 |
+| Remote-India | 210 | 28 / 40 days | ₹29L | 0.79 |
+| Hyderabad (on-site) | 31 | 44 / 58 days | ₹30L | 0.36 |
+| Pune (on-site) | 26 | 47 / 62 days | ₹26L | 0.34 |
+| Bengaluru (on-site, as requested) | 14 | 62 / 81 days | ₹32L | 0.00 |
 
 ### Section 7B: Sourcing channels table (verbatim)
 
