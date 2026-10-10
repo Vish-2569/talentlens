@@ -93,6 +93,63 @@ async def test_analyze_rejects_empty(client):
 @pytest.mark.anyio
 async def test_decision_requires_reason(client):
     resp = await client.post("/api/decisions", json={
-        "req_id": "REQ-001", "option_id": "mix", "reason": ""
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Approve",
+        "relaxed_mask": "00000", "decided_by": "someone", "reason": ""
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_requires_verb(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix",
+        "relaxed_mask": "00000", "decided_by": "someone", "reason": "good"
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_rejects_unknown_verb(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Destroy",
+        "relaxed_mask": "00000", "decided_by": "someone",
+        "reason": "good reason"
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_requires_decided_by(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Approve",
+        "relaxed_mask": "00000", "reason": "good reason"
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_rejects_blank_decided_by(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Approve",
+        "relaxed_mask": "00000", "decided_by": "", "reason": "good reason"
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_requires_relaxed_mask(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Approve",
+        "decided_by": "someone", "reason": "good reason"
+    })
+    assert resp.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_decision_rejects_invalid_relaxed_mask(client):
+    resp = await client.post("/api/decisions", json={
+        "req_id": "REQ-001", "option_id": "mix", "verb": "Approve",
+        "relaxed_mask": "abc", "decided_by": "someone",
+        "reason": "good reason"
     })
     assert resp.status_code == 422

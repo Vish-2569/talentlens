@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -15,6 +15,8 @@ from backend.api.schemas import (
     Health,
 )
 from backend.config import settings
+from backend.db import Database
+from backend.decisions import record_decision
 
 app = FastAPI(title="TalentLens", version="0.1.0")
 
@@ -52,9 +54,47 @@ def analyze(req: AnalyzeRequest) -> AnalysisResult:
     return AnalysisResult.model_validate(stub)
 
 
+_VALID_OPTIONS = ["mix", "build", "borrow", "relocate", "buy",
+                  "mix-1", "mix-2", "mix-3", "automate"]
+
+
 @app.post("/api/decisions", status_code=201)
 def create_decision(req: DecisionRequest) -> dict:
-    return {"status": "recorded", "req_id": req.req_id}
+    db = Database()
+    try:
+        req_row = db.get_requisition(req.req_id)
+        if req_row is None:
+            raise HTTPException(status_code=400,
+                                detail=f"Requisition {req.req_id} not found")
+
+        parsed_json = json.loads(req_row["raw_json"])
+
+        scenarios = db.get_scenarios(req.req_id)
+        scenario_row = next(
+            (s for s in scenarios if s["relaxed_mask"] == req.relaxed_mask),
+            None,
+        )
+        options_json = (
+            json.loads(scenario_row["outputs_json"]) if scenario_row else {}
+        )
+
+        result = record_decision(
+            db=db,
+            req_id=req.req_id,
+            option_id=req.option_id,
+            verb=req.verb.value,
+            relaxed_mask=req.relaxed_mask,
+            decided_by=req.decided_by,
+            reason=req.reason,
+            valid_options=_VALID_OPTIONS,
+            parsed_json=parsed_json,
+            options_json=options_json,
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        db.close()
 
 
 _DIST = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"

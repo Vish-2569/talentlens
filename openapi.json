@@ -495,6 +495,19 @@
             "type": "string",
             "title": "Option Id"
           },
+          "verb": {
+            "$ref": "#/components/schemas/DecisionVerb"
+          },
+          "relaxed_mask": {
+            "type": "string",
+            "pattern": "^[01]{5}$",
+            "title": "Relaxed Mask"
+          },
+          "decided_by": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Decided By"
+          },
           "reason": {
             "type": "string",
             "minLength": 1,
@@ -506,9 +519,21 @@
         "required": [
           "req_id",
           "option_id",
+          "verb",
+          "relaxed_mask",
+          "decided_by",
           "reason"
         ],
         "title": "DecisionRequest"
+      },
+      "DecisionVerb": {
+        "type": "string",
+        "enum": [
+          "Approve",
+          "Modify",
+          "Reject"
+        ],
+        "title": "DecisionVerb"
       },
       "DejaReq": {
         "properties": {

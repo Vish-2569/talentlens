@@ -93,10 +93,19 @@ class AnalyzeRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=1000)
 
 
+class DecisionVerb(str, Enum):
+    approve = "Approve"
+    modify = "Modify"
+    reject = "Reject"
+
+
 class DecisionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     req_id: str
     option_id: str
+    verb: DecisionVerb
+    relaxed_mask: str = Field(..., pattern=r"^[01]{5}$")
+    decided_by: str = Field(..., min_length=1)
     reason: str = Field(..., min_length=1)
 
 
