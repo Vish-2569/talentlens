@@ -2,10 +2,12 @@ import type { components } from "../api/types";
 import { InfoTip, VisuallyHidden } from "./ui";
 
 type Constraint = components["schemas"]["Constraint"];
+type ConstraintKind = components["schemas"]["ConstraintKind"];
 
 interface Props {
   requestText: string;
   constraints: Constraint[];
+  constraintOrder: ConstraintKind[];
   mask: string;
 }
 
@@ -24,16 +26,19 @@ const severityLabel: Record<string, string> = {
   amber: "Moderate cost",
 };
 
-export function RedlineText({ requestText, constraints, mask }: Props) {
+function maskIndex(c: Constraint, order: ConstraintKind[]): number {
+  return order.indexOf(c.kind);
+}
+
+export function RedlineText({ requestText, constraints, constraintOrder, mask }: Props) {
   const spanned = constraints
-    .map((c, i) => ({ constraint: c, index: i }))
-    .filter((e) => e.constraint.span_start != null && e.constraint.span_end != null)
-    .sort((a, b) => a.constraint.span_start - b.constraint.span_start);
+    .filter((c) => c.span_start != null && c.span_end != null)
+    .sort((a, b) => a.span_start - b.span_start);
 
   const segments: React.ReactNode[] = [];
   let cursor = 0;
 
-  for (const { constraint: c, index } of spanned) {
+  for (const c of spanned) {
     if (c.span_start > cursor) {
       segments.push(
         <span key={`gap-${cursor}`}>
@@ -42,7 +47,8 @@ export function RedlineText({ requestText, constraints, mask }: Props) {
       );
     }
 
-    const relaxed = mask[index] === "1";
+    const mi = maskIndex(c, constraintOrder);
+    const relaxed = mi >= 0 && mask[mi] === "1";
     const sev = c.severity;
     const style = severityStyle[sev] ?? "";
     const icon = severityIcon[sev];

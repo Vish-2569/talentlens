@@ -84,11 +84,13 @@ export function Challenge() {
                 <RedlineText
                   requestText={requestText}
                   constraints={result.redline.constraints}
+                  constraintOrder={result.redline.constraint_order}
                   mask={mask}
                 />
                 <div className="mt-4">
                   <RedlineCards
                     constraints={result.redline.constraints}
+                    constraintOrder={result.redline.constraint_order}
                     mask={mask}
                     onToggle={(index, relaxed) =>
                       dispatch({
@@ -100,6 +102,7 @@ export function Challenge() {
                 </div>
                 <AssumptionLedger
                   constraints={result.redline.constraints}
+                  constraintOrder={result.redline.constraint_order}
                   mask={mask}
                   decisionBoundaries={result.options.decision_boundaries}
                 />

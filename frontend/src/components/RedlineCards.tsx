@@ -4,9 +4,11 @@ import type { components } from "../api/types";
 import { StatusMark } from "./ui";
 
 type Constraint = components["schemas"]["Constraint"];
+type ConstraintKind = components["schemas"]["ConstraintKind"];
 
 interface Props {
   constraints: Constraint[];
+  constraintOrder: ConstraintKind[];
   mask: string;
   onToggle: (index: number, relaxed: boolean) => void;
 }
@@ -85,11 +87,15 @@ function KeepRelaxControl({
   );
 }
 
-export function RedlineCards({ constraints, mask, onToggle }: Props) {
+export function RedlineCards({ constraints, constraintOrder, mask, onToggle }: Props) {
+  const byKind = new Map(constraints.map((c) => [c.kind, c]));
+
   return (
     <ul className="flex flex-col gap-3" aria-label="Redline constraints">
-      {constraints.map((c, index) => {
-        const relaxed = mask[index] === "1";
+      {constraintOrder.map((kind, maskIdx) => {
+        const c = byKind.get(kind);
+        if (!c) return null;
+        const relaxed = mask[maskIdx] === "1";
 
         return (
           <li
@@ -115,7 +121,7 @@ export function RedlineCards({ constraints, mask, onToggle }: Props) {
               </div>
               <KeepRelaxControl
                 relaxed={relaxed}
-                onChange={(r) => onToggle(index, r)}
+                onChange={(r) => onToggle(maskIdx, r)}
                 constraintId={c.id}
               />
             </div>

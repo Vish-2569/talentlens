@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { components } from "../api/types";
 import { FIXTURE_ANALYSIS } from "../fixtures";
 import { AppProvider } from "../state/context";
 import { Challenge } from "../screens/Challenge";
@@ -234,7 +235,7 @@ describe("Edge cases", () => {
     const fixtureWithNull = structuredClone(FIXTURE_ANALYSIS);
     fixtureWithNull.redline.constraints.push({
       id: "c-inferred",
-      kind: "budget",
+      kind: "skill" as components["schemas"]["ConstraintKind"],
       value: "test",
       phrase: "test phrase",
       span_start: null as unknown as number,
@@ -245,10 +246,6 @@ describe("Edge cases", () => {
       cost: { supply_delta: null, days_delta: null, rupees_delta_lpa: null },
       relaxed_value: null,
     });
-    fixtureWithNull.redline.constraint_order = [
-      ...fixtureWithNull.redline.constraint_order,
-      "budget",
-    ];
 
     const user = userEvent.setup();
     globalThis.fetch = mockFetch(200, fixtureWithNull);
@@ -271,5 +268,47 @@ describe("Edge cases", () => {
     expect(keyWarnings).toHaveLength(0);
 
     errorSpy.mockRestore();
+  });
+
+  it("shuffled constraints array: location Relax still sets mask position 0", async () => {
+    const shuffled = structuredClone(FIXTURE_ANALYSIS);
+    // Reverse the constraints array so array index !== constraint_order index
+    shuffled.redline.constraints = [...shuffled.redline.constraints].reverse();
+    // constraint_order stays ["location","years","skill","budget","deadline"]
+
+    const user = userEvent.setup();
+    globalThis.fetch = mockFetch(200, shuffled);
+    render(
+      <AppProvider>
+        <Challenge />
+        <div role="status" aria-live="polite" aria-atomic="true" id="recommendation-live" />
+      </AppProvider>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Use the example request" }));
+    await user.click(screen.getByRole("button", { name: "Challenge this request" }));
+    await screen.findByText(DEMO_SENTENCE);
+
+    // Cards render in constraint_order: first card should be location
+    const cardList = screen.getByRole("list", { name: "Redline constraints" });
+    const cards = within(cardList).getAllByRole("listitem");
+    expect(cards[0].textContent).toContain("Bengaluru, on-site");
+
+    // Default mask "00000" shows Buy panel
+    expect(screen.getByText("Buy: P50 62 days, ₹32L.")).toBeInTheDocument();
+
+    const fetchSpy = vi.fn();
+    globalThis.fetch = fetchSpy;
+
+    // Relax location (first card) + skill (third card)
+    const radioGroups = screen.getAllByRole("radiogroup");
+    await user.click(within(radioGroups[0]).getByRole("radio", { name: "Relax" }));
+    await user.click(within(radioGroups[2]).getByRole("radio", { name: "Relax" }));
+
+    // Should produce mask "10100" and show mix panel — same as unshuffled
+    expect(
+      screen.getByText("Borrow E-045 + C-17: available now, ₹18L in year one."),
+    ).toBeInTheDocument();
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 });
