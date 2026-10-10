@@ -154,7 +154,8 @@ def precomputed(store):
         parsed_req={"role": "Full Stack Developer", "level": "senior",
                      "location": "bengaluru", "work_mode": "onsite",
                      "team": "Payments",
-                     "skill_ids": [s["id"] for s in SENIOR_SKILLS]},
+                     "skill_ids": [s["id"] for s in SENIOR_SKILLS
+                                  if s["importance"] == "must"]},
         past_reqs=reqs,
         employees=employees_df,
         emp_skills=emp_skills,

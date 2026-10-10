@@ -1,19 +1,21 @@
 """Tests for engine/dejareq.py — Deja Req past-requisition analysis."""
 import pytest
+import pandas as pd
 from datetime import date
 
 from backend.engine.dejareq import dejareq
 
 TODAY = date(2026, 10, 8)
 
+# Demo skills match the Section 13 story: React, Node.js, Kubernetes (3 skills).
+# Standard Jaccard compares against PastRequisition.skills column, not person skills.
 DEMO_PARSED_REQ = {
     "role": "Full Stack Developer",
     "level": "senior",
     "team": "Payments",
     "location": "bengaluru",
     "work_mode": "onsite",
-    "skill_ids": ["react", "nodejs", "kubernetes", "typescript",
-                  "javascript", "docker", "aws", "git"],
+    "skill_ids": ["react", "nodejs", "kubernetes"],
 }
 
 JUNIOR_PARSED_REQ = {
@@ -135,3 +137,37 @@ def test_insight_text(store):
 def test_what_worked_is_build(store):
     result = _run(store, DEMO_PARSED_REQ)
     assert result["patterns"]["what_worked"] == "build"
+
+
+# ── TC04: Low-overlap past requisition must NOT match ───────────────
+
+
+def test_low_overlap_req_no_match(store):
+    """A past req sharing only 1 of 3 required skills (Jaccard = 1/3 < 0.5) must not match."""
+    low_overlap_reqs = pd.DataFrame([{
+        "req_id": "REQ-X01",
+        "role": "Full Stack Developer",
+        "level": "senior",
+        "team": "Payments",
+        "location": "bengaluru",
+        "work_mode": "onsite",
+        "opened_date": "2026-06-01",
+        "closed_date": "2026-06-30",
+        "decision": "buy",
+        "outcome": "still_in_role",
+        "person_id": "E-010",
+        "time_to_fill_days": 29,
+        "first_year_cost_lpa": 31.0,
+        "skills": "react",   # only 1 of 3 required skills → Jaccard = 1/3 < 0.5
+    }])
+    result = dejareq(
+        parsed_req=DEMO_PARSED_REQ,
+        past_reqs=low_overlap_reqs,
+        employees=store.hris.employees(),
+        emp_skills=store.hris.employee_skills(),
+        contractors=store.vms.contractors(),
+        ctr_skills=store.vms.contractor_skills(),
+        exits=store.hris.exits(),
+        today=TODAY,
+    )
+    assert result["match_count"] == 0

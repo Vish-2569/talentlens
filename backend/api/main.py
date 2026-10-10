@@ -313,7 +313,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
     deja_parsed = {
         "role": "Full Stack Developer",
         "level": level,
-        "skill_ids": skill_ids_all,
+        "skill_ids": set(must_ids),
         "team": "Payments",
     }
     deja_result = dejareq(

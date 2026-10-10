@@ -1,5 +1,5 @@
-req_id,role,level,team,location,work_mode,opened_date,closed_date,decision,outcome,person_id,time_to_fill_days,first_year_cost_lpa
-REQ-001,Full Stack Developer,senior,Payments,bengaluru,onsite,2024-11-05,2025-01-12,buy,left_9m,E-018,68,31.0
-REQ-002,Full Stack Developer,senior,Payments,bengaluru,onsite,2025-10-01,2025-12-14,buy,left_7m,E-020,74,33.0
-REQ-003,Full Stack Developer,senior,Payments,bengaluru,onsite,2026-03-01,2026-03-07,borrow,knowledge_lost,C-09,6,24.0
-REQ-004,Full Stack Developer,senior,Payments,bengaluru,onsite,2026-06-01,2026-06-15,build,still_in_role,E-010,0,4.0
+req_id,role,level,team,location,work_mode,opened_date,closed_date,decision,outcome,person_id,time_to_fill_days,first_year_cost_lpa,skills
+REQ-001,Full Stack Developer,senior,Payments,bengaluru,onsite,2024-11-05,2025-01-12,buy,left_9m,E-018,68,31.0,"react,nodejs,kubernetes"
+REQ-002,Full Stack Developer,senior,Payments,bengaluru,onsite,2025-10-01,2025-12-14,buy,left_7m,E-020,74,33.0,"react,nodejs,kubernetes,typescript"
+REQ-003,Full Stack Developer,senior,Payments,bengaluru,onsite,2026-03-01,2026-03-07,borrow,knowledge_lost,C-09,6,24.0,"react,nodejs,kubernetes,docker"
+REQ-004,Full Stack Developer,senior,Payments,bengaluru,onsite,2026-06-01,2026-06-15,build,still_in_role,E-010,0,4.0,"react,nodejs,kubernetes,postgresql"
