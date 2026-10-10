@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AssumptionLedger } from "../components/AssumptionLedger";
+import { DejaReq } from "../components/DejaReq";
 import { LiveRecommendation } from "../components/LiveRecommendation";
 import { LoadingStages } from "../components/LoadingStages";
 import { ParsedFields } from "../components/ParsedFields";
@@ -77,7 +78,7 @@ export function Challenge() {
             <ParsedFields parsed={result.parsed} />
           </div>
 
-          {/* Redline */}
+          {/* Redline + Déjà Req */}
           <section id="redline-section" aria-label="Requisition redline" className="mt-6">
             <div className="lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
               <div>
@@ -106,6 +107,8 @@ export function Challenge() {
                   mask={mask}
                   decisionBoundaries={result.options.decision_boundaries}
                 />
+
+                <DejaReq dejareq={result.dejareq} />
               </div>
               <div className="mt-4 lg:mt-0">
                 <LiveRecommendation
@@ -117,8 +120,6 @@ export function Challenge() {
               </div>
             </div>
           </section>
-
-          {/* Déjà Req slot — built in F5 */}
 
           <div className="mt-6">
             <TitleNormPanel
