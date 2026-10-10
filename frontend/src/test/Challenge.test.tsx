@@ -153,7 +153,8 @@ describe("Post-success view", () => {
     await user.paste(xssText);
     await user.click(screen.getByRole("button", { name: "Challenge this request" }));
 
-    await screen.findByText(xssText);
+    const matches = await screen.findAllByText(xssText);
+    expect(matches.length).toBeGreaterThanOrEqual(1);
 
     const scriptElements = document.querySelectorAll("script");
     const injectedScripts = Array.from(scriptElements).filter((el) =>

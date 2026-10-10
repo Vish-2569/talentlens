@@ -41,6 +41,7 @@ export type Action =
   | { type: "ANALYZE_ERROR"; payload: string }
   | { type: "SET_TAB"; payload: TabId }
   | { type: "TOGGLE_CONSTRAINT"; payload: { index: number; relaxed: boolean } }
+  | { type: "RESET_MASK" }
   | { type: "SELECT_PERSON"; payload: string | null }
   | { type: "RECORD_DECISION"; payload: DecisionRecord }
   | { type: "DISMISS_ERROR" };
@@ -95,6 +96,12 @@ export function reducer(state: AppState, action: Action): AppState {
       chars[action.payload.index] = action.payload.relaxed ? "1" : "0";
       return { ...state, mask: chars.join("") };
     }
+
+    case "RESET_MASK":
+      return {
+        ...state,
+        mask: "0".repeat(state.result?.redline.constraint_order.length ?? 5),
+      };
 
     case "SELECT_PERSON":
       return { ...state, selectedPersonId: action.payload };
