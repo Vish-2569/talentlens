@@ -12,7 +12,6 @@ from typing import Callable
 
 import pandas as pd
 
-from backend.config import settings
 from backend.engine.location import compare_locations
 from backend.engine.market import matching_supply, ttf_adjusted
 
@@ -232,7 +231,7 @@ def analyze_redline(
     market_stats_df: pd.DataFrame,
     dejareq_result: dict,
     score_options_fn: Callable[[dict, dict], dict],
-    today: date | None = None,
+    today: date,
 ) -> dict:
     """Pure redline analysis.
 
@@ -248,8 +247,6 @@ def analyze_redline(
     The API layer substitutes display names and drops hover_data before Pydantic
     validation (Constraint has extra='forbid').
     """
-    if today is None:
-        today = settings.demo_today
 
     # ── 1. Field values ──────────────────────────────────────────────────
     level = str(parsed_req["level"]["value"])

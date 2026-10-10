@@ -54,6 +54,12 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 - 2026-10-09 | Deja Req outcome "still_in_role" maps to "Still in role, rated Exceeds" — the "rated Exceeds" part is from the demo narrative (no performance data in CSV). | Section 4, 13
 - 2026-10-09 | Section 7A Relocate card scores (0.86/0.52/0.49/0.18) are not reachable with the Section 7 M6 min–max formula given the fixed story supply/TTF values: Bengaluru is the minimum on all four dimensions (smallest supply 14, slowest TTF 1/62, highest effective cost col=1.00 × sal=32, lowest remote_share 0.05) and therefore scores 0 on every normalised axis regardless of seed tuning. Formula kept exactly as specified; scores recomputed to 0.79/0.36/0.34/0.00 with seed col_index remote=1.00, reloc_package_lpa blr=2L/hyd=1L/pune=1L/remote=0L. | Section 7A, 7 M6, 13
 
+## Phase 10: Ripple Effect
+
+- 2026-10-10 | Promotion raise = (sal_p75 − sal_p50) / 2 at the mover's CURRENT level and location. Derived from market_stats; reproduces the story's ₹3L (Priya mid Bengaluru: (24−18)/2) and ₹1.5L (Rahul junior Bengaluru: (10−7)/2) without hardcoding. Implemented as `_promotion_raise_lpa()` in ripple.py. | Section 6, 13
+- 2026-10-10 | Backfill threshold is >= 70 (not strictly > 70). Section 6 stopping rule: stop RED when no backfill scores >= 70. A candidate scoring exactly 70 qualifies as an internal backfill. Boundary tests added. | Section 6
+- 2026-10-10 | `redline.py` no longer imports `backend.config.settings`. The `today` parameter is now required (no default), keeping engine/ free of I/O and config dependencies. The API layer passes `settings.demo_today`. | Section 12
+
 ## Phase 8: Parser, LLM, Guardrails
 
 - 2026-10-09 | Regex pre-parser (engine/parser.py) runs FIRST before any LLM call. Extracts budget (₹NL), years, deadline (days), city (fixed 4-city list), work_mode (onsite/hybrid/remote with negative lookahead to exclude "Remote India"), level (including Sr./Jr. abbreviations), and skills via scanning all known skill names/aliases in the text (longest-first, with overlap protection). | Section 8

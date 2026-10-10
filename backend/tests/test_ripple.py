@@ -179,3 +179,66 @@ def test_mover_nodes_have_evidence_ids(result):
         assert len(mover_node["evidence_ids"]) > 0, (
             f"Mover {cand['person_id']} has no evidence_ids"
         )
+
+
+# ── Backfill threshold boundary tests ─────────────────────────────
+
+
+def test_backfill_exactly_70_qualifies(store):
+    """A candidate scoring exactly 70 should be accepted as a backfill."""
+    from unittest.mock import patch
+    from backend.engine.ripple import _trace_chain, _BACKFILL_MIN
+
+    assert _BACKFILL_MIN == 70
+
+    fake_scored = [{"match": 70, "person_id": "E-FAKE", "evidence_ids": ["ev1"],
+                    "level": "mid", "team": "Test", "location": "bengaluru",
+                    "work_mode": "onsite"}]
+
+    with patch("backend.engine.ripple._score_movers", return_value=fake_scored), \
+         patch("backend.engine.ripple._bus_factor_check", return_value=[]), \
+         patch("backend.engine.ripple.resolve_person", return_value={}), \
+         patch("backend.engine.ripple.build_plan", return_value={
+             "readiness_weeks": 0, "build_cost_lpa": 0.0, "gaps": []}):
+        chain = _trace_chain(
+            level="senior", team="Test",
+            location="bengaluru", work_mode="onsite",
+            employees_df=store.hris.employees(),
+            emp_skills=store.hris.employee_skills(),
+            evidence_df=store.evidence.skill_evidence(),
+            skill_edges_df=store.reference.skill_edges(),
+            market_stats_df=store.market.market_stats(),
+            project_assignments=store.hris.project_assignments(),
+            projects_df=store.hris.projects(),
+            candidates_df=store.ats.candidates(),
+            candidate_skills=store.ats.candidate_skills(),
+            today=TODAY,
+        )
+        assert chain[0]["person_id"] == "E-FAKE"
+
+
+def test_backfill_69_9_rejected(store):
+    """A candidate scoring 69.9 should NOT qualify as a backfill."""
+    from unittest.mock import patch
+    from backend.engine.ripple import _trace_chain
+
+    fake_scored = [{"match": 69.9, "person_id": "E-FAKE", "evidence_ids": ["ev1"],
+                    "level": "mid", "team": "Test", "location": "bengaluru",
+                    "work_mode": "onsite"}]
+
+    with patch("backend.engine.ripple._score_movers", return_value=fake_scored):
+        chain = _trace_chain(
+            level="senior", team="Test",
+            location="bengaluru", work_mode="onsite",
+            employees_df=store.hris.employees(),
+            emp_skills=store.hris.employee_skills(),
+            evidence_df=store.evidence.skill_evidence(),
+            skill_edges_df=store.reference.skill_edges(),
+            market_stats_df=store.market.market_stats(),
+            project_assignments=store.hris.project_assignments(),
+            projects_df=store.hris.projects(),
+            candidates_df=store.ats.candidates(),
+            candidate_skills=store.ats.candidate_skills(),
+            today=TODAY,
+        )
+        assert chain[0]["person_id"] is None, "69.9 should fall through to external hire"

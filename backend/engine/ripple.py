@@ -64,7 +64,7 @@ SKILLS_BY_LEVEL: dict[str, list[dict]] = {
 _GREEN_P50 = 30
 _GREEN_SUPPLY = 50
 _RED_P50 = 60
-_BACKFILL_MIN = 70   # strictly > 70 excludes must-zero-capped candidates
+_BACKFILL_MIN = 70   # >= 70 qualifies; stop RED when no backfill scores >= 70
 _MAX_DEPTH = 3
 
 
@@ -236,7 +236,7 @@ def _trace_chain(
         skills_needed, level, skill_edges_df, today,
         one_below_only=True,
     )
-    best = next((c for c in scored if c["match"] > _BACKFILL_MIN), None)
+    best = next((c for c in scored if c["match"] >= _BACKFILL_MIN), None)
 
     if best is None:
         # Stopping rule: check if market is easy (GREEN) or hard (RED).
