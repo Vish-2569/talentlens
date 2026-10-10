@@ -67,21 +67,36 @@ describe("TC09: Priya's chain — 3 nodes, all green, net impact values", () => 
 });
 
 describe("TC10: Karthik's chain — bus-factor flag and hard-to-fill node", () => {
-  it("shows bus-factor flag", () => {
+  const deadEnd = karthik.chain.children![0];
+
+  it("dead-end node reason contains bus-factor signal from the API", () => {
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
-    expect(screen.getByText("Hard to fill")).toBeInTheDocument();
+    expect(deadEnd.reason.toLowerCase()).toContain("bus factor");
+    expect(screen.getByText("Bus factor = 1")).toBeInTheDocument();
   });
 
-  it("shows 2 red flags in net impact", () => {
+  it("dead-end node reason contains hard-to-fill signal from the API", () => {
+    globalThis.fetch = mockFetchForPerson("");
+    render(<RippleComparison candidates={[karthik]} />);
+
+    expect(deadEnd.reason).toMatch(/No internal backfill/);
+    expect(deadEnd.reason).toMatch(/external.*P50 76 days/);
+    expect(screen.getByText(deadEnd.reason)).toBeInTheDocument();
+  });
+
+  it("shows red_flags count from fixture in net impact", () => {
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
     const redFlagsLabel = screen.getByText("Red flags");
     const container = redFlagsLabel.closest("div")!.parentElement!;
-    const value = within(container).getByText("2");
+    const value = within(container).getByText(
+      String(karthik.net_impact.red_flags),
+    );
     expect(value).toBeInTheDocument();
+    expect(karthik.net_impact.red_flags).toBe(2);
   });
 
   it("shows no internal backfill for the lead/Platform seat", () => {
@@ -91,12 +106,12 @@ describe("TC10: Karthik's chain — bus-factor flag and hard-to-fill node", () =
     expect(screen.getByText("No internal backfill")).toBeInTheDocument();
   });
 
-  it("shows 76 days and ₹42L cost", () => {
+  it("shows net impact days and cost from fixture", () => {
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
-    expect(screen.getByText("76 days")).toBeInTheDocument();
-    expect(screen.getByText("₹42L")).toBeInTheDocument();
+    expect(screen.getByText(`${karthik.net_impact.days_to_fill_last_gap} days`)).toBeInTheDocument();
+    expect(screen.getByText(`₹${karthik.net_impact.total_cost_lpa}L`)).toBeInTheDocument();
   });
 });
 

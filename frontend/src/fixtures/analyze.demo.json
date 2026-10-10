@@ -884,7 +884,7 @@
               "person_id": null,
               "display_name": null,
               "status": "red",
-              "reason": "No internal backfill; external P50 76 days",
+              "reason": "Bus factor = 1 (terraform). No internal backfill ≥ 70%; external Lead P50 76 days",
               "children": []
             }
           ]

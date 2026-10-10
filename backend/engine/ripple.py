@@ -249,7 +249,7 @@ def _trace_chain(
             reason = f"External hire: P50 {p50} days, {supply} candidates"
         elif p50 > _RED_P50:
             status = "red"
-            reason = f"No internal backfill; external P50 {p50} days"
+            reason = f"No internal backfill ≥ {_BACKFILL_MIN}%; external {level.capitalize()} P50 {p50} days"
         else:
             status = "amber"
             reason = f"Moderate market: P50 {p50} days, {supply} candidates"
@@ -427,6 +427,15 @@ def analyze_ripple(
             project_assignments, projects_df, candidates_df, candidate_skills, today,
             skill_edges_df=skill_edges_df,
         )
+
+        if bf_flags:
+            for node in chain:
+                if node["person_id"] is None and node.get("status") == "red":
+                    bf_text = ", ".join(bf_flags)
+                    node["reason"] = (
+                        f"Bus factor = 1 ({bf_text}). {node['reason']}"
+                    )
+                    break
 
         # ── Net impact ─────────────────────────────────────────────────
         # Last external-hire node determines net days and the junior hire cost.
