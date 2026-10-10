@@ -228,7 +228,9 @@ describe("Edge cases", () => {
     expect(lastMark!.textContent).toContain("need in 30 days");
   });
 
-  it("renders no marks for null-span constraints", async () => {
+  it("renders no marks for null-span constraints and emits no key warnings", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
     const fixtureWithNull = structuredClone(FIXTURE_ANALYSIS);
     fixtureWithNull.redline.constraints.push({
       id: "c-inferred",
@@ -262,5 +264,12 @@ describe("Edge cases", () => {
 
     const marks = document.querySelectorAll("mark");
     expect(marks).toHaveLength(5);
+
+    const keyWarnings = errorSpy.mock.calls.filter(
+      (args) => typeof args[0] === "string" && args[0].includes("same key"),
+    );
+    expect(keyWarnings).toHaveLength(0);
+
+    errorSpy.mockRestore();
   });
 });

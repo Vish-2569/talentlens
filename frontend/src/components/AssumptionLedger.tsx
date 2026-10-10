@@ -2,11 +2,9 @@ import type { components } from "../api/types";
 import { SectionHeader } from "./ui";
 
 type Constraint = components["schemas"]["Constraint"];
-type ConstraintKind = components["schemas"]["ConstraintKind"];
 
 interface Props {
   constraints: Constraint[];
-  constraintOrder: ConstraintKind[];
   mask: string;
   decisionBoundaries: string[];
 }
@@ -27,12 +25,9 @@ function formatCostShort(cost: components["schemas"]["ConstraintCost"]): string 
 
 export function AssumptionLedger({
   constraints,
-  constraintOrder,
   mask,
   decisionBoundaries,
 }: Props) {
-  const byKind = new Map(constraints.map((c, i) => [c.kind, { constraint: c, index: i }]));
-
   return (
     <div className="mt-4 space-y-3">
       <div>
@@ -40,10 +35,7 @@ export function AssumptionLedger({
           Assumption ledger
         </SectionHeader>
         <ul className="mt-1 flex flex-col gap-0.5" aria-label="Assumption ledger">
-          {constraintOrder.map((kind) => {
-            const entry = byKind.get(kind);
-            if (!entry) return null;
-            const { constraint: c, index } = entry;
+          {constraints.map((c, index) => {
             const relaxed = mask[index] === "1";
             const costStr = formatCostShort(c.cost);
 
