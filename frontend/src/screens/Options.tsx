@@ -1,4 +1,6 @@
 import { EmptyState } from "../components/ui";
+import { DataQualityLine } from "../components/DataQualityLine";
+import { RippleComparison } from "../components/RippleComparison";
 import { useAppState } from "../state/context";
 
 export function Options() {
@@ -19,13 +21,16 @@ export function Options() {
   }
 
   return (
-    <section aria-labelledby="options-heading">
+    <section aria-labelledby="options-heading" className="space-y-6">
       <h2 id="options-heading" className="sr-only">
         Weigh the options
       </h2>
-      <p className="font-sans text-sm text-muted">
-        Options screens arrive in Phase F3–F5.
-      </p>
+
+      <DataQualityLine line={result.data_quality.line} />
+
+      {result.ripple.candidates.length > 0 && (
+        <RippleComparison candidates={result.ripple.candidates} />
+      )}
     </section>
   );
 }
