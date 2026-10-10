@@ -335,6 +335,7 @@ export interface components {
             year_one_cost_lpa: number;
             /** Reason */
             reason: string;
+            dimensions: components["schemas"]["OptionDimensions"];
         };
         /** NetImpact */
         NetImpact: {
@@ -371,6 +372,20 @@ export interface components {
             reason: string;
             /** Evidence Ids */
             evidence_ids: string[];
+            dimensions?: components["schemas"]["OptionDimensions"] | null;
+        };
+        /** OptionDimensions */
+        OptionDimensions: {
+            /** Speed */
+            speed: number;
+            /** Cost */
+            cost: number;
+            /** Fit */
+            fit: number;
+            /** Risk */
+            risk: number;
+            /** Strategic */
+            strategic: number;
         };
         /** OptionSummary */
         OptionSummary: {
@@ -417,6 +432,8 @@ export interface components {
             /** Decision Boundaries */
             decision_boundaries: string[];
             weights: components["schemas"]["OptionWeights"];
+            /** Relaxed Mask */
+            relaxed_mask: string;
         };
         /** ParsedField */
         ParsedField: {

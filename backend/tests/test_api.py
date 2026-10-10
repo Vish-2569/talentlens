@@ -93,11 +93,15 @@ async def test_analyze_scenario_10100(result):
 @pytest.mark.anyio
 async def test_analyze_option_scores(result):
     by_id = {o.id: o.score for o in result.options.five}
-    assert by_id.get("mix") == 89.0, f"mix score: {by_id.get('mix')}"
-    assert by_id.get("borrow") == 87.0, f"borrow score: {by_id.get('borrow')}"
-    assert by_id.get("build") == 73.0, f"build score: {by_id.get('build')}"
-    assert by_id.get("relocate") == 62.0, f"relocate score: {by_id.get('relocate')}"
-    assert by_id.get("buy") == 42.0, f"buy score: {by_id.get('buy')}"
+    assert set(by_id.keys()) == {"borrow", "build", "relocate", "buy", "automate"}
+    assert by_id["borrow"] == 87.0, f"borrow score: {by_id['borrow']}"
+    assert by_id["build"] == 73.0, f"build score: {by_id['build']}"
+    assert by_id["relocate"] == 62.0, f"relocate score: {by_id['relocate']}"
+    assert by_id["buy"] == 42.0, f"buy score: {by_id['buy']}"
+    assert by_id["automate"] is None, f"automate score: {by_id['automate']}"
+    assert result.options.mixes[0].score == 89.0, (
+        f"top mix score: {result.options.mixes[0].score}"
+    )
 
 
 # ── Location scores ───────────────────────────────────────────────────────────

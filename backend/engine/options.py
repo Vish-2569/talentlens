@@ -7,6 +7,7 @@ AI reads language; Python does arithmetic; a human decides.
 from __future__ import annotations
 
 import itertools
+import math
 from datetime import date
 
 DEFAULT_WEIGHTS: dict[str, float] = {
@@ -47,6 +48,11 @@ _DEJAREQ_CATEGORY_MAP: dict[str, list[str]] = {
 # Build option card uses Build-band atoms only (match 70-84, needs upskilling).
 # Redeploy atoms (match 85-100) stay valid in mixes but are not the Build card.
 _BUILD_CARD_TYPES = {"build"}
+
+
+def round_half_up(x: float) -> int:
+    """Half-up rounding (72.5 → 73), matching JS Math.round behaviour."""
+    return math.floor(x + 0.5)
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -432,14 +438,15 @@ def _compute_entry_stats(
 def _score_pool(
     entries: list[dict],
     weights: dict[str, float],
-) -> list[int]:
-    """Min-max normalize speed/cost across ALL entries and return scores."""
+) -> tuple[list[int], list[dict[str, float]]]:
+    """Min-max normalize speed/cost across ALL entries and return (scores, dimensions)."""
     days_vals = [float(e["days"]) for e in entries]
     cost_vals = [e["cost"] for e in entries]
     days_mm = _minmax(days_vals)
     cost_mm = _minmax(cost_vals)
 
     scores: list[int] = []
+    dims: list[dict[str, float]] = []
     for i, e in enumerate(entries):
         speed_n = 1.0 - days_mm[i]
         cost_n = 1.0 - cost_mm[i]
@@ -452,9 +459,16 @@ def _score_pool(
                + weights["fit"] * fit_n
                + weights["risk"] * risk_n
                + weights["strategic"] * strat_n)
-        scores.append(round(raw * 100))
+        scores.append(round_half_up(raw * 100))
+        dims.append({
+            "speed": round(speed_n, 4),
+            "cost": round(cost_n, 4),
+            "fit": round(fit_n, 4),
+            "risk": round(risk_n, 4),
+            "strategic": round(strat_n, 4),
+        })
 
-    return scores
+    return scores, dims
 
 
 # ── Build card selection (Build-band only) ───────────────────────────────────
@@ -639,7 +653,7 @@ def generate_options(
         pool_labels.append("mix")
 
     # ── Score the entire pool with shared min-max ─────────────────────
-    all_scores = _score_pool(pool, w)
+    all_scores, all_dims = _score_pool(pool, w)
 
     # ── Build option card dicts ───────────────────────────────────────
     options: list[dict] = []
@@ -647,6 +661,7 @@ def generate_options(
         atom = card_atoms[cat]
         entry = pool[idx]
         score = all_scores[idx]
+        dims = all_dims[idx]
 
         if atom:
             what, reason = _option_card_text(atom, cat)
@@ -661,6 +676,7 @@ def generate_options(
                 "score": score,
                 "one_line_reason": reason,
                 "evidence_ids": entry["evidence_ids"],
+                "dimensions": dims,
             })
         else:
             options.append({
@@ -674,6 +690,7 @@ def generate_options(
                 "score": score,
                 "one_line_reason": f"No {cat} candidate available",
                 "evidence_ids": [],
+                "dimensions": dims,
             })
 
     automate_opt = _build_option_automate(automation_result)
@@ -681,17 +698,11 @@ def generate_options(
 
     # ── Build top-3 mixes from pool ───────────────────────────────────
     n_cards = 4
-    days_vals = [float(e["days"]) for e in pool]
-    cost_vals = [e["cost"] for e in pool]
-    days_mm = _minmax(days_vals)
-    cost_mm = _minmax(cost_vals)
     mix_scored: list[dict] = []
     for i in range(n_cards, len(pool)):
         ms = pool[i]
         score = all_scores[i]
-
-        speed_n = 1.0 - days_mm[i]
-        cost_n = 1.0 - cost_mm[i]
+        dims = all_dims[i]
 
         mix_scored.append({
             "mix_id": f"mix-{i - n_cards + 1}",
@@ -703,11 +714,7 @@ def generate_options(
             "score": score,
             "cost_lpa": round(ms["cost"], 2),
             "ready_by_p80_days": ms["days"],
-            "speed": round(speed_n, 4),
-            "cost": round(cost_n, 4),
-            "fit": round(ms["fit"], 4),
-            "risk": round(ms["risk_raw"], 4),
-            "strategic": round(ms["strategic"], 4),
+            "dimensions": dims,
             "evidence_ids": ms["evidence_ids"],
         })
 
@@ -827,7 +834,7 @@ def make_scenario_scorer(
             pool.append(mix_entry)
             pool_ids.append("mix")
 
-        scores = _score_pool(pool, w)
+        scores, _scenario_dims = _score_pool(pool, w)
 
         best_i = max(range(len(scores)), key=lambda i: scores[i])
         top_id = pool_ids[best_i]

@@ -914,6 +914,9 @@
           "reason": {
             "type": "string",
             "title": "Reason"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/OptionDimensions"
           }
         },
         "additionalProperties": false,
@@ -925,7 +928,8 @@
           "score",
           "ready_by_p80_days",
           "year_one_cost_lpa",
-          "reason"
+          "reason",
+          "dimensions"
         ],
         "title": "MixOption"
       },
@@ -1040,6 +1044,16 @@
             },
             "type": "array",
             "title": "Evidence Ids"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OptionDimensions"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -1054,6 +1068,40 @@
           "evidence_ids"
         ],
         "title": "OptionCard"
+      },
+      "OptionDimensions": {
+        "properties": {
+          "speed": {
+            "type": "number",
+            "title": "Speed"
+          },
+          "cost": {
+            "type": "number",
+            "title": "Cost"
+          },
+          "fit": {
+            "type": "number",
+            "title": "Fit"
+          },
+          "risk": {
+            "type": "number",
+            "title": "Risk"
+          },
+          "strategic": {
+            "type": "number",
+            "title": "Strategic"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "speed",
+          "cost",
+          "fit",
+          "risk",
+          "strategic"
+        ],
+        "title": "OptionDimensions"
       },
       "OptionSummary": {
         "properties": {
@@ -1198,6 +1246,10 @@
           },
           "weights": {
             "$ref": "#/components/schemas/OptionWeights"
+          },
+          "relaxed_mask": {
+            "type": "string",
+            "title": "Relaxed Mask"
           }
         },
         "additionalProperties": false,
@@ -1211,7 +1263,8 @@
           "internal_candidates",
           "sourcing",
           "decision_boundaries",
-          "weights"
+          "weights",
+          "relaxed_mask"
         ],
         "title": "Options"
       },

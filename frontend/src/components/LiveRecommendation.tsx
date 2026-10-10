@@ -44,11 +44,6 @@ export function LiveRecommendation({ scenario, fiveOptions, mask, onReset }: Pro
               ₹{top.year_one_cost_lpa}L
             </span>
           )}
-          {top.score != null && (
-            <span className="font-mono text-xs text-muted">
-              {top.score}/100
-            </span>
-          )}
         </div>
       )}
 
@@ -56,14 +51,13 @@ export function LiveRecommendation({ scenario, fiveOptions, mask, onReset }: Pro
         {fiveOptions.map((opt) => (
           <li
             key={opt.id}
-            className={`flex items-center justify-between font-sans text-xs ${
+            className={`font-sans text-xs ${
               top && opt.id === top.option_id
                 ? "font-semibold text-ink"
                 : "text-muted"
             }`}
           >
-            <span>{opt.name}</span>
-            <span className="font-mono">{opt.score ?? "—"}</span>
+            {opt.name}
           </li>
         ))}
       </ul>

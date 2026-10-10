@@ -959,33 +959,6 @@
   "options": {
     "five": [
       {
-        "id": "mix",
-        "name": "Recommended mix",
-        "what_it_means": "Priya + Arjun",
-        "ready_by_p80_days": 0,
-        "year_one_cost_lpa": 18,
-        "fit": "—",
-        "risk_label": "Medium",
-        "risk_value": 0.3,
-        "score": 89,
-        "reason": "Recommended mix combining bridge and build options",
-        "evidence_ids": [
-          "kubernetes",
-          "graphql",
-          "docker",
-          "react",
-          "nodejs",
-          "typescript",
-          "javascript",
-          "html_css",
-          "git",
-          "ci_cd",
-          "postgresql",
-          "rest_apis",
-          "jest"
-        ]
-      },
-      {
         "id": "borrow",
         "name": "Borrow",
         "what_it_means": "Extend contractor C-17",
@@ -996,7 +969,14 @@
         "risk_value": 0.25,
         "score": 87,
         "reason": "C-17 available now; ₹24.0L/year",
-        "evidence_ids": []
+        "evidence_ids": [],
+        "dimensions": {
+          "speed": 1,
+          "cost": 0.871,
+          "fit": 0.84,
+          "risk": 0.75,
+          "strategic": 0.4
+        }
       },
       {
         "id": "build",
@@ -1023,7 +1003,14 @@
           "postgresql",
           "rest_apis",
           "jest"
-        ]
+        ],
+        "dimensions": {
+          "speed": 0.4815,
+          "cost": 1,
+          "fit": 0.81,
+          "risk": 0.85,
+          "strategic": 0.9
+        }
       },
       {
         "id": "relocate",
@@ -1036,7 +1023,14 @@
         "risk_value": 0.3,
         "score": 62,
         "reason": "remote_india: P80 40 days, ₹29.0L",
-        "evidence_ids": []
+        "evidence_ids": [],
+        "dimensions": {
+          "speed": 0.5062,
+          "cost": 0.8172,
+          "fit": 0.65,
+          "risk": 0.7,
+          "strategic": 0.35
+        }
       },
       {
         "id": "buy",
@@ -1049,7 +1043,75 @@
         "risk_value": 0.3,
         "score": 42,
         "reason": "P80 81 days; ₹32.0L",
-        "evidence_ids": []
+        "evidence_ids": [],
+        "dimensions": {
+          "speed": 0,
+          "cost": 0.7849,
+          "fit": 0.7,
+          "risk": 0.7,
+          "strategic": 0.3
+        }
+      },
+      {
+        "id": "automate",
+        "name": "Automate",
+        "what_it_means": "AI coding-assistant seats for the team (add-on)",
+        "ready_by_p80_days": 7,
+        "year_one_cost_lpa": 1,
+        "fit": null,
+        "risk_label": "Low",
+        "risk_value": 0,
+        "score": null,
+        "reason": "Absorbs ~22-41% of routine hours",
+        "evidence_ids": [
+          "14707",
+          "14694",
+          "14698",
+          "14711",
+          "14700",
+          "14704",
+          "14710",
+          "14695",
+          "14701",
+          "14702",
+          "14713",
+          "14705",
+          "14697",
+          "14708",
+          "14706",
+          "14726",
+          "14717",
+          "14719",
+          "14728",
+          "14714",
+          "14724",
+          "14722",
+          "14725",
+          "14723",
+          "14729",
+          "14727",
+          "14730",
+          "21683",
+          "21684",
+          "21662",
+          "21669",
+          "21664",
+          "21670",
+          "21673",
+          "21661",
+          "21676",
+          "21667",
+          "21668",
+          "21665",
+          "21663",
+          "21671",
+          "21666",
+          "21678",
+          "21677",
+          "21672",
+          "21679"
+        ],
+        "dimensions": null
       }
     ],
     "mixes": [
@@ -1063,7 +1125,14 @@
         "score": 89,
         "ready_by_p80_days": 0,
         "year_one_cost_lpa": 18,
-        "reason": "Bridge-then-build strategy"
+        "reason": "Bridge-then-build strategy",
+        "dimensions": {
+          "speed": 1,
+          "cost": 0.9355,
+          "fit": 0.8107,
+          "risk": 0.7,
+          "strategic": 0.65
+        }
       },
       {
         "id": "mix-820",
@@ -1076,7 +1145,14 @@
         "score": 88,
         "ready_by_p80_days": 0,
         "year_one_cost_lpa": 19,
-        "reason": "Alternative mix"
+        "reason": "Alternative mix",
+        "dimensions": {
+          "speed": 1,
+          "cost": 0.9247,
+          "fit": 0.8107,
+          "risk": 0.7,
+          "strategic": 0.65
+        }
       },
       {
         "id": "mix-3",
@@ -1087,7 +1163,14 @@
         "score": 87,
         "ready_by_p80_days": 0,
         "year_one_cost_lpa": 24,
-        "reason": "Alternative mix"
+        "reason": "Alternative mix",
+        "dimensions": {
+          "speed": 1,
+          "cost": 0.871,
+          "fit": 0.84,
+          "risk": 0.75,
+          "strategic": 0.4
+        }
       }
     ],
     "relocate_card": [
@@ -1412,7 +1495,8 @@
       "fit": 0.2,
       "risk": 0.15,
       "strategic": 0.05
-    }
+    },
+    "relaxed_mask": "11110"
   },
   "brief": {
     "sections": [

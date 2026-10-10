@@ -304,6 +304,15 @@ class Ripple(BaseModel):
 
 # ── Options ────────────────────────────────────────────────────────────
 
+class OptionDimensions(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    speed: float
+    cost: float
+    fit: float
+    risk: float
+    strategic: float
+
+
 class OptionCard(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -317,6 +326,7 @@ class OptionCard(BaseModel):
     score: Optional[float] = None
     reason: str
     evidence_ids: list[str]
+    dimensions: Optional[OptionDimensions] = None
 
 
 class RelocateRow(BaseModel):
@@ -417,6 +427,7 @@ class MixOption(BaseModel):
     ready_by_p80_days: int
     year_one_cost_lpa: float
     reason: str
+    dimensions: OptionDimensions
 
 
 class Options(BaseModel):
@@ -430,6 +441,7 @@ class Options(BaseModel):
     sourcing: Sourcing
     decision_boundaries: list[str]
     weights: OptionWeights
+    relaxed_mask: str
 
 
 # ── Brief ──────────────────────────────────────────────────────────────

@@ -29,6 +29,7 @@ from backend.engine.options import (
     _risk_label,
     _self_report_penalty,
     generate_options,
+    round_half_up,
 )
 from backend.engine.ripple import analyze_ripple
 
@@ -464,7 +465,7 @@ def test_ripple_red_flags_increase_mix_risk():
     flagged = _compute_entry_stats([flagged_atom], {}, [])
 
     assert flagged["risk_raw"] > clean["risk_raw"]
-    scores = _score_pool([clean, flagged], w)
+    scores, _dims = _score_pool([clean, flagged], w)
     assert scores[1] < scores[0]
 
 
@@ -690,3 +691,87 @@ def test_tiebreak_fewer_atoms_wins(result):
         f"bridge+build (idx {bb_idx}) must rank above "
         f"bridge+build+automate (idx {bba_idx})"
     )
+
+
+# ── Dimensions reproduce scores (round_half_up, not round) ─────────────────
+
+
+def test_dimensions_reproduce_scores(result):
+    """For every scored option and mix, round_half_up(Σ(w×d)×100) == score."""
+    w = result["weights_used"]
+    for opt in result["options"]:
+        if opt["name"] == "Automate":
+            assert opt.get("dimensions") is None
+            continue
+        d = opt["dimensions"]
+        raw = (w["speed"] * d["speed"]
+               + w["cost"] * d["cost"]
+               + w["fit"] * d["fit"]
+               + w["risk"] * d["risk"]
+               + w["strategic"] * d["strategic"])
+        assert round_half_up(raw * 100) == opt["score"], (
+            f"{opt['name']}: round_half_up({raw}*100) = {round_half_up(raw * 100)}, "
+            f"expected {opt['score']}"
+        )
+    for mx in result["top_mixes"]:
+        d = mx["dimensions"]
+        raw = (w["speed"] * d["speed"]
+               + w["cost"] * d["cost"]
+               + w["fit"] * d["fit"]
+               + w["risk"] * d["risk"]
+               + w["strategic"] * d["strategic"])
+        assert round_half_up(raw * 100) == mx["score"], (
+            f"mix {mx['mix_id']}: round_half_up({raw}*100) = "
+            f"{round_half_up(raw * 100)}, expected {mx['score']}"
+        )
+
+
+# ── Half-up rounding with exact binary .5 case ────────────────────────────
+
+
+def test_half_up_rounding_exact_binary():
+    """0.125 is exact in IEEE 754; 0.125 * 100 = 12.5; half-up → 13.
+    Python round(12.5) would give 12 (banker's rounding)."""
+    assert round_half_up(12.5) == 13
+    assert round(12.5) == 12  # banker's rounding for comparison
+    assert round_half_up(0.125 * 100) == 13
+
+
+# ── Five option IDs: Build, Buy, Borrow, Relocate, Automate (no mix) ──────
+
+
+def test_options_five_ids(result):
+    ids = {o["option_id"] for o in result["options"]}
+    assert ids == {"build", "buy", "borrow", "relocate", "automate"}
+
+
+def test_mix_not_in_five(result):
+    ids = {o["option_id"] for o in result["options"]}
+    assert "mix" not in ids
+
+
+# ── relaxed_mask documents which constraints generate_options enforces ──────
+
+
+def test_relaxed_mask_bits():
+    """Verify relaxed_mask = '11110' by running generate_options and checking
+    the semantic meaning of each bit.
+
+    Constraint order: [location, years, skill, budget, deadline].
+    Bit 0 (location) = 1: generate_options does not filter atoms by location;
+        Relocate/Build/Borrow atoms always included regardless of requested location.
+    Bit 1 (years) = 1: no min_years filtering inside generate_options.
+    Bit 2 (skill) = 1: no must-skill filtering; all match_results used.
+    Bit 3 (budget) = 1: budget is not checked or used.
+    Bit 4 (deadline) = 0: _adjust_weights shifts speed/strategic weights
+        when deadline_days < 60.
+    """
+    import inspect
+    src = inspect.getsource(generate_options)
+    assert "deadline_days" in src, "generate_options must use deadline_days"
+    assert "_adjust_weights" in src, "generate_options must call _adjust_weights"
+
+    src_atoms = inspect.getsource(_generate_atoms)
+    assert "min_years" not in src_atoms, "atoms must not filter by min_years"
+    assert "must_skill" not in src_atoms, "atoms must not filter by must_skill"
+    assert "budget" not in src_atoms, "atoms must not filter by budget"

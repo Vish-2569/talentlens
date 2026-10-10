@@ -132,7 +132,9 @@ export function DejaReq({ dejareq }: Props) {
   function navigateToOptions() {
     dispatch({ type: "SET_TAB", payload: "options" });
     requestAnimationFrame(() => {
-      document.getElementById("five-option-table")?.focus({ preventScroll: false });
+      const el = document.getElementById("five-option-table");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      el?.focus({ preventScroll: true });
     });
   }
 

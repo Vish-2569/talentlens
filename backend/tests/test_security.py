@@ -120,7 +120,7 @@ async def test_tc21_offline_mode(monkeypatch):
     data = resp.json()
     assert data["dejareq"]["match_count"] == 4
     by_id = {o["id"]: o["score"] for o in data["options"]["five"]}
-    assert by_id["mix"] == 89.0
+    assert data["options"]["mixes"][0]["score"] == 89.0
     assert by_id["buy"] == 42.0
     assert llm.get_meter().calls == 0, "No LLM calls must occur in offline mode"
 

@@ -35,11 +35,16 @@ def test_stub_demo_story_numbers():
     r = AnalysisResult.model_validate(raw)
 
     by_id = {o.id: o for o in r.options.five}
-    assert by_id["mix"].score == 89.0
+    assert set(by_id.keys()) == {"borrow", "build", "relocate", "buy", "automate"}
     assert by_id["borrow"].score == 87.0
     assert by_id["build"].score == 73.0
     assert by_id["relocate"].score == 62.0
     assert by_id["buy"].score == 42.0
+    assert by_id["automate"].score is None
+
+    assert r.options.mixes[0].score == 89.0
+
+    assert r.options.relaxed_mask == "11110"
 
     relocate = r.options.relocate_card
     assert relocate[0].location == "Remote-India"

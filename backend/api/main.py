@@ -28,6 +28,7 @@ from backend.api.schemas import (
     MixOption,
     NetImpact,
     OptionCard,
+    OptionDimensions,
     OptionSummary,
     OptionWeights,
     Options,
@@ -918,44 +919,19 @@ def _build_analysis_result(  # noqa: C901
         engine_opts[cat] = o
 
     top_mixes = options_result.get("top_mixes", [])
+    from backend.engine.options import _risk_label
 
-    # Build five OptionCards: [mix, borrow, build, relocate, buy]
+    # Build five OptionCards: Build, Buy, Borrow, Relocate, Automate
+    # (no mix — mixes live in options.mixes only)
     five: list[OptionCard] = []
 
-    # Mix card from top_mixes[0]
-    if top_mixes:
-        mx = top_mixes[0]
-        atoms_raw = mx.get("atoms", [])
-        mix_fit = _mix_fit_str(atoms_raw)
-        mix_risk_raw = float(mx.get("risk", 0.10))
-        from backend.engine.options import _risk_label
-        five.append(OptionCard(
-            id="mix",
-            name="Recommended mix",
-            what_it_means=" + ".join(
-                name_map.get(a["person_id"], a["person_id"])
-                if a.get("person_id") else a.get("location", a["type"])
-                for a in atoms_raw if a["type"] != "automate"
-            ) or "Recommended mix",
-            ready_by_p80_days=mx.get("ready_by_p80_days", 0),
-            year_one_cost_lpa=float(mx.get("cost_lpa", 0)),
-            fit=mix_fit,
-            risk_label=_risk_label(mix_risk_raw),
-            risk_value=round(mix_risk_raw, 2),
-            score=float(mx["score"]),
-            reason="Recommended mix combining bridge and build options",
-            evidence_ids=mx.get("evidence_ids", []),
-        ))
-    elif engine_opts.get("borrow"):
-        # Fallback: no mix, use borrow as first
-        pass  # will still add borrow below
-
-    # Standard option cards
     for cat in ("borrow", "build", "relocate", "buy"):
         o = engine_opts.get(cat)
         if o is None:
             continue
         fit_val = o.get("fit", 0)
+        eng_dims = o.get("dimensions")
+        dims_obj = OptionDimensions(**eng_dims) if eng_dims else None
         five.append(OptionCard(
             id=cat,
             name=o.get("name", cat.title()),
@@ -968,7 +944,29 @@ def _build_analysis_result(  # noqa: C901
             score=float(o["score"]) if isinstance(o.get("score"), (int, float)) else None,
             reason=o.get("one_line_reason", ""),
             evidence_ids=o.get("evidence_ids", []),
+            dimensions=dims_obj,
         ))
+
+    # Automate card — all values from M7 engine output, no fallbacks
+    auto_eng = engine_opts.get("automate")
+    if auto_eng is not None:
+        five.append(OptionCard(
+            id="automate",
+            name=auto_eng["name"],
+            what_it_means=auto_eng["what_it_means"],
+            ready_by_p80_days=auto_eng["ready_by_p80_days"],
+            year_one_cost_lpa=float(auto_eng["year_one_cost_lpa"]),
+            fit=None,
+            risk_label=auto_eng["risk_label"],
+            risk_value=0.0,
+            score=None,
+            reason=auto_eng["one_line_reason"],
+            evidence_ids=auto_eng.get("evidence_ids", []),
+            dimensions=None,
+        ))
+
+    # Sort: scored options by score desc, Automate last
+    five.sort(key=lambda c: (c.score is None, -(c.score or 0)))
 
     # MixOption list from top_mixes
     mixes_out: list[MixOption] = []
@@ -978,6 +976,7 @@ def _build_analysis_result(  # noqa: C901
             f"{a['type']}-{a['person_id'] or a.get('location', '')}"
             for a in atoms_raw
         ]
+        mix_dims = mx.get("dimensions", {})
         mixes_out.append(MixOption(
             id=mx.get("mix_id", f"mix-{i+1}"),
             name=" + ".join(
@@ -990,6 +989,7 @@ def _build_analysis_result(  # noqa: C901
             ready_by_p80_days=int(mx.get("ready_by_p80_days", 0)),
             year_one_cost_lpa=float(mx.get("cost_lpa", 0)),
             reason="Bridge-then-build strategy" if i == 0 else "Alternative mix",
+            dimensions=OptionDimensions(**mix_dims),
         ))
 
     # Relocate card (convert IDs to display names, sort by score desc already done)
@@ -1110,6 +1110,19 @@ def _build_analysis_result(  # noqa: C901
         strategic=float(weights_used.get("strategic", 0.10)),
     )
 
+    # relaxed_mask: bit=1 where generate_options does NOT enforce the
+    # constraint (does not filter atoms or change their values by it).
+    # Constraint order: [location, years, skill, budget, deadline].
+    # - location (0): Buy atom uses base market_data, but the function
+    #   itself doesn't filter by location — Relocate + Build/Borrow always
+    #   included.  Bit = 1.
+    # - years (1): no years filtering inside generate_options.  Bit = 1.
+    # - skill (2): no skill filtering; all match_results used.  Bit = 1.
+    # - budget (3): not checked or used.  Bit = 1.
+    # - deadline (4): _adjust_weights shifts speed/strategic weights when
+    #   deadline < 60 days.  Bit = 0.
+    relaxed_mask = "11110"
+
     options_obj = Options(
         five=five,
         mixes=mixes_out,
@@ -1120,6 +1133,7 @@ def _build_analysis_result(  # noqa: C901
         sourcing=sourcing_obj,
         decision_boundaries=decision_boundaries,
         weights=weights_obj,
+        relaxed_mask=relaxed_mask,
     )
 
     # ── brief ────────────────────────────────────────────────────────────────

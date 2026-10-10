@@ -204,15 +204,22 @@ async def test_demo_story(client, raw):
 
     # ── Option scores and year-one costs (Section 7A) ─────────────────────
     by_id = {o["id"]: o for o in opts["five"]}
-    assert by_id["mix"]["score"]     == 89.0, f"mix score: {by_id['mix']['score']}"
+    assert set(by_id.keys()) == {"borrow", "build", "relocate", "buy", "automate"}, (
+        f"five ids: {set(by_id.keys())}"
+    )
     assert by_id["borrow"]["score"]  == 87.0, f"borrow score: {by_id['borrow']['score']}"
     assert by_id["build"]["score"]   == 73.0, f"build score: {by_id['build']['score']}"
     assert by_id["relocate"]["score"] == 62.0, f"relocate score: {by_id['relocate']['score']}"
     assert by_id["buy"]["score"]     == 42.0, f"buy score: {by_id['buy']['score']}"
+    assert by_id["automate"]["score"] is None, f"automate score: {by_id['automate']['score']}"
+
+    # Mix score from mixes (not in five)
+    top_mix = opts["mixes"][0]
+    assert top_mix["score"] == 89, f"top mix score: {top_mix['score']}"
 
     # Mix ₹18L (₹6L 3-month bridge + ₹12L Build chain)
-    assert by_id["mix"]["year_one_cost_lpa"] == pytest.approx(18.0, abs=1.0), (
-        f"Mix year-one cost: {by_id['mix']['year_one_cost_lpa']}"
+    assert top_mix["year_one_cost_lpa"] == pytest.approx(18.0, abs=1.0), (
+        f"Mix year-one cost: {top_mix['year_one_cost_lpa']}"
     )
 
     # Build chain ₹12L
@@ -340,3 +347,47 @@ async def test_performance_analyze_under_2s(client):
         times.append(elapsed)
     median = sorted(times)[1]
     assert median < 2.0, f"Median of 3 runs: {median:.2f} s (limit: 2.0 s)"
+
+
+# ── Consistency: scenario mix ready_by and cost match options.mixes ──────────
+
+@pytest.mark.anyio
+async def test_scenario_mix_consistency(raw):
+    """For every scenario where top_option_id == 'mix', the mix option's
+    ready_by and year_one_cost must match options.mixes[0], since mix
+    values are constraint-independent (internal candidates)."""
+    scenarios = raw["redline"]["scenarios"]
+    top_mix = raw["options"]["mixes"][0]
+
+    for mask, scen in scenarios.items():
+        if scen["top_option_id"] != "mix":
+            continue
+        mix_opt = next(
+            (o for o in scen["options"] if o["option_id"] == "mix"), None,
+        )
+        assert mix_opt is not None, (
+            f"Scenario {mask} has top_option_id='mix' but no mix in options"
+        )
+        assert mix_opt["ready_by_p80_days"] == top_mix["ready_by_p80_days"], (
+            f"Scenario {mask} mix ready_by {mix_opt['ready_by_p80_days']} "
+            f"!= options.mixes[0] {top_mix['ready_by_p80_days']}"
+        )
+        assert mix_opt["year_one_cost_lpa"] == pytest.approx(
+            top_mix["year_one_cost_lpa"], abs=0.01,
+        ), (
+            f"Scenario {mask} mix cost {mix_opt['year_one_cost_lpa']} "
+            f"!= options.mixes[0] {top_mix['year_one_cost_lpa']}"
+        )
+
+
+@pytest.mark.anyio
+async def test_scenario_mix_entries_present(raw):
+    """A7: for every scenario whose top_option_id is 'mix', the scenario's
+    options list contains an OptionSummary with option_id='mix'."""
+    for mask, scen in raw["redline"]["scenarios"].items():
+        if scen["top_option_id"] != "mix":
+            continue
+        has_mix = any(o["option_id"] == "mix" for o in scen["options"])
+        assert has_mix, (
+            f"Scenario {mask}: top_option_id='mix' but no mix entry in options"
+        )
