@@ -133,7 +133,7 @@ def _score_movers(
     evidence_df: pd.DataFrame,
     required_skills: list[dict],
     required_level: str,
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
     today: date,
     one_below_only: bool = False,
 ) -> list[dict]:
@@ -158,7 +158,7 @@ def _score_movers(
         ev = resolve_person(pid, evidence_df, today=today)
         sk = emp_skills.get(pid, set())
         r = score_employee(
-            pid, required_skills, ev, sk, skill_edges_df,
+            pid, required_skills, ev, sk, edge_lookup,
             str(row["level"]), required_level, today=today,
         )
         results.append({
@@ -206,7 +206,7 @@ def _trace_chain(
     employees_df: pd.DataFrame,
     emp_skills: dict[str, set[str]],
     evidence_df: pd.DataFrame,
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
     market_stats_df: pd.DataFrame,
     project_assignments: dict[str, set[str]],
     projects_df: pd.DataFrame,
@@ -214,6 +214,7 @@ def _trace_chain(
     candidate_skills: dict[str, set[str]],
     today: date,
     depth: int = 0,
+    skill_edges_df: pd.DataFrame | None = None,
 ) -> list[dict]:
     """Recursively resolve the backfill chain for a gap at (level, team).
 
@@ -233,7 +234,7 @@ def _trace_chain(
     skills_needed = SKILLS_BY_LEVEL.get(level, SKILLS_BY_LEVEL["senior"])
     scored = _score_movers(
         employees_df, emp_skills, evidence_df,
-        skills_needed, level, skill_edges_df, today,
+        skills_needed, level, edge_lookup, today,
         one_below_only=True,
     )
     best = next((c for c in scored if c["match"] >= _BACKFILL_MIN), None)
@@ -293,9 +294,10 @@ def _trace_chain(
 
     sub = _trace_chain(
         best["level"], best["team"], best["location"], best["work_mode"],
-        employees_df, emp_skills, evidence_df, skill_edges_df, market_stats_df,
+        employees_df, emp_skills, evidence_df, edge_lookup, market_stats_df,
         project_assignments, projects_df, candidates_df, candidate_skills, today,
         depth=depth + 1,
+        skill_edges_df=skill_edges_df,
     )
     return [node] + sub
 
@@ -352,13 +354,14 @@ def analyze_ripple(
     employees_df: pd.DataFrame,
     emp_skills: dict[str, set[str]],
     evidence_df: pd.DataFrame,
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
     market_stats_df: pd.DataFrame,
     projects_df: pd.DataFrame,
     project_assignments: dict[str, set[str]],
     candidates_df: pd.DataFrame,
     candidate_skills: dict[str, set[str]],
     today: date = date(2026, 10, 8),
+    skill_edges_df: pd.DataFrame | None = None,
 ) -> dict:
     """Score top internal candidates and trace their backfill ripple chains.
 
@@ -373,7 +376,7 @@ def analyze_ripple(
     # Score all active open-to-move employees against the target role.
     scored = _score_movers(
         employees_df, emp_skills, evidence_df,
-        required_skills, required_level, skill_edges_df, today,
+        required_skills, required_level, edge_lookup, today,
     )
     top2 = [c for c in scored if c["match"] > 0][:2]
 
@@ -420,8 +423,9 @@ def analyze_ripple(
         # Build ripple chain for the mover's vacated seat.
         chain = [mover_node] + _trace_chain(
             mover_level, mover_team, mover_loc, mover_wm,
-            employees_df, emp_skills, evidence_df, skill_edges_df, market_stats_df,
+            employees_df, emp_skills, evidence_df, edge_lookup, market_stats_df,
             project_assignments, projects_df, candidates_df, candidate_skills, today,
+            skill_edges_df=skill_edges_df,
         )
 
         # ── Net impact ─────────────────────────────────────────────────

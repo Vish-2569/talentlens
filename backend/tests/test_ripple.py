@@ -7,6 +7,7 @@ TC11  open_to_move=false employees never appear; chain depth never exceeds 3
 import pytest
 from datetime import date
 
+from backend.engine.match import build_edge_lookup
 from backend.engine.ripple import analyze_ripple, borrow_coverage_check
 
 TODAY = date(2026, 10, 8)
@@ -28,6 +29,7 @@ CLOSED_TO_MOVE = {"E-010", "E-018", "E-020"}
 
 @pytest.fixture(scope="module")
 def result(store):
+    skill_edges_df = store.reference.skill_edges()
     return analyze_ripple(
         required_skills=SENIOR_SKILLS,
         required_level="senior",
@@ -37,13 +39,14 @@ def result(store):
         employees_df=store.hris.employees(),
         emp_skills=store.hris.employee_skills(),
         evidence_df=store.evidence.skill_evidence(),
-        skill_edges_df=store.reference.skill_edges(),
+        edge_lookup=build_edge_lookup(skill_edges_df),
         market_stats_df=store.market.market_stats(),
         projects_df=store.hris.projects(),
         project_assignments=store.hris.project_assignments(),
         candidates_df=store.ats.candidates(),
         candidate_skills=store.ats.candidate_skills(),
         today=TODAY,
+        skill_edges_df=skill_edges_df,
     )
 
 
@@ -188,19 +191,21 @@ def test_backfill_exactly_70_qualifies(store):
          patch("backend.engine.ripple.resolve_person", return_value={}), \
          patch("backend.engine.ripple.build_plan", return_value={
              "readiness_weeks": 0, "build_cost_lpa": 0.0, "gaps": []}):
+        skill_edges_df = store.reference.skill_edges()
         chain = _trace_chain(
             level="senior", team="Test",
             location="bengaluru", work_mode="onsite",
             employees_df=store.hris.employees(),
             emp_skills=store.hris.employee_skills(),
             evidence_df=store.evidence.skill_evidence(),
-            skill_edges_df=store.reference.skill_edges(),
+            edge_lookup=build_edge_lookup(skill_edges_df),
             market_stats_df=store.market.market_stats(),
             project_assignments=store.hris.project_assignments(),
             projects_df=store.hris.projects(),
             candidates_df=store.ats.candidates(),
             candidate_skills=store.ats.candidate_skills(),
             today=TODAY,
+            skill_edges_df=skill_edges_df,
         )
         assert chain[0]["person_id"] == "E-FAKE"
 
@@ -215,18 +220,20 @@ def test_backfill_69_9_rejected(store):
                     "work_mode": "onsite"}]
 
     with patch("backend.engine.ripple._score_movers", return_value=fake_scored):
+        skill_edges_df = store.reference.skill_edges()
         chain = _trace_chain(
             level="senior", team="Test",
             location="bengaluru", work_mode="onsite",
             employees_df=store.hris.employees(),
             emp_skills=store.hris.employee_skills(),
             evidence_df=store.evidence.skill_evidence(),
-            skill_edges_df=store.reference.skill_edges(),
+            edge_lookup=build_edge_lookup(skill_edges_df),
             market_stats_df=store.market.market_stats(),
             project_assignments=store.hris.project_assignments(),
             projects_df=store.hris.projects(),
             candidates_df=store.ats.candidates(),
             candidate_skills=store.ats.candidate_skills(),
             today=TODAY,
+            skill_edges_df=skill_edges_df,
         )
         assert chain[0]["person_id"] is None, "69.9 should fall through to external hire"

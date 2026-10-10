@@ -25,7 +25,7 @@ from backend.engine.dejareq import dejareq
 from backend.engine.evidence import resolve_person
 from backend.engine.location import compare_locations
 from backend.engine.market import matching_supply, market_card
-from backend.engine.match import score_employee, score_contractor
+from backend.engine.match import score_employee, score_contractor, build_edge_lookup
 from backend.engine.options import make_scenario_scorer
 from backend.engine.parser import regex_parse
 from backend.engine.redline import CONSTRAINT_ORDER, analyze_redline
@@ -59,6 +59,7 @@ def real_scorer(store):
     emp_skills = store.hris.employee_skills()
     evidence_df = store.evidence.skill_evidence()
     skill_edges = store.reference.skill_edges()
+    edge_lookup = build_edge_lookup(skill_edges)
     market_stats = store.market.market_stats()
     projects_df = store.hris.projects()
     proj_assign = store.hris.project_assignments()
@@ -77,7 +78,7 @@ def real_scorer(store):
         ev = resolve_person(pid, evidence_df, today=TODAY)
         sk = emp_skills.get(pid, set())
         m = score_employee(
-            pid, SENIOR_SKILLS, ev, sk, skill_edges,
+            pid, SENIOR_SKILLS, ev, sk, edge_lookup,
             str(row["level"]), "senior", today=TODAY,
         )
         if m["match"] >= 70:
@@ -94,7 +95,7 @@ def real_scorer(store):
         ev = resolve_person(cid, evidence_df, today=TODAY)
         sk = ctr_skills.get(cid, set())
         cm = score_contractor(
-            cid, SENIOR_SKILLS, ev, sk, skill_edges,
+            cid, SENIOR_SKILLS, ev, sk, edge_lookup,
             str(row["level"]), "senior",
             start_date=(row["start_date"] if isinstance(row["start_date"], date)
                         else date.fromisoformat(str(row["start_date"]))),
@@ -138,7 +139,8 @@ def real_scorer(store):
         required_team="Payments", required_location="bengaluru",
         required_work_mode="onsite", employees_df=employees_df,
         emp_skills=emp_skills, evidence_df=evidence_df,
-        skill_edges_df=skill_edges, market_stats_df=market_stats,
+        edge_lookup=edge_lookup, skill_edges_df=skill_edges,
+        market_stats_df=market_stats,
         projects_df=projects_df, project_assignments=proj_assign,
         candidates_df=candidates_df, candidate_skills=candidate_skills,
         today=TODAY,

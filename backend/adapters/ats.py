@@ -19,6 +19,10 @@ class ATS:
         self._candidates["years_exp"] = self._candidates["years_exp"].astype(float)
 
         self._cand_skills = pd.read_csv(data_dir / "candidate_skills.csv")
+        self._cand_skills_map: dict[str, set[str]] = (
+            self._cand_skills.groupby("candidate_id")["skill_id"]
+            .apply(set).to_dict()
+        )
 
         self._requisitions = pd.read_csv(data_dir / "requisitions.csv")
         self._requisitions["time_to_fill_days"] = (
@@ -40,10 +44,7 @@ class ATS:
         return self._candidates.copy()
 
     def candidate_skills(self) -> dict[str, set[str]]:
-        sk: dict[str, set[str]] = {}
-        for _, r in self._cand_skills.iterrows():
-            sk.setdefault(r["candidate_id"], set()).add(r["skill_id"])
-        return sk
+        return {k: set(v) for k, v in self._cand_skills_map.items()}
 
     def requisitions(self) -> pd.DataFrame:
         return self._requisitions.copy()

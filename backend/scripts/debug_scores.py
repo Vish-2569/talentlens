@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 from backend.data.seed import main as seed_main
 from backend.store import DataStore
-from backend.engine.match import score_employee, score_contractor
+from backend.engine.match import score_employee, score_contractor, build_edge_lookup
 from backend.engine.evidence import resolve_person
 from backend.engine.build import build_plan
 from backend.engine.borrow import analyze_contractor
@@ -43,6 +43,7 @@ employees_df = store.hris.employees()
 emp_skills = store.hris.employee_skills()
 evidence_df = store.evidence.skill_evidence()
 skill_edges = store.reference.skill_edges()
+edge_lookup = build_edge_lookup(skill_edges)
 market_stats = store.market.market_stats()
 projects_df = store.hris.projects()
 proj_assign = store.hris.project_assignments()
@@ -60,7 +61,7 @@ for _, row in employees_df[mask].iterrows():
     pid = str(row["employee_id"])
     ev = resolve_person(pid, evidence_df, today=TODAY)
     sk = emp_skills.get(pid, set())
-    m = score_employee(pid, SENIOR_SKILLS, ev, sk, skill_edges,
+    m = score_employee(pid, SENIOR_SKILLS, ev, sk, edge_lookup,
                        str(row["level"]), "senior", today=TODAY)
     if m["match"] >= 70:
         match_results[pid] = m
@@ -73,7 +74,7 @@ for _, row in contractors_df.iterrows():
     cid = str(row["contractor_id"])
     ev = resolve_person(cid, evidence_df, today=TODAY)
     sk = ctr_skills.get(cid, set())
-    cm = score_contractor(cid, SENIOR_SKILLS, ev, sk, skill_edges,
+    cm = score_contractor(cid, SENIOR_SKILLS, ev, sk, edge_lookup,
                           str(row["level"]), "senior",
                           start_date=date.fromisoformat(str(row["start_date"])),
                           today=TODAY)
@@ -110,7 +111,8 @@ ripple_result = analyze_ripple(
     required_team="Payments", required_location="bengaluru",
     required_work_mode="onsite", employees_df=employees_df,
     emp_skills=emp_skills, evidence_df=evidence_df,
-    skill_edges_df=skill_edges, market_stats_df=market_stats,
+    edge_lookup=edge_lookup, skill_edges_df=skill_edges,
+    market_stats_df=market_stats,
     projects_df=projects_df, project_assignments=proj_assign,
     candidates_df=candidates_df, candidate_skills=candidate_skills,
     today=TODAY)

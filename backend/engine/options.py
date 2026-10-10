@@ -681,16 +681,15 @@ def generate_options(
 
     # ── Build top-3 mixes from pool ───────────────────────────────────
     n_cards = 4
+    days_vals = [float(e["days"]) for e in pool]
+    cost_vals = [e["cost"] for e in pool]
+    days_mm = _minmax(days_vals)
+    cost_mm = _minmax(cost_vals)
     mix_scored: list[dict] = []
     for i in range(n_cards, len(pool)):
         ms = pool[i]
         score = all_scores[i]
 
-        # Compute per-dimension values for output (using same shared min-max)
-        days_vals = [float(e["days"]) for e in pool]
-        cost_vals = [e["cost"] for e in pool]
-        days_mm = _minmax(days_vals)
-        cost_mm = _minmax(cost_vals)
         speed_n = 1.0 - days_mm[i]
         cost_n = 1.0 - cost_mm[i]
 

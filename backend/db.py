@@ -140,6 +140,14 @@ class Database:
         )
         self.conn.commit()
 
+    def save_scenarios_batch(self, rows: list[tuple[str, str, str]]) -> None:
+        self.conn.executemany(
+            "INSERT OR REPLACE INTO Scenario (req_id, relaxed_mask, outputs_json) "
+            "VALUES (?, ?, ?)",
+            rows,
+        )
+        self.conn.commit()
+
     def get_scenarios(self, req_id: str) -> list[dict]:
         rows = self.conn.execute(
             "SELECT * FROM Scenario WHERE req_id = ? ORDER BY id",

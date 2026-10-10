@@ -31,7 +31,7 @@ def band(score: int) -> str:
     return "hidden"
 
 
-def _build_edge_lookup(skill_edges_df: pd.DataFrame) -> dict[str, list[tuple[str, float]]]:
+def build_edge_lookup(skill_edges_df: pd.DataFrame) -> dict[str, list[tuple[str, float]]]:
     lookup: dict[str, list[tuple[str, float]]] = {}
     for _, row in skill_edges_df.iterrows():
         a, b, w = row["skill_a"], row["skill_b"], float(row["weight"])
@@ -73,10 +73,8 @@ def _compute_S(
     required_skills: list[dict],
     evidence_scores: list[dict],
     person_skills: set[str],
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
 ) -> tuple[float, bool]:
-    edge_lookup = _build_edge_lookup(skill_edges_df)
-
     total_weighted = 0.0
     total_weight = 0.0
     must_have_zero = False
@@ -135,13 +133,13 @@ def score_employee(
     required_skills: list[dict],
     evidence_scores: list[dict],
     person_skills: set[str],
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
     person_level: str,
     required_level: str,
     today: date = date(2026, 10, 8),
 ) -> dict:
     S, must_zero = _compute_S(required_skills, evidence_scores, person_skills,
-                              skill_edges_df)
+                              edge_lookup)
     P = _compute_P(person_level, required_level)
     must_ids = [sk["id"] for sk in required_skills if sk.get("importance") == "must"]
     R = _compute_R(evidence_scores, must_ids, today)
@@ -171,14 +169,14 @@ def score_contractor(
     required_skills: list[dict],
     evidence_scores: list[dict],
     person_skills: set[str],
-    skill_edges_df: pd.DataFrame,
+    edge_lookup: dict[str, list[tuple[str, float]]],
     person_level: str,
     required_level: str,
     start_date: date,
     today: date = date(2026, 10, 8),
 ) -> dict:
     S, must_zero = _compute_S(required_skills, evidence_scores, person_skills,
-                              skill_edges_df)
+                              edge_lookup)
     P = _compute_P(person_level, required_level)
     must_ids = [sk["id"] for sk in required_skills if sk.get("importance") == "must"]
     R = _compute_R(evidence_scores, must_ids, today)

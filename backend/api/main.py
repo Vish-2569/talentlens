@@ -62,7 +62,7 @@ from backend.store import DataStore
 from backend.engine.parser import regex_parse
 from backend.engine.normalize import title_normalization_panel
 from backend.engine.evidence import resolve_person, data_quality as ev_data_quality
-from backend.engine.match import score_employee, score_contractor
+from backend.engine.match import score_employee, score_contractor, build_edge_lookup
 from backend.engine.build import build_plan
 from backend.engine.borrow import analyze_contractor
 from backend.engine.dejareq import dejareq
@@ -388,6 +388,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
     market_stats_df = store.market.market_stats()
     evidence_df = store.evidence.skill_evidence()
     skill_edges_df = store.reference.skill_edges()
+    edge_lookup = store.edge_lookup
 
     # 7. Deja Req
     deja_parsed = {
@@ -418,7 +419,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         ev = resolve_person(pid, evidence_df, today=today)
         sk = emp_skills.get(pid, set())
         r = score_employee(
-            pid, required_skills, ev, sk, skill_edges_df,
+            pid, required_skills, ev, sk, edge_lookup,
             str(row["level"]), level, today=today,
         )
         if r["match"] >= 50:
@@ -429,8 +430,9 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
     # 9. Ripple (top-2 internal)
     ripple_result = analyze_ripple(
         required_skills, level, "Payments", location, work_mode,
-        employees_df, emp_skills, evidence_df, skill_edges_df, market_stats_df,
+        employees_df, emp_skills, evidence_df, edge_lookup, market_stats_df,
         projects_df, proj_asgn, candidates_df, cand_skills, today=today,
+        skill_edges_df=skill_edges_df,
     )
 
     # 10. Borrow analyses (all contractors)
@@ -440,7 +442,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         ctr_ev = resolve_person(cid, evidence_df, today=today)
         ctr_sk = ctr_skills.get(cid, set())
         fit_result = score_contractor(
-            cid, required_skills, ctr_ev, ctr_sk, skill_edges_df,
+            cid, required_skills, ctr_ev, ctr_sk, edge_lookup,
             str(ctr["level"]), level,
             date.fromisoformat(str(ctr["start_date"])),
             today=today,
@@ -626,8 +628,10 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         ]
         db.save_constraints(req_id, constraints_for_db)
         db.save_skills(req_id, fields.get("skills", []))
-        for mask, scenario in redline_result.get("scenarios", {}).items():
-            db.save_scenario(req_id, mask, json.dumps(scenario, default=str))
+        db.save_scenarios_batch([
+            (req_id, mask, json.dumps(scenario, default=str))
+            for mask, scenario in redline_result.get("scenarios", {}).items()
+        ])
     finally:
         db.close()
 

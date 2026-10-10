@@ -13,6 +13,7 @@ from backend.adapters.vms import VMS
 from backend.adapters.evidence import EvidenceAdapter
 from backend.adapters.market import MarketAdapter
 from backend.adapters.reference import ReferenceCache
+from backend.engine.match import build_edge_lookup
 
 DATA_DIR = Path(__file__).parent / "data"
 CACHE_DIR = Path(__file__).parent / "cache"
@@ -30,6 +31,8 @@ class DataStore:
         self.evidence = EvidenceAdapter(data_dir)
         self.market = MarketAdapter(data_dir)
         self.reference = ReferenceCache(taxonomy_dir, cache_dir)
+
+        self.edge_lookup = build_edge_lookup(self.reference.skill_edges())
 
         self._name_map: dict[str, str] = {}
         for _, r in self.hris._employees.iterrows():

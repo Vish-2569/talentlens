@@ -3,7 +3,7 @@ import pytest
 from datetime import date
 
 from backend.engine.evidence import resolve_person
-from backend.engine.match import score_employee, score_contractor, band
+from backend.engine.match import score_employee, score_contractor, band, build_edge_lookup
 
 TODAY = date(2026, 10, 8)
 
@@ -50,7 +50,7 @@ def _ctr_skills(store, pid):
 def test_tc12_karthik_88(store):
     ev = _resolve(store, "E-031")
     sk = _emp_skills(store, "E-031")
-    edges = store.reference.skill_edges()
+    edges = build_edge_lookup(store.reference.skill_edges())
     result = score_employee("E-031", SENIOR_SKILLS, ev, sk, edges,
                             "lead", "senior", today=TODAY)
     assert result["match"] == 88
@@ -63,7 +63,7 @@ def test_tc12_karthik_88(store):
 def test_tc12_priya_82(store):
     ev = _resolve(store, "E-045")
     sk = _emp_skills(store, "E-045")
-    edges = store.reference.skill_edges()
+    edges = build_edge_lookup(store.reference.skill_edges())
     result = score_employee("E-045", SENIOR_SKILLS, ev, sk, edges,
                             "mid", "senior", today=TODAY)
     assert result["match"] == 82
@@ -76,7 +76,7 @@ def test_tc12_priya_82(store):
 def test_tc12_arjun_84(store):
     ev = _resolve(store, "C-17")
     sk = _ctr_skills(store, "C-17")
-    edges = store.reference.skill_edges()
+    edges = build_edge_lookup(store.reference.skill_edges())
     result = score_contractor("C-17", SENIOR_SKILLS, ev, sk, edges,
                               "senior", "senior",
                               start_date=date(2025, 7, 1), today=TODAY)
@@ -89,7 +89,7 @@ def test_tc12_arjun_84(store):
 def test_tc12_rahul_76_for_mid(store):
     ev = _resolve(store, "E-072")
     sk = _emp_skills(store, "E-072")
-    edges = store.reference.skill_edges()
+    edges = build_edge_lookup(store.reference.skill_edges())
     result = score_employee("E-072", MID_SKILLS, ev, sk, edges,
                             "junior", "mid", today=TODAY)
     assert result["match"] == 76
@@ -101,7 +101,8 @@ def test_tc12_rahul_76_for_mid(store):
 
 def test_must_have_gate_cap_70():
     import pandas as pd
-    edges = pd.DataFrame(columns=["skill_a", "skill_b", "type", "weight"])
+    edges_df = pd.DataFrame(columns=["skill_a", "skill_b", "type", "weight"])
+    edges = build_edge_lookup(edges_df)
     ev = [{"skill": "react", "value": 90, "source": "assessment",
            "observed_on": "2026-06-01", "stale": False, "confidence": 1.0}]
     skills = {"react"}
@@ -120,7 +121,7 @@ def test_must_have_gate_cap_70():
 def test_evidence_ids_returned(store):
     ev = _resolve(store, "E-031")
     sk = _emp_skills(store, "E-031")
-    edges = store.reference.skill_edges()
+    edges = build_edge_lookup(store.reference.skill_edges())
     result = score_employee("E-031", SENIOR_SKILLS, ev, sk, edges,
                             "lead", "senior", today=TODAY)
     assert len(result["evidence_ids"]) > 0

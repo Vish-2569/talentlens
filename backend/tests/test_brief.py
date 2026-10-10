@@ -21,7 +21,7 @@ from backend.engine.dejareq import dejareq
 from backend.engine.evidence import data_quality, resolve_person
 from backend.engine.location import compare_locations
 from backend.engine.market import market_card, matching_supply
-from backend.engine.match import score_contractor, score_employee
+from backend.engine.match import score_contractor, score_employee, build_edge_lookup
 from backend.engine.options import generate_options
 from backend.engine.ripple import analyze_ripple
 from backend.engine.sourcing import analyze_sourcing
@@ -46,6 +46,7 @@ def pipeline(store):
     emp_skills = store.hris.employee_skills()
     evidence_df = store.evidence.skill_evidence()
     skill_edges = store.reference.skill_edges()
+    edge_lookup = build_edge_lookup(skill_edges)
     market_stats = store.market.market_stats()
     projects_df = store.hris.projects()
     proj_assign = store.hris.project_assignments()
@@ -64,7 +65,7 @@ def pipeline(store):
         ev = resolve_person(pid, evidence_df, today=TODAY)
         sk = emp_skills.get(pid, set())
         m = score_employee(
-            pid, SENIOR_SKILLS, ev, sk, skill_edges,
+            pid, SENIOR_SKILLS, ev, sk, edge_lookup,
             str(row["level"]), "senior", today=TODAY,
         )
         if m["match"] >= 70:
@@ -81,7 +82,7 @@ def pipeline(store):
         ev = resolve_person(cid, evidence_df, today=TODAY)
         sk = ctr_skills.get(cid, set())
         cm = score_contractor(
-            cid, SENIOR_SKILLS, ev, sk, skill_edges,
+            cid, SENIOR_SKILLS, ev, sk, edge_lookup,
             str(row["level"]), "senior",
             start_date=(row["start_date"] if isinstance(row["start_date"], date)
                         else date.fromisoformat(str(row["start_date"]))),
@@ -132,6 +133,7 @@ def pipeline(store):
         employees_df=employees_df,
         emp_skills=emp_skills,
         evidence_df=evidence_df,
+        edge_lookup=edge_lookup,
         skill_edges_df=skill_edges,
         market_stats_df=market_stats,
         projects_df=projects_df,

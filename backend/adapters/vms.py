@@ -15,6 +15,10 @@ class VMS:
             self._contractors["bill_rate_lpa"].astype(float))
 
         self._ctr_skills = pd.read_csv(data_dir / "contractor_skills.csv")
+        self._ctr_skills_map: dict[str, set[str]] = (
+            self._ctr_skills.groupby("contractor_id")["skill_id"]
+            .apply(set).to_dict()
+        )
 
         self._suppliers = pd.read_csv(data_dir / "suppliers.csv")
         self._suppliers["fill_rate"] = self._suppliers["fill_rate"].astype(float)
@@ -27,10 +31,7 @@ class VMS:
         return self._contractors.copy()
 
     def contractor_skills(self) -> dict[str, set[str]]:
-        sk: dict[str, set[str]] = {}
-        for _, r in self._ctr_skills.iterrows():
-            sk.setdefault(r["contractor_id"], set()).add(r["skill_id"])
-        return sk
+        return {k: set(v) for k, v in self._ctr_skills_map.items()}
 
     def suppliers(self) -> pd.DataFrame:
         return self._suppliers.copy()
