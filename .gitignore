@@ -6,3 +6,4 @@ __pycache__/
 dist/
 node_modules/
 .pytest_cache/
+backend/data/talentlens.sqlite

@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS Scenario (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     req_id       TEXT NOT NULL REFERENCES Requisition(req_id),
     relaxed_mask TEXT NOT NULL,
-    outputs_json TEXT NOT NULL
+    outputs_json TEXT NOT NULL,
+    UNIQUE(req_id, relaxed_mask)
 );
 
 CREATE TABLE IF NOT EXISTS Decision (
@@ -133,7 +134,7 @@ class Database:
     def save_scenario(self, req_id: str, relaxed_mask: str,
                       outputs_json: str) -> None:
         self.conn.execute(
-            "INSERT INTO Scenario (req_id, relaxed_mask, outputs_json) "
+            "INSERT OR REPLACE INTO Scenario (req_id, relaxed_mask, outputs_json) "
             "VALUES (?, ?, ?)",
             (req_id, relaxed_mask, outputs_json),
         )

@@ -53,7 +53,7 @@ from backend.api.schemas import (
     DecisionRequest,
 )
 from backend.config import settings
-from backend.db import Database
+from backend.db import Database, DEFAULT_DB_PATH
 from backend.decisions import record_decision
 from backend.store import DataStore
 
@@ -93,6 +93,10 @@ def _load_stub() -> dict:
         _stub_data = json.loads(_STUB_PATH.read_text(encoding="utf-8"))
     return _stub_data
 
+
+# ── DB path (overridden by tests via monkeypatch / direct assignment) ─────────
+
+_db_path: Path = DEFAULT_DB_PATH
 
 # ── DataStore lazy singleton ──────────────────────────────────────────────────
 
@@ -531,7 +535,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
     tokens_snap = llm.get_meter().snapshot()
 
     # 23. Persist to DB
-    db = Database()
+    db = Database(_db_path)
     try:
         db.save_requisition(
             req_id, "Full Stack Developer", level, location, work_mode,
@@ -1074,7 +1078,7 @@ _VALID_OPTIONS = ["mix", "build", "borrow", "relocate", "buy",
 
 @app.post("/api/decisions", status_code=201)
 def create_decision(req: DecisionRequest) -> dict:
-    db = Database()
+    db = Database(_db_path)
     try:
         req_row = db.get_requisition(req.req_id)
         if req_row is None:

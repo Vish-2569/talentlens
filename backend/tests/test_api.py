@@ -141,6 +141,24 @@ async def test_people_skills_unknown(client):
     assert resp.status_code == 404
 
 
+# ── Idempotent double-submit ──────────────────────────────────────────────────
+
+@pytest.mark.anyio
+async def test_analyze_idempotent(client):
+    """POST /api/analyze twice with same text → both 200, identical req_id and scores."""
+    resp1 = await client.post("/api/analyze", json={"text": DEMO})
+    resp2 = await client.post("/api/analyze", json={"text": DEMO})
+    assert resp1.status_code == 200, resp1.text
+    assert resp2.status_code == 200, resp2.text
+    d1 = resp1.json()
+    d2 = resp2.json()
+    assert d1["parsed"]["req_id"] == d2["parsed"]["req_id"], "req_id must be deterministic"
+    scores1 = {o["id"]: o["score"] for o in d1["options"]["five"]}
+    scores2 = {o["id"]: o["score"] for o in d2["options"]["five"]}
+    assert scores1 == scores2, f"Scores diverged: {scores1} vs {scores2}"
+    assert d1["dejareq"]["match_count"] == d2["dejareq"]["match_count"]
+
+
 # ── Round-trip decision ───────────────────────────────────────────────────────
 
 @pytest.mark.anyio
