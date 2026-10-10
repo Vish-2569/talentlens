@@ -381,6 +381,44 @@ async def test_scenario_mix_consistency(raw):
 
 
 @pytest.mark.anyio
+async def test_relaxed_mask_scenario_matches_options_five(raw):
+    """In scenarios[options.relaxed_mask], every option that also appears in
+    options.five must have the same ready_by_p80_days and year_one_cost_lpa.
+
+    This verifies that the options table and the relaxed-mask scenario agree on
+    the core delivery metrics for each option type, even though their scores
+    come from different normalisation pools (per-scenario vs. shared pool).
+    """
+    relaxed_mask = raw["options"]["relaxed_mask"]
+    scenarios = raw["redline"]["scenarios"]
+    assert relaxed_mask in scenarios, (
+        f"relaxed_mask '{relaxed_mask}' not found in scenarios"
+    )
+    scen = scenarios[relaxed_mask]
+    scen_by_id = {o["option_id"]: o for o in scen["options"]}
+
+    five_by_id = {o["id"]: o for o in raw["options"]["five"]}
+
+    for option_id, five_opt in five_by_id.items():
+        if option_id not in scen_by_id:
+            continue  # scenario may not include every option
+        scen_opt = scen_by_id[option_id]
+        assert scen_opt["ready_by_p80_days"] == five_opt["ready_by_p80_days"], (
+            f"relaxed_mask scenario: option '{option_id}' ready_by "
+            f"{scen_opt['ready_by_p80_days']} != options.five "
+            f"{five_opt['ready_by_p80_days']}"
+        )
+        if five_opt["year_one_cost_lpa"] is not None and scen_opt["year_one_cost_lpa"] is not None:
+            assert scen_opt["year_one_cost_lpa"] == pytest.approx(
+                five_opt["year_one_cost_lpa"], abs=0.01,
+            ), (
+                f"relaxed_mask scenario: option '{option_id}' cost "
+                f"{scen_opt['year_one_cost_lpa']} != options.five "
+                f"{five_opt['year_one_cost_lpa']}"
+            )
+
+
+@pytest.mark.anyio
 async def test_scenario_mix_entries_present(raw):
     """A7: for every scenario whose top_option_id is 'mix', the scenario's
     options list contains an OptionSummary with option_id='mix'."""
