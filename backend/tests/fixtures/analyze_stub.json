@@ -345,21 +345,21 @@
       },
       {
         "id": "mix-2",
-        "name": "Build Priya + external junior",
-        "atoms": ["build-priya", "buy-junior"],
-        "score": 73.0,
-        "ready_by_p80_days": 42,
-        "year_one_cost_lpa": 12.0,
-        "reason": "Cheapest long-term; misses the 30-day deadline"
-      },
-      {
-        "id": "mix-3",
         "name": "Borrow Arjun (12 months)",
         "atoms": ["borrow-arjun-12m"],
         "score": 87.0,
         "ready_by_p80_days": 0,
         "year_one_cost_lpa": 24.0,
         "reason": "Fastest single option; knowledge-loss risk from history"
+      },
+      {
+        "id": "mix-3",
+        "name": "Build Priya + external junior",
+        "atoms": ["build-priya", "buy-junior"],
+        "score": 73.0,
+        "ready_by_p80_days": 42,
+        "year_one_cost_lpa": 12.0,
+        "reason": "Cheapest long-term; misses the 30-day deadline"
       }
     ],
     "relocate_card": [

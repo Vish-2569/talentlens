@@ -264,6 +264,28 @@ def test_options_scored_are_int(result):
             assert isinstance(opt["score"], int), f"{opt['name']}: {opt['score']}"
 
 
+def test_option_scores(result):
+    by_name = {o["name"]: o["score"] for o in result["options"]}
+    assert by_name["Build"] == 73
+    assert by_name["Buy"] == 42
+    assert by_name["Borrow"] == 87
+    assert by_name["Relocate"] == 62
+    assert by_name["Automate"] == "add-on"
+
+
+def test_option_ranking(result):
+    scored = [o for o in result["options"] if isinstance(o["score"], int)]
+    scores = [(o["name"], o["score"]) for o in scored]
+    scores.sort(key=lambda x: -x[1])
+    names = [s[0] for s in scores]
+    assert names == ["Borrow", "Build", "Relocate", "Buy"]
+
+
+def test_mix_score_89(result):
+    top = result["top_mixes"][0]
+    assert top["score"] == 89
+
+
 def test_options_top_mixes_capped_at_3(result):
     assert len(result["top_mixes"]) <= 3
 
