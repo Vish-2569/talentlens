@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { LoadingStages } from "../components/LoadingStages";
+import { ParsedFields } from "../components/ParsedFields";
+import { RequestComposer } from "../components/RequestComposer";
+import { TitleNormPanel } from "../components/TitleNormPanel";
 import { EmptyState } from "../components/ui";
 import { useAppState } from "../state/context";
 
@@ -5,7 +10,16 @@ const DEMO_SENTENCE =
   "Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.";
 
 export function Challenge() {
-  const { result } = useAppState();
+  const { status, result, requestText } = useAppState();
+  const [editing, setEditing] = useState(false);
+
+  const composerVisible =
+    status === "idle" ||
+    status === "error" ||
+    status === "loading" ||
+    (status === "ready" && editing);
+
+  const composerHidden = status === "loading";
 
   return (
     <section aria-labelledby="challenge-heading" id="challenge-tab">
@@ -14,16 +28,47 @@ export function Challenge() {
       </h2>
 
       <div id="challenge-input" className="mb-6">
-        {/* Requisition input — wired in Phase F3 */}
-        <p className="mb-2 font-sans text-xs text-muted">
-          Demo sentence (F3 will wire the submit):
-        </p>
-        <blockquote className="rounded-md border border-hairline bg-paper p-3 font-sans text-sm text-ink">
-          {DEMO_SENTENCE}
-        </blockquote>
+        {composerVisible && (
+          <div className={composerHidden ? "hidden" : undefined}>
+            <RequestComposer
+              demoSentence={DEMO_SENTENCE}
+              initialText={requestText}
+            />
+          </div>
+        )}
+
+        {status === "loading" && <LoadingStages />}
+
+        {status === "ready" && !editing && (
+          <div className="flex items-baseline gap-3">
+            <p className="font-sans text-sm text-ink">{requestText}</p>
+            <button
+              onClick={() => setEditing(true)}
+              className="shrink-0 font-sans text-sm font-medium text-accent hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Edit request
+            </button>
+          </div>
+        )}
       </div>
 
-      {!result && (
+      {status === "ready" && result && (
+        <>
+          <div className="mb-6">
+            <ParsedFields parsed={result.parsed} />
+          </div>
+
+          {/* Redline + Déjà Req slot — built in F4/F5 */}
+
+          <div className="mt-6">
+            <TitleNormPanel
+              titleNormalization={result.parsed.title_normalization}
+            />
+          </div>
+        </>
+      )}
+
+      {status === "idle" && (
         <EmptyState
           title="Submit a requisition to begin"
           description="Enter job requirements above and click Analyse."
