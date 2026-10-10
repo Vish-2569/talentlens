@@ -884,7 +884,7 @@
               "person_id": null,
               "display_name": null,
               "status": "red",
-              "reason": "No internal backfill; external P50 76 days",
+              "reason": "He is the only Terraform holder on a critical project (bus factor = 1). No internal backfill scores ≥ 70; external Lead supply is thin, P50 76 days.",
               "children": []
             }
           ]
