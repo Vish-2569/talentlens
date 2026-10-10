@@ -2,9 +2,7 @@
 import pytest
 from datetime import date
 
-from backend.data.seed import main as seed_main
 from backend.engine.dejareq import dejareq
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
 
@@ -26,16 +24,6 @@ JUNIOR_PARSED_REQ = {
     "work_mode": "onsite",
     "skill_ids": ["react", "nodejs", "javascript", "html_css", "git"],
 }
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 def _run(store, parsed_req):

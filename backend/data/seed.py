@@ -34,8 +34,9 @@ TEAMS = ["Payments", "Checkout", "Platform", "Growth", "Infra", "Mobile", "Data"
 # Helpers
 # ═══════════════════════════════════════════════════════════════════════
 
-def _write(name: str, rows: list[dict], fields: list[str]) -> None:
-    with open(DATA_DIR / name, "w", newline="", encoding="utf-8") as f:
+def _write(name: str, rows: list[dict], fields: list[str],
+           output_dir: Path = DATA_DIR) -> None:
+    with open(output_dir / name, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
@@ -641,7 +642,11 @@ def _gen_past_finalists():
 # Main
 # ═══════════════════════════════════════════════════════════════════════
 
-def main():
+def main(output_dir: Path | None = None):
+    if output_dir is None:
+        output_dir = DATA_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     rng = np.random.default_rng(SEED)
     fake = Faker("en_IN")
     Faker.seed(SEED)
@@ -658,23 +663,24 @@ def main():
     suppliers, sup_fields = _gen_suppliers()
     finalists, fin_fields = _gen_past_finalists()
 
-    _write("employees.csv", emp, _EMP_FIELDS)
-    _write("employee_skills.csv", emp_sk, ["employee_id", "skill_id"])
-    _write("contractors.csv", ctr, _CTR_FIELDS)
-    _write("contractor_skills.csv", ctr_sk, ["contractor_id", "skill_id"])
-    _write("requisitions.csv", reqs, req_fields)
-    _write("exits.csv", exits, exit_fields)
-    _write("candidates.csv", cands,
-           ["candidate_id", "level", "location", "work_mode",
-            "years_exp", "source"])
-    _write("candidate_skills.csv", cand_sk, ["candidate_id", "skill_id"])
-    _write("evidence.csv", evidence, ev_fields)
-    _write("market_stats.csv", market, mkt_fields)
-    _write("projects.csv", projects, proj_fields)
-    _write("project_assignments.csv", assignments, asgn_fields)
-    _write("sourcing_history.csv", sourcing, src_fields)
-    _write("suppliers.csv", suppliers, sup_fields)
-    _write("past_finalists.csv", finalists, fin_fields)
+    w = lambda name, rows, fields: _write(name, rows, fields, output_dir)
+    w("employees.csv", emp, _EMP_FIELDS)
+    w("employee_skills.csv", emp_sk, ["employee_id", "skill_id"])
+    w("contractors.csv", ctr, _CTR_FIELDS)
+    w("contractor_skills.csv", ctr_sk, ["contractor_id", "skill_id"])
+    w("requisitions.csv", reqs, req_fields)
+    w("exits.csv", exits, exit_fields)
+    w("candidates.csv", cands,
+       ["candidate_id", "level", "location", "work_mode",
+        "years_exp", "source"])
+    w("candidate_skills.csv", cand_sk, ["candidate_id", "skill_id"])
+    w("evidence.csv", evidence, ev_fields)
+    w("market_stats.csv", market, mkt_fields)
+    w("projects.csv", projects, proj_fields)
+    w("project_assignments.csv", assignments, asgn_fields)
+    w("sourcing_history.csv", sourcing, src_fields)
+    w("suppliers.csv", suppliers, sup_fields)
+    w("past_finalists.csv", finalists, fin_fields)
 
 
 if __name__ == "__main__":

@@ -1,19 +1,7 @@
 """Tests for engine/automate.py — automation potential estimation."""
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.automate import estimate_automation
-from backend.store import DataStore
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 # ── 25-35% range with production tasks ──────────────────────────────

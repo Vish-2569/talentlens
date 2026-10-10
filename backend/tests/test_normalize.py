@@ -1,23 +1,11 @@
 """Tests for engine/normalize.py — title and skill normalization."""
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.normalize import (
     normalize_title, normalize_skill, skill_relation, title_normalization_panel,
 )
-from backend.store import DataStore
 
 ESCO_URI = "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1"
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 def _title(store, raw, system="ats"):

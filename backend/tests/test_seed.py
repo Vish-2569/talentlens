@@ -5,39 +5,31 @@ from pathlib import Path
 
 import pytest
 
-DATA_DIR = Path(__file__).parent.parent / "data"
 
-
-@pytest.fixture(scope="module", autouse=True)
-def generate_seed_data():
-    from backend.data.seed import main
-    main()
-
-
-def _read(name: str) -> list[dict]:
-    with open(DATA_DIR / name, encoding="utf-8") as f:
+def _read(name: str, seed_dir: Path) -> list[dict]:
+    with open(seed_dir / name, encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
 # ── Employees ─────────────────────────────────────────────────────────
 
 
-def test_key_employees_exist():
-    rows = _read("employees.csv")
+def test_key_employees_exist(seed_dir):
+    rows = _read("employees.csv", seed_dir)
     ids = {r["employee_id"] for r in rows}
     assert {"E-031", "E-045", "E-072", "E-010"} <= ids
 
 
-def test_karthik():
-    e = next(r for r in _read("employees.csv") if r["employee_id"] == "E-031")
+def test_karthik(seed_dir):
+    e = next(r for r in _read("employees.csv", seed_dir) if r["employee_id"] == "E-031")
     assert e["display_name"] == "Karthik"
     assert e["level"] == "lead"
     assert e["team"] == "Platform"
     assert e["open_to_move"] == "true"
 
 
-def test_priya():
-    e = next(r for r in _read("employees.csv") if r["employee_id"] == "E-045")
+def test_priya(seed_dir):
+    e = next(r for r in _read("employees.csv", seed_dir) if r["employee_id"] == "E-045")
     assert e["display_name"] == "Priya"
     assert e["level"] == "mid"
     assert e["team"] == "Checkout"
@@ -45,16 +37,16 @@ def test_priya():
     assert e["open_to_move"] == "true"
 
 
-def test_rahul():
-    e = next(r for r in _read("employees.csv") if r["employee_id"] == "E-072")
+def test_rahul(seed_dir):
+    e = next(r for r in _read("employees.csv", seed_dir) if r["employee_id"] == "E-072")
     assert e["display_name"] == "Rahul"
     assert e["level"] == "junior"
     assert e["team"] == "Checkout"
     assert e["open_to_move"] == "true"
 
 
-def test_karthik_has_terraform():
-    skills = {r["skill_id"] for r in _read("employee_skills.csv")
+def test_karthik_has_terraform(seed_dir):
+    skills = {r["skill_id"] for r in _read("employee_skills.csv", seed_dir)
               if r["employee_id"] == "E-031"}
     assert "terraform" in skills
     assert "kubernetes" in skills
@@ -62,34 +54,34 @@ def test_karthik_has_terraform():
     assert "nodejs" in skills
 
 
-def test_priya_no_kubernetes():
-    skills = {r["skill_id"] for r in _read("employee_skills.csv")
+def test_priya_no_kubernetes(seed_dir):
+    skills = {r["skill_id"] for r in _read("employee_skills.csv", seed_dir)
               if r["employee_id"] == "E-045"}
     assert "react" in skills
     assert "nodejs" in skills
     assert "kubernetes" not in skills
 
 
-def test_rahul_skills():
-    skills = {r["skill_id"] for r in _read("employee_skills.csv")
+def test_rahul_skills(seed_dir):
+    skills = {r["skill_id"] for r in _read("employee_skills.csv", seed_dir)
               if r["employee_id"] == "E-072"}
     assert {"react", "nodejs", "javascript"} <= skills
 
 
-def test_no_other_platform_has_terraform():
+def test_no_other_platform_has_terraform(seed_dir):
     """Karthik is sole Terraform holder on Platform (bus factor = 1)."""
-    emps = _read("employees.csv")
+    emps = _read("employees.csv", seed_dir)
     platform_ids = {e["employee_id"] for e in emps if e["team"] == "Platform"}
-    skills = _read("employee_skills.csv")
+    skills = _read("employee_skills.csv", seed_dir)
     tf_holders = {s["employee_id"] for s in skills
                   if s["skill_id"] == "terraform" and s["employee_id"] in platform_ids}
     assert tf_holders == {"E-031"}
 
 
-def test_years_relaxation_widens_build():
+def test_years_relaxation_widens_build(seed_dir):
     """Relaxing 5+ → 3+ years widens internal Build pool from 1 to 4."""
-    emps = _read("employees.csv")
-    skills_rows = _read("employee_skills.csv")
+    emps = _read("employees.csv", seed_dir)
+    skills_rows = _read("employee_skills.csv", seed_dir)
     skill_map = {}
     for s in skills_rows:
         skill_map.setdefault(s["employee_id"], set()).add(s["skill_id"])
@@ -111,15 +103,15 @@ def test_years_relaxation_widens_build():
 # ── Contractors ───────────────────────────────────────────────────────
 
 
-def test_arjun():
-    c = next(r for r in _read("contractors.csv") if r["contractor_id"] == "C-17")
+def test_arjun(seed_dir):
+    c = next(r for r in _read("contractors.csv", seed_dir) if r["contractor_id"] == "C-17")
     assert c["display_name"] == "Arjun"
     assert c["level"] == "senior"
     assert float(c["bill_rate_lpa"]) == 24.0
 
 
-def test_arjun_skills():
-    skills = {r["skill_id"] for r in _read("contractor_skills.csv")
+def test_arjun_skills(seed_dir):
+    skills = {r["skill_id"] for r in _read("contractor_skills.csv", seed_dir)
               if r["contractor_id"] == "C-17"}
     assert {"react", "nodejs", "kubernetes"} <= skills
 
@@ -127,28 +119,28 @@ def test_arjun_skills():
 # ── Requisitions (Deja Req) ───────────────────────────────────────────
 
 
-def test_four_past_requisitions():
-    reqs = [r for r in _read("requisitions.csv")
+def test_four_past_requisitions(seed_dir):
+    reqs = [r for r in _read("requisitions.csv", seed_dir)
             if r["role"] == "Full Stack Developer" and r["level"] == "senior"]
     assert len(reqs) == 4
 
 
-def test_req_decisions():
-    by_id = {r["req_id"]: r for r in _read("requisitions.csv")}
+def test_req_decisions(seed_dir):
+    by_id = {r["req_id"]: r for r in _read("requisitions.csv", seed_dir)}
     assert by_id["REQ-001"]["decision"] == "buy"
     assert by_id["REQ-002"]["decision"] == "buy"
     assert by_id["REQ-003"]["decision"] == "borrow"
     assert by_id["REQ-004"]["decision"] == "build"
 
 
-def test_buy_ttf():
-    by_id = {r["req_id"]: r for r in _read("requisitions.csv")}
+def test_buy_ttf(seed_dir):
+    by_id = {r["req_id"]: r for r in _read("requisitions.csv", seed_dir)}
     assert int(by_id["REQ-001"]["time_to_fill_days"]) == 68
     assert int(by_id["REQ-002"]["time_to_fill_days"]) == 74
 
 
-def test_buy_costs():
-    by_id = {r["req_id"]: r for r in _read("requisitions.csv")}
+def test_buy_costs(seed_dir):
+    by_id = {r["req_id"]: r for r in _read("requisitions.csv", seed_dir)}
     assert float(by_id["REQ-001"]["first_year_cost_lpa"]) == 31.0
     assert float(by_id["REQ-002"]["first_year_cost_lpa"]) == 33.0
     assert float(by_id["REQ-003"]["first_year_cost_lpa"]) == 24.0
@@ -158,9 +150,9 @@ def test_buy_costs():
 # ── Exits ─────────────────────────────────────────────────────────────
 
 
-def test_avg_external_tenure():
+def test_avg_external_tenure(seed_dir):
     """Average tenure of external hires: 8 months (9 and 7)."""
-    exits = _read("exits.csv")
+    exits = _read("exits.csv", seed_dir)
     buy_exits = [r for r in exits if r["req_origin"] in ("REQ-001", "REQ-002")]
     tenures = sorted(int(r["tenure_months"]) for r in buy_exits)
     assert tenures == [7, 9]
@@ -170,10 +162,10 @@ def test_avg_external_tenure():
 # ── Candidate Supply ──────────────────────────────────────────────────
 
 
-def _supply(location, work_mode, level, must_skills, min_years=5):
+def _supply(seed_dir, location, work_mode, level, must_skills, min_years=5):
     """Count candidates matching all filters."""
-    cands = _read("candidates.csv")
-    skills = _read("candidate_skills.csv")
+    cands = _read("candidates.csv", seed_dir)
+    skills = _read("candidate_skills.csv", seed_dir)
     pool = {
         c["candidate_id"] for c in cands
         if c["level"] == level
@@ -187,43 +179,43 @@ def _supply(location, work_mode, level, must_skills, min_years=5):
     return {cid for cid in pool if sk_map.get(cid, set()) >= set(must_skills)}
 
 
-def test_bengaluru_senior_all_constraints():
+def test_bengaluru_senior_all_constraints(seed_dir):
     """14 Bengaluru on-site Senior with React+Node.js+Kubernetes."""
-    assert len(_supply("bengaluru", "onsite", "senior",
+    assert len(_supply(seed_dir, "bengaluru", "onsite", "senior",
                         ["react", "nodejs", "kubernetes"])) == 14
 
 
-def test_bengaluru_senior_without_kubernetes():
+def test_bengaluru_senior_without_kubernetes(seed_dir):
     """47 without Kubernetes constraint (Kubernetes removes 70%)."""
-    assert len(_supply("bengaluru", "onsite", "senior",
+    assert len(_supply(seed_dir, "bengaluru", "onsite", "senior",
                         ["react", "nodejs"])) == 47
 
 
-def test_remote_india_senior_supply():
-    assert len(_supply("remote_india", "remote", "senior",
+def test_remote_india_senior_supply(seed_dir):
+    assert len(_supply(seed_dir, "remote_india", "remote", "senior",
                         ["react", "nodejs", "kubernetes"])) == 210
 
 
-def test_hyderabad_senior_supply():
-    assert len(_supply("hyderabad", "onsite", "senior",
+def test_hyderabad_senior_supply(seed_dir):
+    assert len(_supply(seed_dir, "hyderabad", "onsite", "senior",
                         ["react", "nodejs", "kubernetes"])) == 31
 
 
-def test_pune_senior_supply():
-    assert len(_supply("pune", "onsite", "senior",
+def test_pune_senior_supply(seed_dir):
+    assert len(_supply(seed_dir, "pune", "onsite", "senior",
                         ["react", "nodejs", "kubernetes"])) == 26
 
 
 # ── Market Stats ──────────────────────────────────────────────────────
 
 
-def _mstat(location, level):
-    return next(r for r in _read("market_stats.csv")
+def _mstat(seed_dir, location, level):
+    return next(r for r in _read("market_stats.csv", seed_dir)
                 if r["location"] == location and r["level"] == level)
 
 
-def test_market_bengaluru_senior():
-    m = _mstat("bengaluru", "senior")
+def test_market_bengaluru_senior(seed_dir):
+    m = _mstat(seed_dir, "bengaluru", "senior")
     assert int(m["ttf_p50"]) == 62
     assert int(m["ttf_p80"]) == 81
     assert float(m["sal_p50"]) == 32.0
@@ -231,48 +223,48 @@ def test_market_bengaluru_senior():
     assert float(m["sal_p75"]) == 40.0
 
 
-def test_market_remote_senior():
-    m = _mstat("remote_india", "senior")
+def test_market_remote_senior(seed_dir):
+    m = _mstat(seed_dir, "remote_india", "senior")
     assert int(m["ttf_p50"]) == 28
     assert int(m["ttf_p80"]) == 40
     assert float(m["sal_p50"]) == 29.0
 
 
-def test_market_hyderabad_senior():
-    m = _mstat("hyderabad", "senior")
+def test_market_hyderabad_senior(seed_dir):
+    m = _mstat(seed_dir, "hyderabad", "senior")
     assert int(m["ttf_p50"]) == 44
     assert int(m["ttf_p80"]) == 58
     assert float(m["sal_p50"]) == 30.0
 
 
-def test_market_pune_senior():
-    m = _mstat("pune", "senior")
+def test_market_pune_senior(seed_dir):
+    m = _mstat(seed_dir, "pune", "senior")
     assert int(m["ttf_p50"]) == 47
     assert int(m["ttf_p80"]) == 62
     assert float(m["sal_p50"]) == 26.0
 
 
-def test_market_bengaluru_junior():
-    m = _mstat("bengaluru", "junior")
+def test_market_bengaluru_junior(seed_dir):
+    m = _mstat(seed_dir, "bengaluru", "junior")
     assert int(m["ttf_p50"]) == 21
     assert float(m["sal_p50"]) == 7.0
 
 
-def test_market_bengaluru_lead():
-    m = _mstat("bengaluru", "lead")
+def test_market_bengaluru_lead(seed_dir):
+    m = _mstat(seed_dir, "bengaluru", "lead")
     assert int(m["ttf_p50"]) == 76
 
 
 # ── Evidence ──────────────────────────────────────────────────────────
 
 
-def _evidence_for(person_id, skill_id):
-    return [r for r in _read("evidence.csv")
+def _evidence_for(seed_dir, person_id, skill_id):
+    return [r for r in _read("evidence.csv", seed_dir)
             if r["person_id"] == person_id and r["skill_id"] == skill_id]
 
 
-def test_rahul_aws_evidence():
-    rows = _evidence_for("E-072", "aws")
+def test_rahul_aws_evidence(seed_dir):
+    rows = _evidence_for(seed_dir, "E-072", "aws")
     sources = {r["source"] for r in rows}
     assert {"assessment", "self"} <= sources
     a = next(r for r in rows if r["source"] == "assessment")
@@ -280,8 +272,8 @@ def test_rahul_aws_evidence():
     assert a["observed_on"] == "2026-03-12"
 
 
-def test_priya_kubernetes_evidence():
-    rows = _evidence_for("E-045", "kubernetes")
+def test_priya_kubernetes_evidence(seed_dir):
+    rows = _evidence_for(seed_dir, "E-045", "kubernetes")
     sources = {r["source"] for r in rows}
     assert {"assessment", "self"} <= sources
     a = next(r for r in rows if r["source"] == "assessment")
@@ -291,8 +283,8 @@ def test_priya_kubernetes_evidence():
     assert s["value"] == "expert"
 
 
-def test_karthik_terraform_evidence():
-    rows = _evidence_for("E-031", "terraform")
+def test_karthik_terraform_evidence(seed_dir):
+    rows = _evidence_for(seed_dir, "E-031", "terraform")
     sources = {r["source"] for r in rows}
     assert "certification" in sources
     assert "project" in sources
@@ -300,9 +292,9 @@ def test_karthik_terraform_evidence():
     assert int(proj["value"]) == 30
 
 
-def test_graphql_self_report_only():
+def test_graphql_self_report_only(seed_dir):
     """At least one person has GraphQL with self-report as the only source."""
-    ev = _read("evidence.csv")
+    ev = _read("evidence.csv", seed_dir)
     gql = [r for r in ev if r["skill_id"] == "graphql"]
     people = {r["person_id"] for r in gql}
     for pid in people:
@@ -315,13 +307,13 @@ def test_graphql_self_report_only():
 # ── Past Finalists ────────────────────────────────────────────────────
 
 
-def test_three_past_finalists():
-    rows = _read("past_finalists.csv")
+def test_three_past_finalists(seed_dir):
+    rows = _read("past_finalists.csv", seed_dir)
     assert len(rows) == 3
 
 
-def test_two_remote_ready_finalists():
-    rows = _read("past_finalists.csv")
+def test_two_remote_ready_finalists(seed_dir):
+    rows = _read("past_finalists.csv", seed_dir)
     remote_ready = [r for r in rows if r["open_to_remote"] == "true"]
     assert len(remote_ready) == 2
 
@@ -329,22 +321,22 @@ def test_two_remote_ready_finalists():
 # ── Sourcing ──────────────────────────────────────────────────────────
 
 
-def test_sourcing_referral():
-    rows = _read("sourcing_history.csv")
+def test_sourcing_referral(seed_dir):
+    rows = _read("sourcing_history.csv", seed_dir)
     ref = next(r for r in rows if r["channel"] == "referral")
     assert float(ref["fill_rate"]) == 0.38
     assert int(ref["median_days"]) == 34
 
 
-def test_sourcing_supplier():
-    rows = _read("sourcing_history.csv")
+def test_sourcing_supplier(seed_dir):
+    rows = _read("sourcing_history.csv", seed_dir)
     sup = next(r for r in rows if r["channel"] == "supplier")
     assert float(sup["fill_rate"]) == 0.45
     assert int(sup["median_days"]) == 9
 
 
-def test_sourcing_job_board():
-    rows = _read("sourcing_history.csv")
+def test_sourcing_job_board(seed_dir):
+    rows = _read("sourcing_history.csv", seed_dir)
     jb = next(r for r in rows if r["channel"] == "job_board")
     assert float(jb["fill_rate"]) == 0.22
     assert int(jb["median_days"]) == 52
@@ -353,8 +345,8 @@ def test_sourcing_job_board():
 # ── Suppliers ─────────────────────────────────────────────────────────
 
 
-def test_supplier_a():
-    rows = _read("suppliers.csv")
+def test_supplier_a(seed_dir):
+    rows = _read("suppliers.csv", seed_dir)
     s = next(r for r in rows if r["supplier_id"] == "SUP-01")
     assert float(s["fill_rate"]) == 0.45
     assert int(s["median_days_to_submit"]) == 9
@@ -363,14 +355,14 @@ def test_supplier_a():
 # ── Projects ──────────────────────────────────────────────────────────
 
 
-def test_platform_core_critical():
-    projects = _read("projects.csv")
+def test_platform_core_critical(seed_dir):
+    projects = _read("projects.csv", seed_dir)
     pc = next(r for r in projects if r["name"] == "Platform-Core")
     assert pc["is_critical"] == "true"
 
 
-def test_karthik_on_platform_core():
-    assignments = _read("project_assignments.csv")
+def test_karthik_on_platform_core(seed_dir):
+    assignments = _read("project_assignments.csv", seed_dir)
     ka = [r for r in assignments if r["employee_id"] == "E-031"]
     assert any(r["project_id"] == "PROJ-01" for r in ka)
 
@@ -378,19 +370,25 @@ def test_karthik_on_platform_core():
 # ── Determinism ───────────────────────────────────────────────────────
 
 
-def test_deterministic():
-    """Running seed twice produces identical CSV output."""
+def test_deterministic(tmp_path):
+    """Running seed twice in separate directories produces identical hashes."""
     from backend.data.seed import main
 
-    def _hashes():
+    dir_a = tmp_path / "run_a"
+    dir_b = tmp_path / "run_b"
+    dir_a.mkdir()
+    dir_b.mkdir()
+
+    main(output_dir=dir_a)
+    main(output_dir=dir_b)
+
+    def _hashes(d: Path) -> dict[str, str]:
         h = {}
-        for f in sorted(DATA_DIR.glob("*.csv")):
+        for f in sorted(d.glob("*.csv")):
             h[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
         return h
 
-    main()
-    h1 = _hashes()
-    main()
-    h2 = _hashes()
+    h1 = _hashes(dir_a)
+    h2 = _hashes(dir_b)
     assert h1 == h2
     assert len(h1) >= 15, f"Expected ≥15 CSVs, got {len(h1)}"

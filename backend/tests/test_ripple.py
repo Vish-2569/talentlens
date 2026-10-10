@@ -7,9 +7,7 @@ TC11  open_to_move=false employees never appear; chain depth never exceeds 3
 import pytest
 from datetime import date
 
-from backend.data.seed import main as seed_main
 from backend.engine.ripple import analyze_ripple, borrow_coverage_check
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
 
@@ -26,16 +24,6 @@ SENIOR_SKILLS = [
 
 # IDs with open_to_move=false (should never appear in any chain).
 CLOSED_TO_MOVE = {"E-010", "E-018", "E-020"}
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 @pytest.fixture(scope="module")

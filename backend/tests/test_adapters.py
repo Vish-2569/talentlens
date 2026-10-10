@@ -2,19 +2,6 @@
 import pandas as pd
 import pytest
 
-from backend.data.seed import main as seed_main
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate_seed_data():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    from backend.store import DataStore
-    return DataStore()
-
 
 # ── HRIS adapter ─────────────────────────────────────────────────────
 

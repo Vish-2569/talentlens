@@ -1,19 +1,7 @@
 """Tests for engine/market.py — supply counting, TTF adjustment."""
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.market import matching_supply, ttf_adjusted, market_card
-from backend.store import DataStore
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 MUST_SKILLS = ["react", "nodejs", "kubernetes"]

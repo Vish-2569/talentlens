@@ -726,3 +726,155 @@ def generate_options(
             "weight_shifts": weight_shifts,
         },
     }
+
+
+# ── Scenario scorer for redline ──────────────────────────────────────────────
+
+
+def make_scenario_scorer(
+    *,
+    match_results: dict[str, dict],
+    build_plans: dict[str, dict],
+    borrow_analyses: list[dict],
+    location_results: list[dict],
+    automation_result: dict,
+    ripple_result: dict,
+    dejareq_result: dict,
+    evidence_results: dict[str, list[dict]],
+    base_location: str = "bengaluru",
+    base_must_skill_ids: list[str] | None = None,
+    deadline_days: int = 90,
+    duration_months: int = 12,
+) -> "Callable[[dict, dict], dict]":
+    """Return a scorer function for redline scenarios.
+
+    The returned callable has signature (ctx, market_ctx) -> dict with keys
+    top_option_id, panel_text, options.
+
+    Scenarios show how relaxing constraints changes the best option:
+    - Base (no relaxation): Buy as-requested
+    - Location relaxed: Relocate may beat Buy
+    - Location + key skill relaxed: the full Mix recommendation surfaces
+
+    Build/Borrow/Mix are constraint-independent (internal candidates), so
+    they only appear when the scenario has relaxed enough constraints to
+    warrant the full challenger recommendation.
+    """
+    w = _adjust_weights(dict(DEFAULT_WEIGHTS), deadline_days, duration_months)
+
+    all_pids = list(match_results.keys()) + [ba["person_id"] for ba in borrow_analyses]
+    _, sr_ledger = _self_report_penalty(all_pids, evidence_results)
+
+    base_atoms = _generate_atoms(
+        match_results, build_plans, borrow_analyses,
+        location_results, automation_result,
+        {"location": "", "sal_p50": 0, "ttf_p80": 90},
+        ripple_result=ripple_result,
+    )
+
+    # Pre-compute the mix score for when it's included.
+    bridge_build = [
+        a for a in base_atoms
+        if a["type"] in ("bridge", "build") and a.get("person_id")
+    ]
+    mix_entry = _compute_entry_stats(bridge_build, dejareq_result, sr_ledger) if bridge_build else None
+
+    base_musts = set(base_must_skill_ids or [])
+
+    def _scorer(ctx: dict, market_ctx: dict) -> dict:
+        loc = ctx.get("location", base_location)
+        loc_relaxed = (loc != base_location)
+        ctx_musts = set(ctx.get("must_skill_ids", base_musts))
+        skill_relaxed = (ctx_musts != base_musts)
+
+        # Buy atom uses scenario-specific market data.
+        buy_atom = {
+            "type": "buy",
+            "person_id": None,
+            "location": loc,
+            "option_category": "buy",
+            "cost_lpa": float(market_ctx.get("pay_p50", 32.0)),
+            "days": int(market_ctx.get("ttf_p80", 90)),
+            "fit": _BUY_FIT_DEFAULT,
+            "red_flags": 0,
+            "evidence_ids": [],
+        }
+
+        buy_stats = _compute_entry_stats([buy_atom], dejareq_result, sr_ledger)
+
+        # Relocate card: best alternative location (pre-computed, fixed).
+        relocate_atoms = [a for a in base_atoms if a["option_category"] == "relocate"]
+        best_reloc = None
+        if loc_relaxed and relocate_atoms:
+            best_reloc = relocate_atoms[0]
+            reloc_stats = _compute_entry_stats([best_reloc], dejareq_result, sr_ledger)
+
+        # Build the scoring pool: Buy + maybe Relocate + maybe Mix.
+        pool = [buy_stats]
+        pool_ids = ["buy"]
+
+        if best_reloc is not None:
+            pool.append(reloc_stats)
+            pool_ids.append("relocate")
+
+        include_mix = loc_relaxed and skill_relaxed and mix_entry is not None
+        if include_mix:
+            pool.append(mix_entry)
+            pool_ids.append("mix")
+
+        scores = _score_pool(pool, w)
+
+        best_i = max(range(len(scores)), key=lambda i: scores[i])
+        top_id = pool_ids[best_i]
+        top_score = scores[best_i]
+        top_entry = pool[best_i]
+
+        p50 = market_ctx.get("ttf_p50", 62)
+        pay = market_ctx.get("pay_p50", 32.0)
+
+        if top_id == "buy":
+            panel_text = f"Buy: P50 {p50} days, ₹{pay}L."
+            options_out = [{
+                "option_id": "buy",
+                "name": "Buy",
+                "score": float(top_score),
+                "ready_by_p80_days": top_entry["days"],
+                "year_one_cost_lpa": round(top_entry["cost"], 2),
+                "panel_line": f"Hire in {loc}",
+            }]
+        elif top_id == "relocate":
+            rloc = best_reloc["location"] if best_reloc else loc
+            panel_text = f"Relocate: {rloc.replace('_', '-').title()}, P50 {p50} days, ₹{pay}L."
+            options_out = [{
+                "option_id": "relocate",
+                "name": "Relocate",
+                "score": float(top_score),
+                "ready_by_p80_days": top_entry["days"],
+                "year_one_cost_lpa": round(top_entry["cost"], 2),
+                "panel_line": f"Hire in {rloc}",
+            }]
+        else:
+            atoms_desc = " + ".join(
+                a.get("person_id") or a.get("location", "")
+                for a in top_entry["atoms"] if a["type"] != "automate"
+            )
+            panel_text = (
+                f"Borrow {atoms_desc}: available now, "
+                f"₹{top_entry['cost']:.0f}L in year one."
+            )
+            options_out = [{
+                "option_id": "mix",
+                "name": "Recommended mix",
+                "score": float(top_score),
+                "ready_by_p80_days": top_entry["days"],
+                "year_one_cost_lpa": round(top_entry["cost"], 2),
+                "panel_line": atoms_desc,
+            }]
+
+        return {
+            "top_option_id": top_id,
+            "panel_text": panel_text,
+            "options": options_out,
+        }
+
+    return _scorer

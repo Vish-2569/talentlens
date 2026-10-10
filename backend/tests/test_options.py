@@ -13,7 +13,6 @@ from datetime import date
 
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.borrow import analyze_contractor
 from backend.engine.automate import estimate_automation
 from backend.engine.dejareq import dejareq
@@ -32,7 +31,6 @@ from backend.engine.options import (
     generate_options,
 )
 from backend.engine.ripple import analyze_ripple
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
 
@@ -46,16 +44,6 @@ SENIOR_SKILLS = [
     {"id": "rest_apis", "importance": "nice"},
     {"id": "postgresql", "importance": "nice"},
 ]
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 @pytest.fixture(scope="module")

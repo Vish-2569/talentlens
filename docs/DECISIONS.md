@@ -66,6 +66,12 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 - 2026-10-10 | Section 7A option scores 84/78/71/64/41 recomputed to 89/87/73/62/42 with the M8 formula (shared normalization pool, M2 bands, Ripple red flags 0.20, Déjà Req penalties, 12-month coverage rule). Borrow now ranks above Build because it is ready Day 0 under a 30-day deadline; Mix remains #1, Buy last. | Section 7A
 - 2026-10-10 | Tie-break rule for equal-scoring mixes: lower year-one cost wins, then fewer atoms. Ensures bridge+build (2 atoms, ₹18L) ranks above bridge+build+automate (3 atoms, ~₹19L) when both score 89. | Section 7A
 
+## Phase 11D: Sourcing, Relocate card, Real Redline Scorer
+
+- 2026-10-10 | M9 ranks sourcing within each use-case group (Buy/Relocate channels first, then Borrow staffing suppliers), each group by fill rate desc then median days asc, following Section 7B's "Use for" column. Past finalists ranked first when present. Campus not applicable for non-junior levels. This reproduces the 7B order: past finalists → referral → supplier A → job board. | Section 7B
+- 2026-10-10 | Past finalists: only candidates with stage_reached=="final", outcome in (declined, closed), decided_on within 12 months of today, AND opted_in_pool==true. This is the consent gate — no candidate without talent pool consent appears in the rediscovery list. | Section 7B
+- 2026-10-10 | Redline 32-scenario scorer replaced from stub to real M8 formula via `make_scenario_scorer()`. Scenarios score Buy (always), Relocate (when location relaxed), and the full Mix recommendation (when both location AND key skill are relaxed). Build/Borrow are constraint-independent internal options that surface only when the scenario shows the original request is fundamentally constrained. | Section 5, 7A
+
 ## Phase 10: Ripple Effect
 
 - 2026-10-10 | Promotion raise = (sal_p75 − sal_p50) / 2 at the mover's CURRENT level and location. Derived from market_stats; reproduces the story's ₹3L (Priya mid Bengaluru: (24−18)/2) and ₹1.5L (Rahul junior Bengaluru: (10−7)/2) without hardcoding. Implemented as `_promotion_raise_lpa()` in ripple.py. | Section 6, 13

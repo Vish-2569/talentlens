@@ -2,10 +2,8 @@
 import pytest
 from datetime import date
 
-from backend.data.seed import main as seed_main
 from backend.engine.evidence import resolve_person
 from backend.engine.build import build_plan, build_chain_cost
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
 
@@ -14,16 +12,6 @@ SENIOR_SKILLS = [
     {"id": "nodejs", "importance": "must"},
     {"id": "kubernetes", "importance": "must"},
 ]
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 def _resolve(store, pid):

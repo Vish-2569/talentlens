@@ -1,19 +1,7 @@
 """Tests for engine/parser.py — regex pre-parser."""
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.parser import regex_parse
-from backend.store import DataStore
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 @pytest.fixture(scope="module")

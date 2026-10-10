@@ -3,21 +3,9 @@ import pandas as pd
 import pytest
 from datetime import date
 
-from backend.data.seed import main as seed_main
 from backend.engine.evidence import normalize_evidence, resolve_person, data_quality
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 # ── normalize_evidence unit tests ─────────────────────────────────────

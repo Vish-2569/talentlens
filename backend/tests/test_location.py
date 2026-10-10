@@ -8,19 +8,7 @@ fixed supply/TTF story values; recomputed targets are 0.79/0.36/0.34/0.00 (see D
 """
 import pytest
 
-from backend.data.seed import main as seed_main
 from backend.engine.location import compare_locations
-from backend.store import DataStore
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 LOCATIONS = ["remote_india", "hyderabad", "pune", "bengaluru"]

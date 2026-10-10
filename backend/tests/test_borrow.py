@@ -2,24 +2,12 @@
 import pytest
 from datetime import date
 
-from backend.data.seed import main as seed_main
 from backend.engine.borrow import (
     extension_cost, conversion_saving, conversion_signal,
     compliance_flag, availability_text, analyze_contractor,
 )
-from backend.store import DataStore
 
 TODAY = date(2026, 10, 8)
-
-
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
-
-
-@pytest.fixture(scope="module")
-def store():
-    return DataStore()
 
 
 # ── Extension costs ──────────────────────────────────────────────────

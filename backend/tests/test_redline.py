@@ -5,8 +5,11 @@ TC05  relax Kubernetes only → supply 14 → 47 (supply_delta == 33)
 TC06  relax location only  → Remote-India 210, P50 28
 TC08  same inputs twice    → identical scenario output (determinism)
       32 scenario keys
-      total compute < 1 s per call
+      total compute < 2 s per call (real M8 scorer)
       every hover number equals an engine value
+      mask 00000 panel text contains "Buy" and "P50 62 days"
+      location + Kubernetes relaxed → Borrow + Build mix, ₹18L
+      decision boundaries non-empty
 """
 from __future__ import annotations
 
@@ -15,10 +18,18 @@ from datetime import date
 
 import pytest
 
-from backend.data.seed import main as seed_main
+from backend.engine.automate import estimate_automation
+from backend.engine.borrow import analyze_contractor
+from backend.engine.build import build_plan
+from backend.engine.dejareq import dejareq
+from backend.engine.evidence import resolve_person
+from backend.engine.location import compare_locations
+from backend.engine.market import matching_supply, market_card
+from backend.engine.match import score_employee, score_contractor
+from backend.engine.options import make_scenario_scorer
 from backend.engine.parser import regex_parse
 from backend.engine.redline import CONSTRAINT_ORDER, analyze_redline
-from backend.store import DataStore
+from backend.engine.ripple import analyze_ripple
 
 TODAY = date(2026, 10, 8)
 
@@ -27,79 +38,142 @@ DEMO_TEXT = (
     "must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days"
 )
 
-
-# ── Stub option scorer ────────────────────────────────────────────────────────
-
-def _stub_scorer(ctx: dict, market_ctx: dict) -> dict:
-    """Deterministic stub scorer — logic matches the demo story top-option mapping."""
-    loc = ctx.get("location", "bengaluru")
-    key = ctx.get("key_skill_id", "kubernetes")
-    has_key = key in ctx.get("must_skill_ids", [])
-
-    if loc == "remote_india" and not has_key:
-        return {
-            "top_option_id": "mix",
-            "panel_text": "Borrow C-17 (3 months) + Build E-045: available now, ₹18L in year one.",
-            "options": [
-                {
-                    "option_id": "mix",
-                    "name": "Recommended mix",
-                    "score": 84.0,
-                    "ready_by_p80_days": 0,
-                    "year_one_cost_lpa": 18.0,
-                    "panel_line": "",
-                }
-            ],
-        }
-    if loc == "remote_india":
-        p50 = market_ctx.get("ttf_p50", 28)
-        pay = market_ctx.get("pay_p50", 29.0)
-        return {
-            "top_option_id": "relocate",
-            "panel_text": f"Relocate: Remote-India, P50 {p50} days, ₹{pay}L.",
-            "options": [
-                {
-                    "option_id": "relocate",
-                    "name": "Relocate",
-                    "score": 64.0,
-                    "ready_by_p80_days": market_ctx.get("ttf_p80", 40),
-                    "year_one_cost_lpa": pay,
-                    "panel_line": "",
-                }
-            ],
-        }
-    p50 = market_ctx.get("ttf_p50", 62)
-    pay = market_ctx.get("pay_p50", 32.0)
-    return {
-        "top_option_id": "buy",
-        "panel_text": f"Buy: P50 {p50} days, ₹{pay}L.",
-        "options": [
-            {
-                "option_id": "buy",
-                "name": "Buy",
-                "score": 41.0,
-                "ready_by_p80_days": 81,
-                "year_one_cost_lpa": 32.0,
-                "panel_line": "",
-            }
-        ],
-    }
+SENIOR_SKILLS = [
+    {"id": "react", "importance": "must"},
+    {"id": "nodejs", "importance": "must"},
+    {"id": "kubernetes", "importance": "must"},
+    {"id": "typescript", "importance": "nice"},
+    {"id": "docker", "importance": "nice"},
+    {"id": "javascript", "importance": "nice"},
+    {"id": "rest_apis", "importance": "nice"},
+    {"id": "postgresql", "importance": "nice"},
+]
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
-@pytest.fixture(scope="module", autouse=True)
-def generate():
-    seed_main()
+
+@pytest.fixture(scope="module")
+def real_scorer(store):
+    employees_df = store.hris.employees()
+    emp_skills = store.hris.employee_skills()
+    evidence_df = store.evidence.skill_evidence()
+    skill_edges = store.reference.skill_edges()
+    market_stats = store.market.market_stats()
+    projects_df = store.hris.projects()
+    proj_assign = store.hris.project_assignments()
+    candidates_df = store.ats.candidates()
+    candidate_skills = store.ats.candidate_skills()
+    contractors_df = store.vms.contractors()
+    ctr_skills = store.vms.contractor_skills()
+
+    match_results: dict[str, dict] = {}
+    build_plans_d: dict[str, dict] = {}
+    evidence_results: dict[str, list[dict]] = {}
+
+    mask = (employees_df["open_to_move"] == True) & (employees_df["is_active"] == True)  # noqa: E712
+    for _, row in employees_df[mask].iterrows():
+        pid = str(row["employee_id"])
+        ev = resolve_person(pid, evidence_df, today=TODAY)
+        sk = emp_skills.get(pid, set())
+        m = score_employee(
+            pid, SENIOR_SKILLS, ev, sk, skill_edges,
+            str(row["level"]), "senior", today=TODAY,
+        )
+        if m["match"] >= 70:
+            match_results[pid] = m
+            build_plans_d[pid] = build_plan(
+                pid, ev, sk, SENIOR_SKILLS, skill_edges,
+                str(row["level"]), "senior",
+            )
+            evidence_results[pid] = ev
+
+    borrow_analyses: list[dict] = []
+    for _, row in contractors_df.iterrows():
+        cid = str(row["contractor_id"])
+        ev = resolve_person(cid, evidence_df, today=TODAY)
+        sk = ctr_skills.get(cid, set())
+        cm = score_contractor(
+            cid, SENIOR_SKILLS, ev, sk, skill_edges,
+            str(row["level"]), "senior",
+            start_date=(row["start_date"] if isinstance(row["start_date"], date)
+                        else date.fromisoformat(str(row["start_date"]))),
+            today=TODAY,
+        )
+        if cm["match"] >= 70:
+            sd = row["start_date"] if isinstance(row["start_date"], date) else date.fromisoformat(str(row["start_date"]))
+            ed = row["end_date"] if isinstance(row["end_date"], date) else date.fromisoformat(str(row["end_date"]))
+            ba = analyze_contractor(
+                cid, float(row["bill_rate_lpa"]), sd, ed,
+                cm["match"], proj_assign, projects_df, today=TODAY,
+            )
+            borrow_analyses.append(ba)
+            evidence_results[cid] = ev
+
+    supply, _ = matching_supply(
+        "bengaluru", "senior", "onsite",
+        [s["id"] for s in SENIOR_SKILLS if s["importance"] == "must"],
+        candidates_df, candidate_skills,
+    )
+    mstat = store.market.stat("bengaluru", "senior")
+    mcard = market_card("bengaluru", "senior", supply, mstat)
+
+    locations = ["bengaluru", "hyderabad", "pune", "remote_india"]
+    supplies: dict[str, int] = {}
+    for loc in locations:
+        s, _ = matching_supply(
+            loc, "senior",
+            "remote" if loc == "remote_india" else "onsite",
+            [sk["id"] for sk in SENIOR_SKILLS if sk["importance"] == "must"],
+            candidates_df, candidate_skills,
+        )
+        supplies[loc] = s
+
+    loc_stats = market_stats[market_stats["level"] == "senior"]
+    loc_results = compare_locations(locations, supplies, loc_stats)
+    automation_result = estimate_automation(store.reference.automation_tasks())
+
+    ripple_result = analyze_ripple(
+        required_skills=SENIOR_SKILLS, required_level="senior",
+        required_team="Payments", required_location="bengaluru",
+        required_work_mode="onsite", employees_df=employees_df,
+        emp_skills=emp_skills, evidence_df=evidence_df,
+        skill_edges_df=skill_edges, market_stats_df=market_stats,
+        projects_df=projects_df, project_assignments=proj_assign,
+        candidates_df=candidates_df, candidate_skills=candidate_skills,
+        today=TODAY,
+    )
+
+    reqs = store.ats.requisitions()
+    exits = store.hris.exits()
+    dejareq_result = dejareq(
+        parsed_req={"role": "Full Stack Developer", "level": "senior",
+                     "location": "bengaluru", "work_mode": "onsite",
+                     "team": "Payments",
+                     "skill_ids": [s["id"] for s in SENIOR_SKILLS]},
+        past_reqs=reqs, employees=employees_df, emp_skills=emp_skills,
+        contractors=contractors_df, ctr_skills=ctr_skills,
+        exits=exits, today=TODAY,
+    )
+
+    return make_scenario_scorer(
+        match_results=match_results,
+        build_plans=build_plans_d,
+        borrow_analyses=borrow_analyses,
+        location_results=loc_results,
+        automation_result=automation_result,
+        ripple_result=ripple_result,
+        dejareq_result=dejareq_result,
+        evidence_results=evidence_results,
+        base_location="bengaluru",
+        base_must_skill_ids=[s["id"] for s in SENIOR_SKILLS if s["importance"] == "must"],
+        deadline_days=30,
+        duration_months=12,
+    )
 
 
 @pytest.fixture(scope="module")
-def store():
-    return DataStore()
-
-
-@pytest.fixture(scope="module")
-def result(store):
+def result(store, real_scorer):
     fields, _ = regex_parse(
         DEMO_TEXT,
         store.reference.skills(),
@@ -117,7 +191,7 @@ def result(store):
         store.reference.skill_edges(),
         store.market.market_stats(),
         {},
-        _stub_scorer,
+        real_scorer,
         TODAY,
     )
 
@@ -182,7 +256,7 @@ def test_tc06_remote_p50(result):
 
 # ── TC08: determinism ─────────────────────────────────────────────────────────
 
-def test_tc08_determinism(store):
+def test_tc08_determinism(store, real_scorer):
     fields, _ = regex_parse(
         DEMO_TEXT, store.reference.skills(), store.reference.skill_aliases()
     )
@@ -197,7 +271,7 @@ def test_tc08_determinism(store):
         skill_edges_df=store.reference.skill_edges(),
         market_stats_df=store.market.market_stats(),
         dejareq_result={},
-        score_options_fn=_stub_scorer,
+        score_options_fn=real_scorer,
         today=TODAY,
     )
     r1 = analyze_redline(fields, **kwargs)
@@ -219,14 +293,25 @@ def test_scenario_00000_top_is_buy(result):
     assert result["scenarios"]["00000"]["top_option_id"] == "buy"
 
 
+def test_scenario_00000_panel_text(result):
+    panel = result["scenarios"]["00000"]["panel_text"]
+    assert "Buy" in panel or "buy" in panel
+    assert "62" in panel
+    assert "32" in panel
+
+
 def test_scenario_10100_top_is_mix(result):
-    # location + skill relaxed → mix (Borrow + Build)
     assert result["scenarios"]["10100"]["top_option_id"] == "mix"
 
 
-# ── Performance < 1 s per call ────────────────────────────────────────────────
+def test_scenario_10100_panel_has_18L(result):
+    panel = result["scenarios"]["10100"]["panel_text"]
+    assert "18" in panel
 
-def test_performance(store):
+
+# ── Performance < 2 s per call (real scorer) ─────────────────────────────────
+
+def test_performance(store, real_scorer):
     fields, _ = regex_parse(
         DEMO_TEXT, store.reference.skills(), store.reference.skill_aliases()
     )
@@ -241,15 +326,15 @@ def test_performance(store):
         skill_edges_df=store.reference.skill_edges(),
         market_stats_df=store.market.market_stats(),
         dejareq_result={},
-        score_options_fn=_stub_scorer,
+        score_options_fn=real_scorer,
         today=TODAY,
     )
     t0 = time.perf_counter()
-    for _ in range(5):
+    for _ in range(3):
         analyze_redline(fields, **kwargs)
     elapsed = time.perf_counter() - t0
-    avg = elapsed / 5
-    assert avg < 1.0, f"Average call time {avg:.2f}s >= 1.0s"
+    avg = elapsed / 3
+    assert avg < 2.0, f"Average call time {avg:.2f}s >= 2.0s"
 
 
 # ── Hover numbers equal engine values ────────────────────────────────────────
