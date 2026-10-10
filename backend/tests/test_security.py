@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import socket as _socket
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -96,6 +97,33 @@ async def test_key_not_in_response(client):
 
 
 # ── GeminiKeyFilter redacts key before any handler emits ─────────────────────
+
+# ── TC21: offline mode — outbound connect blocked, LLM disabled → same results ─
+
+@pytest.mark.anyio
+async def test_tc21_offline_mode(monkeypatch):
+    """LLM_ENABLED=false + outbound connect blocked: demo sentence returns full story values."""
+    # Patch connect() on the socket class (not the class itself) so asyncio internals
+    # can still create sockets while any outbound TCP/SSL connection attempt raises.
+    def _no_connect(self, address):
+        raise OSError(f"TC21: outbound network blocked — attempted {address}")
+
+    monkeypatch.setattr(_socket.socket, "connect", _no_connect)
+    llm.reset()
+    monkeypatch.setattr(llm, "_get_client", lambda: None)
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        resp = await c.post("/api/analyze", json={"text": DEMO})
+
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["dejareq"]["match_count"] == 4
+    by_id = {o["id"]: o["score"] for o in data["options"]["five"]}
+    assert by_id["mix"] == 89.0
+    assert by_id["buy"] == 42.0
+    assert llm.get_meter().calls == 0, "No LLM calls must occur in offline mode"
+
 
 def test_key_redacted_in_log_records():
     """GeminiKeyFilter rewrites record.msg and record.args before emit."""
