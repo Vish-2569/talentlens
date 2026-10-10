@@ -27,15 +27,27 @@
       "post": {
         "summary": "Analyze",
         "operationId": "analyze_api_analyze_post",
+        "parameters": [
+          {
+            "name": "stub",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Stub"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AnalyzeRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -84,6 +96,49 @@
                   "additionalProperties": true,
                   "type": "object",
                   "title": "Response Create Decision Api Decisions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/people/{person_id}/skills": {
+      "get": {
+        "summary": "Person Skills",
+        "operationId": "person_skills_api_people__person_id__skills_get",
+        "parameters": [
+          {
+            "name": "person_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Person Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillScore"
+                  },
+                  "title": "Response Person Skills Api People  Person Id  Skills Get"
                 }
               }
             }
@@ -643,6 +698,30 @@
         ],
         "title": "Health"
       },
+      "IgnoredSource": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source",
+          "value",
+          "reason"
+        ],
+        "title": "IgnoredSource"
+      },
       "InternalCandidate": {
         "properties": {
           "person_id": {
@@ -1164,6 +1243,10 @@
       },
       "ParsedRequisition": {
         "properties": {
+          "req_id": {
+            "type": "string",
+            "title": "Req Id"
+          },
           "level": {
             "$ref": "#/components/schemas/ParsedField"
           },
@@ -1205,6 +1288,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "req_id",
           "level",
           "headcount",
           "location",
@@ -1541,6 +1625,63 @@
           "nice"
         ],
         "title": "SkillImportance"
+      },
+      "SkillScore": {
+        "properties": {
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "observed_on": {
+            "type": "string",
+            "title": "Observed On"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale"
+          },
+          "conflict": {
+            "type": "boolean",
+            "title": "Conflict"
+          },
+          "tooltip": {
+            "type": "string",
+            "title": "Tooltip"
+          },
+          "ignored": {
+            "items": {
+              "$ref": "#/components/schemas/IgnoredSource"
+            },
+            "type": "array",
+            "title": "Ignored"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "skill",
+          "value",
+          "source",
+          "observed_on",
+          "confidence",
+          "stale",
+          "conflict",
+          "tooltip",
+          "ignored"
+        ],
+        "title": "SkillScore"
       },
       "Sourcing": {
         "properties": {

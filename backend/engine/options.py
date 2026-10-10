@@ -189,6 +189,8 @@ def _generate_atoms(
                 "evidence_ids": eids,
             })
 
+    _BRIDGE_MIN_FIT = 0.50  # bridge contractors must be qualified to cover the seat
+
     for ba in borrow_analyses:
         cid = ba.get("person_id", "")
         fit = ba.get("fit", 0) / 100.0
@@ -203,17 +205,18 @@ def _generate_atoms(
             "red_flags": 0,
             "evidence_ids": [],
         })
-        atoms.append({
-            "type": "bridge",
-            "person_id": cid,
-            "location": None,
-            "option_category": "borrow",
-            "cost_lpa": ba.get("extend_cost_3m", 0.0),
-            "days": 0,
-            "fit": fit,
-            "red_flags": 0,
-            "evidence_ids": [],
-        })
+        if fit >= _BRIDGE_MIN_FIT:
+            atoms.append({
+                "type": "bridge",
+                "person_id": cid,
+                "location": None,
+                "option_category": "borrow",
+                "cost_lpa": ba.get("extend_cost_3m", 0.0),
+                "days": 0,
+                "fit": fit,
+                "red_flags": 0,
+                "evidence_ids": [],
+            })
         if ba.get("conversion_signal"):
             atoms.append({
                 "type": "convert",
@@ -654,6 +657,7 @@ def generate_options(
                 "year_one_cost_lpa": round(entry["cost"], 2),
                 "fit": round(entry["fit"], 2),
                 "risk_label": _risk_label(entry["risk_raw"]),
+                "risk_raw": entry["risk_raw"],
                 "score": score,
                 "one_line_reason": reason,
                 "evidence_ids": entry["evidence_ids"],
@@ -666,6 +670,7 @@ def generate_options(
                 "year_one_cost_lpa": 0.0,
                 "fit": 0.0,
                 "risk_label": "Medium",
+                "risk_raw": 0.5,
                 "score": score,
                 "one_line_reason": f"No {cat} candidate available",
                 "evidence_ids": [],
@@ -698,6 +703,7 @@ def generate_options(
             ],
             "score": score,
             "cost_lpa": round(ms["cost"], 2),
+            "ready_by_p80_days": ms["days"],
             "speed": round(speed_n, 4),
             "cost": round(cost_n, 4),
             "fit": round(ms["fit"], 4),
@@ -833,7 +839,7 @@ def make_scenario_scorer(
         pay = market_ctx.get("pay_p50", 32.0)
 
         if top_id == "buy":
-            panel_text = f"Buy: P50 {p50} days, ₹{pay}L."
+            panel_text = f"Buy: P50 {p50} days, ₹{pay:.0f}L."
             options_out = [{
                 "option_id": "buy",
                 "name": "Buy",
@@ -844,7 +850,7 @@ def make_scenario_scorer(
             }]
         elif top_id == "relocate":
             rloc = best_reloc["location"] if best_reloc else loc
-            panel_text = f"Relocate: {rloc.replace('_', '-').title()}, P50 {p50} days, ₹{pay}L."
+            panel_text = f"Relocate: {rloc.replace('_', '-').title()}, P50 {p50} days, ₹{pay:.0f}L."
             options_out = [{
                 "option_id": "relocate",
                 "name": "Relocate",

@@ -149,6 +149,7 @@ class TitleNormalization(BaseModel):
 
 class ParsedRequisition(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    req_id: str
     level: ParsedField
     headcount: ParsedField
     location: ParsedField

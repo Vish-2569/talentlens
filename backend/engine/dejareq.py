@@ -24,12 +24,15 @@ _EXIT_REASON_LABELS = {
 
 
 def _jaccard(a: set[str], b: set[str]) -> float:
-    if not a and not b:
+    """Coverage: fraction of required skills (a) present in person's skills (b).
+
+    Standard Jaccard |a∩b|/|a∪b| undermatches because the hired person may
+    have 7-11 skills while the requisition lists only 3; all four demo story
+    reqs have 3/3 required skills = 1.0 coverage but only 0.27-0.43 Jaccard.
+    """
+    if not a:
         return 1.0
-    union = a | b
-    if not union:
-        return 0.0
-    return len(a & b) / len(union)
+    return len(a & b) / len(a)
 
 
 _RATING_LABELS: dict[int, str] = {

@@ -292,15 +292,27 @@ def analyze_redline(
     budget_field = parsed_req["budget_lpa"]
     deadline_field = parsed_req["need_by_days"]
 
-    # Location: combine location + work_mode spans
-    loc_span_start = int(loc_field["span_start"])
-    loc_span_end = int(wm_field["span_end"])
-    loc_phrase = raw_text[loc_span_start:loc_span_end]
+    # Location: combine location + work_mode spans (handle inferred/None spans)
+    _ls = loc_field.get("span_start") or 0
+    _we = wm_field.get("span_end") or loc_field.get("span_end") or 0
+    if _ls == 0 and _we == 0:
+        loc_span_start, loc_span_end = 0, 0
+        loc_phrase = str(loc_field.get("value") or "")
+    else:
+        loc_span_start = int(_ls)
+        loc_span_end = int(_we)
+        loc_phrase = raw_text[loc_span_start:loc_span_end]
 
     # Years: exact from min_years field
-    years_span_start = int(years_field["span_start"])
-    years_span_end = int(years_field["span_end"])
-    years_phrase = raw_text[years_span_start:years_span_end]
+    _ys = years_field.get("span_start")
+    _ye = years_field.get("span_end")
+    if _ys is None or _ye is None:
+        years_span_start, years_span_end = 0, 0
+        years_phrase = str(years_field.get("value") or "")
+    else:
+        years_span_start = int(_ys)
+        years_span_end = int(_ye)
+        years_phrase = raw_text[years_span_start:years_span_end]
 
     # Skill: from first "must" keyword before first must-skill to end of last
     if must_skills:
@@ -316,18 +328,26 @@ def analyze_redline(
         skill_phrase = ""
 
     # Budget: extend backward to include "budget" keyword
-    budget_span_start = _extend_span_start(
-        raw_text, int(budget_field["span_start"]), "budget"
-    )
-    budget_span_end = int(budget_field["span_end"])
-    budget_phrase = raw_text[budget_span_start:budget_span_end]
+    _bs = budget_field.get("span_start")
+    _be = budget_field.get("span_end")
+    if _bs is None or _be is None:
+        budget_span_start, budget_span_end = 0, 0
+        budget_phrase = str(budget_field.get("value") or "")
+    else:
+        budget_span_start = _extend_span_start(raw_text, int(_bs), "budget")
+        budget_span_end = int(_be)
+        budget_phrase = raw_text[budget_span_start:budget_span_end]
 
     # Deadline: extend backward to include "need" phrase
-    deadline_span_start = _extend_span_start(
-        raw_text, int(deadline_field["span_start"]), "need"
-    )
-    deadline_span_end = int(deadline_field["span_end"])
-    deadline_phrase = raw_text[deadline_span_start:deadline_span_end]
+    _ds = deadline_field.get("span_start")
+    _de = deadline_field.get("span_end")
+    if _ds is None or _de is None:
+        deadline_span_start, deadline_span_end = 0, 0
+        deadline_phrase = str(deadline_field.get("value") or "")
+    else:
+        deadline_span_start = _extend_span_start(raw_text, int(_ds), "need")
+        deadline_span_end = int(_de)
+        deadline_phrase = raw_text[deadline_span_start:deadline_span_end]
 
     # ── 5. Relaxed queries ───────────────────────────────────────────────
 

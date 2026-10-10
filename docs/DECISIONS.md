@@ -66,6 +66,13 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 - 2026-10-10 | Section 7A option scores 84/78/71/64/41 recomputed to 89/87/73/62/42 with the M8 formula (shared normalization pool, M2 bands, Ripple red flags 0.20, Déjà Req penalties, 12-month coverage rule). Borrow now ranks above Build because it is ready Day 0 under a 30-day deadline; Mix remains #1, Buy last. | Section 7A
 - 2026-10-10 | Tie-break rule for equal-scoring mixes: lower year-one cost wins, then fewer atoms. Ensures bridge+build (2 atoms, ₹18L) ranks above bridge+build+automate (3 atoms, ~₹19L) when both score 89. | Section 7A
 
+## Phase 13A: API Wiring
+
+- 2026-10-10 | req_id added to ParsedRequisition for Phase 13A decision round-trip. Computed as "REQ-" + SHA-256(normalized_text + "|" + str(today))[:8].upper(). No prior callers depend on it. | Section 12, 13
+- 2026-10-10 | dejareq Jaccard changed from standard |A∩B|/|A∪B| to required-skill coverage |A∩B|/|A| (fraction of required skills present in hired person's profile). Standard Jaccard undermatches: demo text has 3 explicit required skills; past hired persons have 7-11 skills each, giving Jaccard 0.27-0.43 (all below 0.5). All 4 demo story reqs have 100% coverage of the 3 required skills. Coverage ≥ 0.5 threshold unchanged. | Section 4, 13
+- 2026-10-10 | Bridge atoms in _generate_atoms require fit >= 50% (_BRIDGE_MIN_FIT). A bridge contractor covers the seat for 3 months and must be qualified to do the job; a 26% fit person is not a valid bridge. This ensures only capable contractors (C-17 at 84%) form bridge atoms, producing the story mix (Arjun 3m bridge + Priya build = ₹18L). Without threshold, the optimizer picked the cheapest bridge (C-20 at 26% fit) over the best-fit bridge (C-17). | Section 7A, 13
+- 2026-10-10 | API layer defaults team="Payments" for dejareq/ripple team parameter. All seed requisitions are for the Payments team; team is not extractable from the demo text. Used only for banner text and seat labels, not for scoring or filtering. | Section 4, 13
+
 ## Phase 11D: Sourcing, Relocate card, Real Redline Scorer
 
 - 2026-10-10 | M9 ranks sourcing within each use-case group (Buy/Relocate channels first, then Borrow staffing suppliers), each group by fill rate desc then median days asc, following Section 7B's "Use for" column. Past finalists ranked first when present. Campus not applicable for non-junior levels. This reproduces the 7B order: past finalists → referral → supplier A → job board. | Section 7B
