@@ -50,31 +50,74 @@ async function submitAndWait() {
 }
 
 describe("TC04: Redline marks rendering", () => {
-  it("renders 5 marks with correct severities", async () => {
+  it("RedlineText: 5 marks — location, skill, deadline red; years, budget amber", async () => {
     await submitAndWait();
 
-    const marks = document.querySelectorAll("mark");
+    const textContainer = screen.getByTestId("redline-text");
+    const marks = textContainer.querySelectorAll("mark");
     expect(marks).toHaveLength(5);
 
-    const redMarks = document.querySelectorAll('mark[data-severity="red"]');
-    const amberMarks = document.querySelectorAll('mark[data-severity="amber"]');
+    const redMarks = textContainer.querySelectorAll('mark[data-severity="red"]');
+    const amberMarks = textContainer.querySelectorAll('mark[data-severity="amber"]');
     expect(redMarks).toHaveLength(3);
     expect(amberMarks).toHaveLength(2);
+
+    const redTexts = Array.from(redMarks).map((m) => m.textContent);
+    expect(redTexts.some((t) => t?.includes("Bengaluru, on-site"))).toBe(true);
+    expect(redTexts.some((t) => t?.includes("Kubernetes"))).toBe(true);
+    expect(redTexts.some((t) => t?.includes("need in 30 days"))).toBe(true);
+
+    const amberTexts = Array.from(amberMarks).map((m) => m.textContent);
+    expect(amberTexts.some((t) => t?.includes("5+ years"))).toBe(true);
+    expect(amberTexts.some((t) => t?.includes("budget"))).toBe(true);
   });
 
-  it("each mark has a VisuallyHidden severity label", async () => {
+  it("RedlineText: each mark has a VisuallyHidden severity label", async () => {
     await submitAndWait();
 
-    const highCostLabels = screen.getAllByText("High cost");
-    const moderateCostLabels = screen.getAllByText("Moderate cost");
-    expect(highCostLabels).toHaveLength(3 + 3);
-    expect(moderateCostLabels).toHaveLength(2 + 2);
+    const textContainer = screen.getByTestId("redline-text");
+    const redMarks = textContainer.querySelectorAll('mark[data-severity="red"]');
+    const amberMarks = textContainer.querySelectorAll('mark[data-severity="amber"]');
+
+    for (const mark of redMarks) {
+      expect(mark.textContent).toContain("High cost");
+    }
+    for (const mark of amberMarks) {
+      expect(mark.textContent).toContain("Moderate cost");
+    }
+  });
+
+  it("RedlineCards: each card StatusMark matches its constraint severity", async () => {
+    await submitAndWait();
+
+    const cardList = screen.getByRole("list", { name: "Redline constraints" });
+    const cards = within(cardList).getAllByRole("listitem");
+    expect(cards).toHaveLength(5);
+
+    const expectedSeverities = [
+      { kind: "location", severity: "red" },
+      { kind: "years", severity: "amber" },
+      { kind: "skill", severity: "red" },
+      { kind: "budget", severity: "amber" },
+      { kind: "deadline", severity: "red" },
+    ];
+
+    for (let i = 0; i < expectedSeverities.length; i++) {
+      const card = cards[i];
+      const { severity } = expectedSeverities[i];
+      const statusMark = card.querySelector(`[data-status="${severity}"]`);
+      expect(statusMark).toBeTruthy();
+
+      const label = severity === "red" ? "High cost" : "Moderate cost";
+      expect(within(card).getByText(label)).toBeInTheDocument();
+    }
   });
 
   it("hover text matches the API string for location constraint", async () => {
     const user = await submitAndWait();
 
-    const locationMark = document.querySelector('mark[data-severity="red"]');
+    const textContainer = screen.getByTestId("redline-text");
+    const locationMark = textContainer.querySelector('mark[data-severity="red"]');
     expect(locationMark).toBeTruthy();
 
     const trigger = locationMark!.closest("button");

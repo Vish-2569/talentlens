@@ -78,6 +78,6 @@ export function RedlineText({ requestText, constraints, mask }: Props) {
   }
 
   return (
-    <p className="font-sans text-base leading-relaxed text-ink">{segments}</p>
+    <p data-testid="redline-text" className="font-sans text-base leading-relaxed text-ink">{segments}</p>
   );
 }
