@@ -13,10 +13,13 @@ import {
   rankMixes,
 } from "../components/WeightSliders";
 import { LiveRecommendation } from "../components/LiveRecommendation";
+import { describeMaskNote } from "../screens/Options";
 import type { components } from "../api/types";
 
 type OptionCard = components["schemas"]["OptionCard"];
 type MixOption = components["schemas"]["MixOption"];
+type Constraint = components["schemas"]["Constraint"];
+type ConstraintKind = components["schemas"]["ConstraintKind"];
 
 const opts = FIXTURE_ANALYSIS.options;
 
@@ -237,5 +240,52 @@ describe("LiveRecommendation renders no score values", () => {
     expect(
       screen.getAllByText(scenario.options[0].name).length,
     ).toBeGreaterThanOrEqual(1);
+  });
+});
+
+// ── Mask note wording ─────────────────────────────────────────────────────────
+
+describe("describeMaskNote: plain-English relaxed_mask wording", () => {
+  const constraints = FIXTURE_ANALYSIS.redline.constraints as Constraint[];
+  const constraintOrder = FIXTURE_ANALYSIS.redline
+    .constraint_order as ConstraintKind[];
+
+  it('relaxed_mask="11110" produces the correct assume and kept texts', () => {
+    const { assumeText, keptText } = describeMaskNote(
+      "11110",
+      constraintOrder,
+      constraints,
+    );
+    expect(assumeText).toBe(
+      "any location (including Remote-India), " +
+        "experience requirement relaxed, " +
+        "Kubernetes treated as nice-to-have, " +
+        "budget at market rate",
+    );
+    expect(keptText).toBe("need in 30 days");
+  });
+
+  it('relaxed_mask="00000" returns "the request as written" with all constraints kept', () => {
+    const { assumeText, keptText } = describeMaskNote(
+      "00000",
+      constraintOrder,
+      constraints,
+    );
+    expect(assumeText).toBe("the request as written");
+    // All 5 constraint phrases appear in kept
+    expect(keptText).not.toBeNull();
+    for (const c of constraints) {
+      expect(keptText).toContain(c.phrase);
+    }
+  });
+
+  it('relaxed_mask="00001" (only deadline relaxed) mentions deadline in assume', () => {
+    const { assumeText, keptText } = describeMaskNote(
+      "00001",
+      constraintOrder,
+      constraints,
+    );
+    expect(assumeText).toContain("deadline relaxed");
+    expect(keptText).not.toContain("need in 30 days");
   });
 });

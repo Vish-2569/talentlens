@@ -19,27 +19,54 @@ import type { components } from "../api/types";
 
 type OptionCard = components["schemas"]["OptionCard"];
 type ConstraintKind = components["schemas"]["ConstraintKind"];
+type Constraint = components["schemas"]["Constraint"];
 
-const CONSTRAINT_LABELS: Record<string, string> = {
-  location: "location",
-  years: "years of experience",
-  skill: "key skill requirement",
-  budget: "budget",
-  deadline: "deadline",
-};
+function relaxedPhrase(kind: ConstraintKind, constraint: Constraint): string {
+  switch (kind) {
+    case "location":
+      return "any location (including Remote-India)";
+    case "years":
+      return "experience requirement relaxed";
+    case "skill": {
+      // constraint.value is e.g. "must know Kubernetes"
+      const skillName = constraint.value.replace(/^must know\s+/i, "").trim();
+      return `${skillName} treated as nice-to-have`;
+    }
+    case "budget":
+      return "budget at market rate";
+    case "deadline":
+      return `deadline relaxed (was: ${constraint.phrase})`;
+    default:
+      return kind;
+  }
+}
 
-function describeMask(
+export function describeMaskNote(
   mask: string,
   constraintOrder: ConstraintKind[],
-): string {
+  constraints: Constraint[],
+): { assumeText: string; keptText: string | null } {
+  const byKind = new Map(constraints.map((c) => [c.kind, c]));
   const relaxed: string[] = [];
+  const kept: string[] = [];
+
   for (let i = 0; i < mask.length; i++) {
+    const kind = constraintOrder[i];
+    const c = byKind.get(kind);
+    if (!c) continue;
     if (mask[i] === "1") {
-      relaxed.push(CONSTRAINT_LABELS[constraintOrder[i]] ?? constraintOrder[i]);
+      relaxed.push(relaxedPhrase(kind, c));
+    } else {
+      kept.push(c.phrase);
     }
   }
-  if (relaxed.length === 0) return "the request as written";
-  return `no ${relaxed.join(", no ")} constraint`;
+
+  const assumeText =
+    relaxed.length === 0
+      ? "the request as written"
+      : relaxed.join(", ");
+  const keptText = kept.length > 0 ? kept.join(", ") : null;
+  return { assumeText, keptText };
 }
 
 export function Options() {
@@ -77,10 +104,16 @@ export function Options() {
   }
 
   const opts = result.options;
-  const constraintOrder = result.redline.constraint_order;
+  const constraints = result.redline.constraints as Constraint[];
+  const constraintOrder = result.redline.constraint_order as ConstraintKind[];
   const relaxedMask = opts.relaxed_mask;
   const maskMismatch = mask !== relaxedMask;
-  const maskDescription = describeMask(relaxedMask, constraintOrder as ConstraintKind[]);
+
+  const { assumeText, keptText } = describeMaskNote(
+    relaxedMask,
+    constraintOrder,
+    constraints,
+  );
 
   return (
     <section aria-labelledby="options-heading" className="space-y-6">
@@ -91,13 +124,15 @@ export function Options() {
       <DataQualityLine line={result.data_quality.line} />
 
       {/* Relaxed mask notice */}
-      <p className="font-sans text-xs text-muted">
-        These options assume: {maskDescription}.
+      <p className="font-sans text-xs text-muted" data-testid="mask-notice">
+        These options assume: {assumeText}.
+        {keptText && <> Kept: {keptText}.</>}
       </p>
       {maskMismatch && (
         <p className="font-sans text-xs text-amber">
           Tab 1&apos;s live panel reflects your current choices; the detailed
-          options below assume: {maskDescription}.
+          options below assume: {assumeText}.
+          {keptText && <> Kept: {keptText}.</>}
         </p>
       )}
 
