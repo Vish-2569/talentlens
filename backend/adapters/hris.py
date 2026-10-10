@@ -19,6 +19,7 @@ class HRIS:
         self._employees["open_to_move"] = _to_bool(self._employees["open_to_move"])
         self._employees["is_active"] = _to_bool(self._employees["is_active"])
         self._employees["years_exp"] = self._employees["years_exp"].astype(float)
+        self._employees["rating"] = self._employees["rating"].astype(int)
 
         self._emp_skills = pd.read_csv(data_dir / "employee_skills.csv")
 

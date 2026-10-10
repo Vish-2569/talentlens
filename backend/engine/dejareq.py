@@ -32,11 +32,28 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(union)
 
 
-def _outcome_text(req_row: dict, exits_df: pd.DataFrame) -> str:
+_RATING_LABELS: dict[int, str] = {
+    5: "Exceeds",
+    4: "Meets+",
+    3: "Meets",
+    2: "Below",
+    1: "Needs improvement",
+}
+
+
+def _outcome_text(
+    req_row: dict, exits_df: pd.DataFrame, employees_df: pd.DataFrame,
+) -> str:
     outcome = req_row["outcome"]
 
     if outcome == "still_in_role":
-        return "Still in role, rated Exceeds"
+        pid = req_row["person_id"]
+        emp = employees_df[employees_df["employee_id"] == pid]
+        if not emp.empty:
+            rating = int(emp.iloc[0].get("rating", 3))
+            label = _RATING_LABELS.get(rating, f"rating {rating}")
+            return f"Still in role, rated {label}"
+        return "Still in role"
 
     if outcome == "knowledge_lost":
         return "Contract ended, knowledge lost"
@@ -102,7 +119,7 @@ def dejareq(
             "opened_date": req["opened_date"],
             "closed_date": req["closed_date"],
             "decision": req["decision"],
-            "outcome": _outcome_text(req, exits),
+            "outcome": _outcome_text(req, exits, employees),
             "person_id": req["person_id"],
             "first_year_cost_lpa": float(req["first_year_cost_lpa"]),
             "time_to_fill_days": int(req["time_to_fill_days"]),

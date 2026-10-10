@@ -1,10 +1,10 @@
 contractor_id,display_name,supplier_id,level,location,work_mode,start_date,end_date,bill_rate_lpa
 C-17,Arjun,SUP-01,senior,bengaluru,onsite,2025-07-01,2026-11-05,24.0
 C-09,Suresh,SUP-01,senior,bengaluru,onsite,2026-03-06,2026-08-15,24.0
-C-03,Diya,SUP-02,senior,pune,onsite,2026-03-14,2027-02-07,21.3
-C-05,Nandini,SUP-02,mid,hyderabad,onsite,2026-01-26,2027-02-16,16.0
-C-08,Amrita,SUP-02,senior,remote_india,remote,2026-07-22,2026-12-28,23.8
-C-11,Dominic,SUP-01,mid,bengaluru,onsite,2026-01-23,2027-03-16,19.8
-C-14,Siddharth,SUP-03,senior,bengaluru,onsite,2026-07-08,2026-11-14,24.3
-C-20,Divya,SUP-01,senior,hyderabad,onsite,2026-06-06,2027-01-06,19.9
-C-22,Simon,SUP-03,senior,hyderabad,onsite,2026-04-10,2027-03-06,16.9
+C-03,Diya,SUP-01,senior,remote_india,remote,2026-03-10,2027-01-25,29.6
+C-05,Nandini,SUP-02,senior,bengaluru,onsite,2026-02-14,2026-12-30,21.1
+C-08,Amrita,SUP-01,mid,hyderabad,onsite,2026-01-21,2026-12-29,19.8
+C-11,Dominic,SUP-01,senior,pune,onsite,2026-03-02,2027-03-11,28.9
+C-14,Siddharth,SUP-02,senior,bengaluru,onsite,2026-07-29,2027-03-27,23.4
+C-20,Divya,SUP-02,mid,remote_india,remote,2026-07-23,2026-12-17,17.4
+C-22,Simon,SUP-02,senior,remote_india,remote,2026-04-17,2026-11-24,27.2

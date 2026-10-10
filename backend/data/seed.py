@@ -52,41 +52,42 @@ def _d(d: date) -> str:
 _EMP_FIELDS = [
     "employee_id", "display_name", "level", "team", "location",
     "work_mode", "hire_date", "years_exp", "open_to_move", "is_active",
+    "rating",
 ]
 
 NAMED_EMPLOYEES = [
     {"employee_id": "E-010", "display_name": "Vikram", "level": "senior",
      "team": "Payments", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2022, 1, 15)), "years_exp": 5.5,
-     "open_to_move": "false", "is_active": "true"},
+     "open_to_move": "false", "is_active": "true", "rating": 5},
     {"employee_id": "E-018", "display_name": "Anil", "level": "senior",
      "team": "Payments", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2025, 1, 18)), "years_exp": 5.0,
-     "open_to_move": "false", "is_active": "false"},
+     "open_to_move": "false", "is_active": "false", "rating": 3},
     {"employee_id": "E-020", "display_name": "Deepak", "level": "senior",
      "team": "Payments", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2025, 12, 20)), "years_exp": 5.5,
-     "open_to_move": "false", "is_active": "false"},
+     "open_to_move": "false", "is_active": "false", "rating": 3},
     {"employee_id": "E-031", "display_name": "Karthik", "level": "lead",
      "team": "Platform", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2019, 7, 1)), "years_exp": 7.2,
-     "open_to_move": "true", "is_active": "true"},
+     "open_to_move": "true", "is_active": "true", "rating": 5},
     {"employee_id": "E-038", "display_name": "Sneha", "level": "mid",
      "team": "Growth", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2023, 3, 1)), "years_exp": 3.5,
-     "open_to_move": "true", "is_active": "true"},
+     "open_to_move": "true", "is_active": "true", "rating": 4},
     {"employee_id": "E-045", "display_name": "Priya", "level": "mid",
      "team": "Checkout", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2022, 9, 1)), "years_exp": 4.0,
-     "open_to_move": "true", "is_active": "true"},
+     "open_to_move": "true", "is_active": "true", "rating": 4},
     {"employee_id": "E-052", "display_name": "Ananya", "level": "mid",
      "team": "Data", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2023, 1, 15)), "years_exp": 3.7,
-     "open_to_move": "true", "is_active": "true"},
+     "open_to_move": "true", "is_active": "true", "rating": 3},
     {"employee_id": "E-072", "display_name": "Rahul", "level": "junior",
      "team": "Checkout", "location": "bengaluru", "work_mode": "onsite",
      "hire_date": _d(date(2025, 3, 1)), "years_exp": 1.5,
-     "open_to_move": "true", "is_active": "true"},
+     "open_to_move": "true", "is_active": "true", "rating": 3},
 ]
 
 NAMED_EMP_SKILLS: dict[str, list[str]] = {
@@ -202,6 +203,7 @@ def _gen_employees(fake: Faker, rng: np.random.Generator):
             "years_exp": years,
             "open_to_move": "true" if float(rng.random()) < 0.35 else "false",
             "is_active": "true",
+            "rating": int(rng.choice([3, 3, 4, 4, 5], p=[0.25, 0.25, 0.25, 0.15, 0.10])),
         })
 
         pool = _skill_pool(level, team)
