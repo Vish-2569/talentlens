@@ -108,6 +108,37 @@ No `>=`, `~=`, or unpinned entries. No `torch`, `transformers`, `sentence-transf
 
 ---
 
+## LLM Cache — Token Counts
+
+Measured 2026-10-10 with `gemini-3.5-flash`, `temperature=0`, `LLM_ENABLED=true`.
+
+**Standard demo sentence** (`"Senior Full Stack Developer, Bengaluru, on-site, 5+ years…"`):
+The regex pre-parser resolves all three required fields (`level`, `location`, `work_mode`) → `needs_llm=False` → LLM is **never invoked**. Both cold and warm runs record `calls=0, tokens=0`. This is correct and intentional: the demo sentence requires no LLM call.
+
+**Ambiguous probe text** (no location or work_mode in text — triggers LLM fallback):
+
+| Run | calls | input tokens | output tokens | cache_hit | note |
+|-----|-------|-------------|---------------|-----------|------|
+| Cold | 1 | 132 | 69 | false | live Gemini call; result written to `llm_cache.sqlite` |
+| Warm | 0 | 0 | 0 | **true** | served from SQLite; zero LLM spend |
+
+Cache key = SHA-256(normalised_text \| PROMPT_VERSION \| model_name).  
+Cache file committed at `backend/cache/llm_cache.sqlite` (3 entries; gitignored previously, now tracked).
+
+---
+
+## Static Analysis Results (Phase 14C)
+
+| Check | Result |
+|-------|--------|
+| `google-genai` imports | Only `backend/llm.py` and `backend/scripts/score_automation.py` |
+| Story numbers hard-coded in `engine/` | None — all values come from seed CSVs or formulas |
+| f-string SQL | None |
+| `settings.gemini_api_key` logged | Never — `log_filter.GeminiKeyFilter` redacts any accidental log emission; key is only used in conditional checks and `genai.Client()` constructor |
+| `date.today()` in `engine/` | None — `today` is always an explicit parameter passed from the API layer |
+
+---
+
 ## DECISIONS.md Log (Phase 13–14)
 
 One line per entry added since Phase 12:
