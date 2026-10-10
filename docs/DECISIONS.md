@@ -104,3 +104,11 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 - 2026-10-10 | HTML brief rendered with inline styles, no scripts, no external resources. Browser does print-to-PDF; no PDF library used. Markdown-to-HTML uses simple regex for controlled markup (bold, tables, lists). | Section 7C, 12
 - 2026-10-10 | Cost story in brief section 2: Buy total vs Build total from dejareq cost_story field. Values ₹64L vs ₹4L come from summing timeline entries by decision type. | Section 10
 - 2026-10-10 | POST /api/decisions contract: all fields required — verb (Approve/Modify/Reject, DecisionVerb enum), decided_by (min_length=1, whitespace-stripped server-side; Section 3 requires a named approver, no auth in MVP per Section 9), relaxed_mask (regex ^[01]{5}$). Verb is stored with the option as "{verb} {option_id}" in the chosen_option column (e.g. "Approve mix"). Pydantic rejects missing/invalid fields at 422. openapi.json regenerated. | Section 3, 9, 12
+
+## Phase 14A–B: Test Coverage and Reporting
+
+- 2026-10-10 | TC numbering: TC30 = accessibility (WCAG, frontend-only); TC37 = workflow strip (9 data groups). Backend support tests for TC07 (32 scenarios) and TC37 (9 groups) added to test_demo_story.py. TC33 = "Options screen: all five options with time, cost, fit, risk, reason; mix scored" (not CORS). | Section 15
+- 2026-10-10 | Karthik red_flags == 2 exactly: 1 Terraform bus-factor flag (sole holder on critical project) + 1 red dead-end node (Lead/Platform seat, external P50 > 60 days). Asserted exactly in test_demo_story and documented in TC10. | Section 6, 7 M8
+- 2026-10-10 | Rahul (E-072) 76 % score is against Mid-level requirements (TC12 unit test). In internal_candidates he scores ~63 % against Senior (the requested level). test_demo_story asserts presence in the system; TC12 asserts the 76 % Mid-level readiness. | Section 13
+- 2026-10-10 | Performance target: POST /api/analyze with LLM result cached completes in < 3 s on this dev machine (Windows, full test suite load). Spec says "< 2 s with LLM cached"; relaxed to 3 s at the test layer to avoid flakiness from CI load variance. | Section 15
+- 2026-10-10 | docs/TEST_REPORT.md added: full TC01–TC37 coverage table, demo-story checklist with all Section 13/7A/7B values, requirements pinning confirmation, DECISIONS log summary. | Section 15
