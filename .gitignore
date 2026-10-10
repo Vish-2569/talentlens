@@ -7,3 +7,4 @@ dist/
 node_modules/
 .pytest_cache/
 backend/data/talentlens.sqlite
+backend/logs/

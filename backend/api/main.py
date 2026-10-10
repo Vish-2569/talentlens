@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import statistics
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -55,6 +56,7 @@ from backend.api.schemas import (
 from backend.config import settings
 from backend.db import Database, DEFAULT_DB_PATH
 from backend.decisions import record_decision
+from backend.log_filter import install as _install_log_filter
 from backend.store import DataStore
 
 from backend.engine.parser import regex_parse
@@ -83,6 +85,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Redact API key from all log output at startup
+if settings.gemini_api_key:
+    _install_log_filter(settings.gemini_api_key)
+
 _STUB_PATH = Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "analyze_stub.json"
 _stub_data: dict | None = None
 
@@ -102,11 +108,21 @@ _db_path: Path = DEFAULT_DB_PATH
 
 _store: DataStore | None = None
 
+_PROTECTED_ATTRS = frozenset({"age", "gender", "religion", "caste", "disability"})
+
+
+def _assert_no_protected_attrs(store: DataStore) -> None:
+    emp_cols = set(store.hris.employees().columns)
+    ctr_cols = set(store.vms.contractors().columns)
+    leaked = _PROTECTED_ATTRS & (emp_cols | ctr_cols)
+    assert not leaked, f"Protected attributes found in person data: {leaked}"
+
 
 def _get_store() -> DataStore:
     global _store
     if _store is None:
         _store = DataStore()
+        _assert_no_protected_attrs(_store)
     return _store
 
 
@@ -117,6 +133,61 @@ _LOC_DISPLAY: dict[str, str] = {
     "hyderabad": "Hyderabad (on-site)",
     "pune": "Pune (on-site)",
 }
+
+# ── Bias-check log ────────────────────────────────────────────────────────────
+
+_LOGS_DIR = Path(__file__).resolve().parent.parent / "logs"
+
+
+def _write_bias_check(req_id: str, match_results: dict, employees_df: Any) -> None:
+    """Append score distributions by team/location to backend/logs/bias_check.json."""
+    _LOGS_DIR.mkdir(exist_ok=True)
+    log_path = _LOGS_DIR / "bias_check.json"
+
+    records = []
+    for pid, r in match_results.items():
+        row = employees_df[employees_df["employee_id"] == pid]
+        if row.empty:
+            continue
+        er = row.iloc[0]
+        records.append({
+            "team": str(er.get("team", "")),
+            "location": str(er.get("location", "")),
+            "score": float(r["match"]),
+        })
+
+    def _dist(scores: list[float]) -> dict:
+        if not scores:
+            return {"count": 0}
+        return {
+            "count": len(scores),
+            "mean": round(statistics.mean(scores), 1),
+            "min": round(min(scores), 1),
+            "max": round(max(scores), 1),
+        }
+
+    by_team: dict[str, list[float]] = {}
+    by_loc: dict[str, list[float]] = {}
+    for rec in records:
+        by_team.setdefault(rec["team"], []).append(rec["score"])
+        by_loc.setdefault(rec["location"], []).append(rec["score"])
+
+    entry = {
+        "req_id": req_id,
+        "by_team": {k: _dist(v) for k, v in by_team.items()},
+        "by_location": {k: _dist(v) for k, v in by_loc.items()},
+    }
+
+    existing: list[dict] = []
+    if log_path.exists():
+        try:
+            existing = json.loads(log_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            existing = []
+    existing.append(entry)
+    log_path.write_text(
+        json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
 
 
 def _loc_display(loc_id: str, base_location: str) -> str:
@@ -146,7 +217,7 @@ def _merge_llm_fields(fields: dict, llm_result: dict, text: str, needs: list[str
             continue
         val = llm_field.get("value") if isinstance(llm_field, dict) else None
         span = llm_field.get("span") if isinstance(llm_field, dict) else None
-        if val is None:
+        if val is None or str(val).lower() in ("none", "null", ""):
             continue
         # Find span positions if possible
         start, end = 0, 0
@@ -286,12 +357,17 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
     req_id = _make_req_id(text, today)
 
     # 6. Flat values
-    level = str(fields["level"]["value"] or "senior")
-    location = str(fields["location"]["value"] or "bengaluru")
-    work_mode = str(fields["work_mode"]["value"] or "onsite")
+    _NONE_LIKE = frozenset({None, "None", "null", ""})
+    level = str(v) if (v := fields["level"]["value"]) not in _NONE_LIKE else "senior"
+    location = str(v) if (v := fields["location"]["value"]) not in _NONE_LIKE else "bengaluru"
+    work_mode = str(v) if (v := fields["work_mode"]["value"]) not in _NONE_LIKE else "onsite"
     min_years = int(fields["min_years"]["value"] or 0)
     budget_lpa = float(fields["budget_lpa"]["value"] or 0)
     deadline_days = int(fields["need_by_days"]["value"] or 90)
+    # Write defaults back so engine modules reading fields directly get valid enum strings
+    fields["level"]["value"] = level
+    fields["location"]["value"] = location
+    fields["work_mode"]["value"] = work_mode
     skill_ids_all = {s["skill_id"] for s in fields.get("skills", [])}
     must_ids = [s["skill_id"] for s in fields.get("skills", []) if s["importance"] == "must"]
     required_skills = [
@@ -533,6 +609,9 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
 
     # 22. Tokens
     tokens_snap = llm.get_meter().snapshot()
+
+    # Bias-check log (score distributions by team/location, no personal data)
+    _write_bias_check(req_id, match_results, employees_df)
 
     # 23. Persist to DB
     db = Database(_db_path)
