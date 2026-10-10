@@ -34,11 +34,12 @@ def test_stub_demo_story_numbers():
     raw = json.loads(STUB_PATH.read_text(encoding="utf-8"))
     r = AnalysisResult.model_validate(raw)
 
-    assert r.options.five[0].score == 84.0  # Mix
-    assert r.options.five[1].score == 78.0  # Build
-    assert r.options.five[2].score == 71.0  # Borrow
-    assert r.options.five[3].score == 64.0  # Relocate
-    assert r.options.five[4].score == 41.0  # Buy
+    by_id = {o.id: o for o in r.options.five}
+    assert by_id["mix"].score == 89.0
+    assert by_id["borrow"].score == 87.0
+    assert by_id["build"].score == 73.0
+    assert by_id["relocate"].score == 62.0
+    assert by_id["buy"].score == 42.0
 
     relocate = r.options.relocate_card
     assert relocate[0].location == "Remote-India"

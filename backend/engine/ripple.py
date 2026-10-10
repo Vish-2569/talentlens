@@ -479,8 +479,11 @@ def analyze_ripple(
             if net_days is not None else None
         )
 
-        # Red flag count: bus-factor flags across all chain nodes.
-        red_flags = sum(len(n.get("bus_factor_flags", [])) for n in chain)
+        # Red flag count: bus-factor flags + red dead-end nodes across chain.
+        red_flags = (
+            sum(len(n.get("bus_factor_flags", [])) for n in chain)
+            + sum(1 for n in chain if n.get("status") == "red")
+        )
 
         candidates_out.append({
             "person_id": pid,

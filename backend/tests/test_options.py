@@ -27,6 +27,7 @@ from backend.engine.options import (
     _adjust_weights,
     _filter_mixes,
     _generate_atoms,
+    _risk_label,
     _self_report_penalty,
     generate_options,
 )
@@ -163,7 +164,9 @@ def precomputed(store):
     exits = store.hris.exits()
     dejareq_result = dejareq(
         parsed_req={"role": "Full Stack Developer", "level": "senior",
-                     "location": "bengaluru", "work_mode": "onsite"},
+                     "location": "bengaluru", "work_mode": "onsite",
+                     "team": "Payments",
+                     "skill_ids": [s["id"] for s in SENIOR_SKILLS]},
         past_reqs=reqs,
         employees=employees_df,
         emp_skills=emp_skills,
@@ -424,7 +427,7 @@ def test_ripple_red_flags_on_atoms(precomputed):
 def test_ripple_red_flags_increase_mix_risk():
     """A mix containing a high-red-flag atom scores higher risk_raw
     than an identical mix with zero red flags."""
-    from backend.engine.options import _score_mixes
+    from backend.engine.options import _compute_entry_stats, _score_pool
 
     base_atom = {
         "type": "build", "person_id": "E-045", "location": None,
@@ -437,11 +440,12 @@ def test_ripple_red_flags_increase_mix_risk():
     total = sum(w.values())
     w = {k: v / total for k, v in w.items()}
 
-    scored_clean = _score_mixes([[base_atom]], w, {}, [])
-    scored_flagged = _score_mixes([[flagged_atom]], w, {}, [])
+    clean = _compute_entry_stats([base_atom], {}, [])
+    flagged = _compute_entry_stats([flagged_atom], {}, [])
 
-    assert scored_flagged[0]["risk"] > scored_clean[0]["risk"]
-    assert scored_flagged[0]["score"] < scored_clean[0]["score"]
+    assert flagged["risk_raw"] > clean["risk_raw"]
+    scores = _score_pool([clean, flagged], w)
+    assert scores[1] < scores[0]
 
 
 # ── Determinism ──────────────────────────────────────────────────────────────
@@ -451,3 +455,218 @@ def test_options_deterministic(precomputed):
     r1 = generate_options(**precomputed, today=TODAY)
     r2 = generate_options(**precomputed, today=TODAY)
     assert r1 == r2
+
+
+# ── Karthik red_flags == 2 (bus factor + red dead-end), Priya == 0 ─────────
+
+
+def test_karthik_red_flags_equals_2(precomputed):
+    """TC10: Karthik's chain has a Terraform bus-factor flag AND a red
+    dead-end node (no backfill >= 70, Lead P50 76 > 60). Both count."""
+    atoms = _generate_atoms(
+        match_results=precomputed["match_results"],
+        build_plans=precomputed["build_plans"],
+        borrow_analyses=precomputed["borrow_analyses"],
+        location_results=precomputed["location_results"],
+        automation_result=precomputed["automation_result"],
+        market_data=precomputed["market_data"],
+        ripple_result=precomputed["ripple_result"],
+    )
+    karthik = next(a for a in atoms if a["person_id"] == "E-031")
+    assert karthik["red_flags"] == 2
+
+
+def test_priya_red_flags_equals_0(precomputed):
+    atoms = _generate_atoms(
+        match_results=precomputed["match_results"],
+        build_plans=precomputed["build_plans"],
+        borrow_analyses=precomputed["borrow_analyses"],
+        location_results=precomputed["location_results"],
+        automation_result=precomputed["automation_result"],
+        market_data=precomputed["market_data"],
+        ripple_result=precomputed["ripple_result"],
+    )
+    priya = next(a for a in atoms if a["person_id"] == "E-045")
+    assert priya["red_flags"] == 0
+
+
+# ── Bridge-only mix rejected (does not cover full duration) ────────────────
+
+
+def test_bridge_only_mix_rejected():
+    """A standalone 3-month bridge cannot fill a 12-month need."""
+    bridge = {
+        "type": "bridge", "person_id": "C-17", "location": None,
+        "option_category": "borrow", "cost_lpa": 6.0, "days": 0,
+        "fit": 0.84, "red_flags": 0, "evidence_ids": [],
+    }
+    auto = {
+        "type": "automate", "person_id": None, "location": None,
+        "option_category": "automate", "cost_lpa": 1.0, "days": 7,
+        "fit": 0.0, "red_flags": 0, "evidence_ids": [],
+    }
+    mixes = [[bridge], [bridge, auto]]
+    filtered = _filter_mixes(mixes, [], duration_months=12)
+    assert len(filtered) == 0
+
+
+def test_bridge_plus_build_mix_valid():
+    """A bridge + build mix covers the full duration."""
+    bridge = {
+        "type": "bridge", "person_id": "C-17", "location": None,
+        "option_category": "borrow", "cost_lpa": 6.0, "days": 0,
+        "fit": 0.84, "red_flags": 0, "evidence_ids": [],
+    }
+    build = {
+        "type": "build", "person_id": "E-045", "location": None,
+        "option_category": "build", "cost_lpa": 12.0, "days": 42,
+        "fit": 0.82, "red_flags": 0, "evidence_ids": [],
+    }
+    mixes = [[bridge, build]]
+    filtered = _filter_mixes(mixes, [], duration_months=12)
+    assert len(filtered) == 1
+
+
+# ── Déjà Req risk wiring: churn → buy+relocate, knowledge-loss → borrow ───
+
+
+def test_dejareq_churn_applies_to_buy_and_relocate():
+    """When dejareq fires churn (option='buy', delta=0.20), both Buy and
+    Relocate atoms carry +0.20 risk since both are external hires."""
+    from backend.engine.options import _compute_entry_stats
+
+    dejareq_with_churn = {
+        "risk_adjustments": [
+            {"option": "buy", "delta": 0.20, "reason": "churn"},
+        ],
+    }
+    buy_atom = {
+        "type": "buy", "person_id": None, "location": "bengaluru",
+        "option_category": "buy", "cost_lpa": 32.0, "days": 81,
+        "fit": 0.70, "red_flags": 0, "evidence_ids": [],
+    }
+    relocate_atom = {
+        "type": "relocate", "person_id": None, "location": "remote_india",
+        "option_category": "relocate", "cost_lpa": 29.0, "days": 40,
+        "fit": 0.65, "red_flags": 0, "evidence_ids": [],
+    }
+
+    buy_churn = _compute_entry_stats([buy_atom], dejareq_with_churn, [])
+    buy_no = _compute_entry_stats([buy_atom], {}, [])
+    rel_churn = _compute_entry_stats([relocate_atom], dejareq_with_churn, [])
+    rel_no = _compute_entry_stats([relocate_atom], {}, [])
+
+    assert abs(buy_churn["risk_raw"] - buy_no["risk_raw"] - 0.20) < 0.01
+    assert abs(rel_churn["risk_raw"] - rel_no["risk_raw"] - 0.20) < 0.01
+
+
+def test_dejareq_knowledge_loss_applies_to_borrow():
+    """When dejareq fires knowledge-loss (option='borrow', delta=0.10),
+    Borrow atoms carry +0.10 risk."""
+    from backend.engine.options import _compute_entry_stats
+
+    dejareq_kl = {
+        "risk_adjustments": [
+            {"option": "borrow", "delta": 0.10, "reason": "knowledge loss"},
+        ],
+    }
+    extend_atom = {
+        "type": "extend", "person_id": "C-17", "location": None,
+        "option_category": "borrow", "cost_lpa": 24.0, "days": 0,
+        "fit": 0.84, "red_flags": 0, "evidence_ids": [],
+    }
+
+    kl = _compute_entry_stats([extend_atom], dejareq_kl, [])
+    no = _compute_entry_stats([extend_atom], {}, [])
+
+    assert abs(kl["risk_raw"] - no["risk_raw"] - 0.10) < 0.01
+
+
+# ── Risk label thresholds ──────────────────────────────────────────────────
+
+
+def test_risk_label_low():
+    assert _risk_label(0.0) == "Low"
+    assert _risk_label(0.29) == "Low"
+
+
+def test_risk_label_medium():
+    assert _risk_label(0.30) == "Medium"
+    assert _risk_label(0.44) == "Medium"
+
+
+def test_risk_label_medium_high():
+    assert _risk_label(0.45) == "Medium-high"
+    assert _risk_label(0.59) == "Medium-high"
+
+
+def test_risk_label_high():
+    assert _risk_label(0.60) == "High"
+    assert _risk_label(1.0) == "High"
+
+
+# ── Unified scoring: same atom gets same score as card and as mix ──────────
+
+
+def test_borrow_card_score_equals_extend_mix_score(result):
+    """extend(C-17) must have an identical score whether it appears as the
+    Borrow option card or as a standalone mix, because both are scored in
+    one shared normalization pool."""
+    borrow_card = next(o for o in result["options"] if o["name"] == "Borrow")
+    extend_mix = None
+    for mx in result["top_mixes"]:
+        atoms = mx["atoms"]
+        if len(atoms) == 1 and atoms[0]["type"] == "extend":
+            extend_mix = mx
+            break
+    if extend_mix is None:
+        pytest.skip("extend-only mix not in top 3")
+    assert borrow_card["score"] == extend_mix["score"], (
+        f"Borrow card score {borrow_card['score']} != "
+        f"extend mix score {extend_mix['score']}"
+    )
+
+
+# ── Build card uses Build-band only (match 70-84, needs upskilling) ────────
+
+
+def test_build_card_is_build_band(result, precomputed):
+    """The Build option card must come from a Build-band atom (type=='build',
+    match 70-84), not a redeploy atom (85-100). Redeploy atoms are valid in
+    mixes but not as the Build card."""
+    build_card = next(o for o in result["options"] if o["name"] == "Build")
+    # Build-band atoms have type "build" and days > 0 (need upskilling)
+    assert build_card["ready_by_p80_days"] > 0, (
+        "Build card should need upskilling time (days > 0), "
+        "not be a ready-now redeploy"
+    )
+    # Verify it's not Karthik's redeploy atom (cost 42L, 0 days)
+    assert build_card["year_one_cost_lpa"] != 42.0 or build_card["ready_by_p80_days"] != 0
+
+
+# ── Tie-break: equal score → lower cost → fewer atoms ────────────────────
+
+
+def test_tiebreak_fewer_atoms_wins(result):
+    """bridge(C-17)+build(E-045) must rank above bridge+build+automate
+    when both have the same score, because it has fewer atoms."""
+    mixes = result["top_mixes"]
+    bridge_build = None
+    bridge_build_auto = None
+    for mx in mixes:
+        types = sorted(a["type"] for a in mx["atoms"])
+        if types == ["bridge", "build"]:
+            bridge_build = mx
+        elif types == ["automate", "bridge", "build"]:
+            bridge_build_auto = mx
+    if bridge_build is None or bridge_build_auto is None:
+        pytest.skip("both mixes not in top 3")
+    assert bridge_build["score"] == bridge_build_auto["score"], (
+        "Precondition: both mixes must have the same score"
+    )
+    bb_idx = mixes.index(bridge_build)
+    bba_idx = mixes.index(bridge_build_auto)
+    assert bb_idx < bba_idx, (
+        f"bridge+build (idx {bb_idx}) must rank above "
+        f"bridge+build+automate (idx {bba_idx})"
+    )

@@ -25,11 +25,28 @@ _STRATEGIC_PRIOR: dict[str, float] = {
     "automate": 0.50,
 }
 
-_BORROW_READY_DAYS = 14
+_RED_FLAG_WEIGHT = 0.20
 _AUTOMATE_READY_DAYS = 7
 _AUTOMATE_COST_LPA = 1.0
 _BUY_FIT_DEFAULT = 0.70
 _RELOCATE_FIT_DEFAULT = 0.65
+_DEFAULT_DURATION_MONTHS = 12
+
+# Risk-label thresholds (documented in DECISIONS.md).
+_RISK_HIGH = 0.60
+_RISK_MEDIUM_HIGH = 0.45
+_RISK_MEDIUM = 0.30
+
+# Dejareq pattern-to-category mapping: churn applies to all external-hire
+# categories (buy AND relocate); knowledge-loss applies to borrow.
+_DEJAREQ_CATEGORY_MAP: dict[str, list[str]] = {
+    "buy": ["buy", "relocate"],
+    "borrow": ["borrow"],
+}
+
+# Build option card uses Build-band atoms only (match 70-84, needs upskilling).
+# Redeploy atoms (match 85-100) stay valid in mixes but are not the Build card.
+_BUILD_CARD_TYPES = {"build"}
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -63,11 +80,11 @@ def _minmax(values: list[float]) -> list[float]:
 
 
 def _risk_label(risk_raw: float) -> str:
-    if risk_raw >= 0.6:
+    if risk_raw >= _RISK_HIGH:
         return "High"
-    if risk_raw >= 0.45:
+    if risk_raw >= _RISK_MEDIUM_HIGH:
         return "Medium-high"
-    if risk_raw >= 0.3:
+    if risk_raw >= _RISK_MEDIUM:
         return "Medium"
     return "Low"
 
@@ -90,11 +107,19 @@ def _self_report_penalty(
     return penalty, ledger
 
 
-def _dejareq_delta(dejareq_result: dict, option_id: str) -> float:
+def _dejareq_delta(dejareq_result: dict, option_category: str) -> float:
+    """Sum all dejareq risk adjustments that apply to this option category.
+
+    Churn (option="buy") applies to buy AND relocate (both external hires).
+    Knowledge-loss (option="borrow") applies to borrow only.
+    """
+    total = 0.0
     for adj in dejareq_result.get("risk_adjustments", []):
-        if adj.get("option") == option_id:
-            return float(adj.get("delta", 0.0))
-    return 0.0
+        pattern = adj.get("option", "")
+        targets = _DEJAREQ_CATEGORY_MAP.get(pattern, [pattern])
+        if option_category in targets:
+            total += float(adj.get("delta", 0.0))
+    return total
 
 
 def _dejareq_adjustments_ledger(dejareq_result: dict) -> list[dict]:
@@ -102,6 +127,13 @@ def _dejareq_adjustments_ledger(dejareq_result: dict) -> list[dict]:
         {"option": a["option"], "delta": a["delta"], "reason": a["reason"]}
         for a in dejareq_result.get("risk_adjustments", [])
     ]
+
+
+def _atom_coverage_months(atom: dict) -> int | None:
+    """How many months does this atom cover? None = full duration."""
+    if atom["type"] == "bridge":
+        return 3
+    return None
 
 
 # ── Atom generation ──────────────────────────────────────────────────────────
@@ -118,15 +150,19 @@ def _generate_atoms(
 ) -> list[dict]:
     atoms: list[dict] = []
 
-    ripple_flags: dict[str, int] = {}
+    ripple_by_pid: dict[str, dict] = {}
     for cand in (ripple_result or {}).get("candidates", []):
-        ripple_flags[cand["person_id"]] = cand.get("red_flags", 0)
+        ripple_by_pid[cand["person_id"]] = cand
 
     for pid, m in match_results.items():
         band = m.get("band", "")
         fit = m.get("match", 0) / 100.0
         eids = list(m.get("evidence_ids", []))
-        rf = ripple_flags.get(pid, 0)
+        rc = ripple_by_pid.get(pid, {})
+
+        cost = rc.get("net_cost_lpa", build_plans.get(pid, {}).get("build_cost_lpa", 0.0))
+        weeks = rc.get("readiness_weeks", build_plans.get(pid, {}).get("readiness_weeks", 0))
+        rf = rc.get("red_flags", 0)
 
         if band == "redeploy":
             atoms.append({
@@ -134,8 +170,8 @@ def _generate_atoms(
                 "person_id": pid,
                 "location": None,
                 "option_category": "build",
-                "cost_lpa": build_plans.get(pid, {}).get("build_cost_lpa", 0.0),
-                "days": build_plans.get(pid, {}).get("readiness_weeks", 0) * 7,
+                "cost_lpa": cost,
+                "days": weeks * 7,
                 "fit": fit,
                 "red_flags": rf,
                 "evidence_ids": eids,
@@ -146,8 +182,8 @@ def _generate_atoms(
                 "person_id": pid,
                 "location": None,
                 "option_category": "build",
-                "cost_lpa": build_plans.get(pid, {}).get("build_cost_lpa", 0.0),
-                "days": build_plans.get(pid, {}).get("readiness_weeks", 0) * 7,
+                "cost_lpa": cost,
+                "days": weeks * 7,
                 "fit": fit,
                 "red_flags": rf,
                 "evidence_ids": eids,
@@ -162,7 +198,7 @@ def _generate_atoms(
             "location": None,
             "option_category": "borrow",
             "cost_lpa": ba.get("extend_cost_12m", 0.0),
-            "days": _BORROW_READY_DAYS,
+            "days": 0,
             "fit": fit,
             "red_flags": 0,
             "evidence_ids": [],
@@ -185,7 +221,7 @@ def _generate_atoms(
                 "location": None,
                 "option_category": "borrow",
                 "cost_lpa": ba.get("extend_cost_12m", 0.0),
-                "days": _BORROW_READY_DAYS,
+                "days": 0,
                 "fit": fit,
                 "red_flags": 0,
                 "evidence_ids": [],
@@ -233,6 +269,29 @@ def _generate_atoms(
     return atoms
 
 
+# ── Coverage validation ──────────────────────────────────────────────────────
+
+
+def _mix_covers_duration(mix: list[dict], duration_months: int) -> bool:
+    """A mix is valid only if it covers the full need duration.
+
+    A bridge atom covers only 3 months. A standalone bridge (or bridge +
+    automate) cannot fill a 12-month need. A bridge paired with a longer-term
+    atom (build, extend, buy, relocate) is valid because the longer atom takes
+    over when the bridge ends.
+    """
+    non_auto = [a for a in mix if a["type"] != "automate"]
+    if not non_auto:
+        return False
+
+    has_bridge_only = all(
+        _atom_coverage_months(a) is not None
+        and _atom_coverage_months(a) < duration_months
+        for a in non_auto
+    )
+    return not has_bridge_only
+
+
 # ── Mix generation & filtering ───────────────────────────────────────────────
 
 
@@ -262,6 +321,7 @@ def _generate_mixes(
 def _filter_mixes(
     mixes: list[list[dict]],
     borrow_analyses: list[dict],
+    duration_months: int = _DEFAULT_DURATION_MONTHS,
 ) -> list[list[dict]]:
     compliance_ids = {
         ba["person_id"]
@@ -283,268 +343,209 @@ def _filter_mixes(
                if a.get("option_category") == "borrow" and a["person_id"]):
             continue
 
+        if not _mix_covers_duration(mix, duration_months):
+            continue
+
         kept.append(mix)
 
     return kept
 
 
-# ── Scoring ──────────────────────────────────────────────────────────────────
+# ── Mix aggregation ──────────────────────────────────────────────────────────
 
 
-def _score_mixes(
-    mixes: list[list[dict]],
-    weights: dict[str, float],
+def _mix_ready_by(mix: list[dict]) -> int:
+    """Ready-by for a mix: a bridge or borrow covers day 0 while a build
+    candidate ramps up, so the seat is covered from the earliest atom."""
+    non_auto = [a for a in mix if a["type"] != "automate"]
+    if not non_auto:
+        return 0
+    has_immediate = any(a["days"] == 0 for a in non_auto)
+    if has_immediate and len(non_auto) > 1:
+        return 0
+    return max(a["days"] for a in non_auto)
+
+
+def _mix_fit(mix: list[dict]) -> float:
+    """Coverage-weighted fit: each non-automate atom contributes its fit
+    weighted by its share of the time horizon it covers."""
+    non_auto = [a for a in mix if a["type"] != "automate"]
+    if not non_auto:
+        return 0.0
+    if len(non_auto) == 1:
+        return non_auto[0]["fit"]
+    total_days = sum(max(a["days"], 1) for a in non_auto)
+    if total_days == 0:
+        return sum(a["fit"] for a in non_auto) / len(non_auto)
+    return sum(a["fit"] * max(a["days"], 1) / total_days for a in non_auto)
+
+
+# ── Unified scoring ─────────────────────────────────────────────────────────
+
+
+def _compute_entry_stats(
+    mix: list[dict],
     dejareq_result: dict,
-    self_report_ledger: list[dict],
-) -> list[dict]:
-    if not mixes:
-        return []
+    sr_ledger: list[dict],
+) -> dict:
+    """Compute raw stats for a mix (or a single-atom option card treated
+    as a one-element mix).  Used for both option cards and mixes so they
+    share one normalization pool."""
+    days = _mix_ready_by(mix)
+    cost = sum(a["cost_lpa"] for a in mix)
+    fit = _mix_fit(mix)
 
-    mix_stats: list[dict] = []
-    for mix in mixes:
-        days = max(a["days"] for a in mix)
-        cost = sum(a["cost_lpa"] for a in mix)
-        fits = [a["fit"] for a in mix if a["type"] != "automate"]
-        fit = sum(fits) / len(fits) if fits else 0.0
+    categories = {a["option_category"] for a in mix if a["type"] != "automate"}
+    risk_raw = 0.10
+    for cat in categories:
+        risk_raw += _dejareq_delta(dejareq_result, cat)
+    risk_raw += sum(a.get("red_flags", 0) * _RED_FLAG_WEIGHT for a in mix)
+    sr_pids = [a["person_id"] for a in mix if a["person_id"]]
+    sr_penalty = sum(
+        e["risk_delta"] for e in sr_ledger
+        if e["person_id"] in sr_pids
+    )
+    risk_raw += sr_penalty
 
-        categories = {a["option_category"] for a in mix if a["type"] != "automate"}
-        risk_raw = 0.10
-        for cat in categories:
-            risk_raw += _dejareq_delta(dejareq_result, cat)
-        risk_raw += sum(a.get("red_flags", 0) * 0.05 for a in mix)
-        sr_pids = [a["person_id"] for a in mix if a["person_id"]]
-        sr_penalty = sum(
-            e["risk_delta"] for e in self_report_ledger
-            if e["person_id"] in sr_pids
-        )
-        risk_raw += sr_penalty
+    strat_vals = [_STRATEGIC_PRIOR.get(a["option_category"], 0.5)
+                  for a in mix if a["type"] != "automate"]
+    strategic = sum(strat_vals) / len(strat_vals) if strat_vals else 0.5
 
-        strat_vals = [_STRATEGIC_PRIOR.get(a["option_category"], 0.5)
-                      for a in mix if a["type"] != "automate"]
-        strategic = sum(strat_vals) / len(strat_vals) if strat_vals else 0.5
+    eids: list[str] = []
+    for a in mix:
+        eids.extend(a.get("evidence_ids", []))
 
-        eids: list[str] = []
-        for a in mix:
-            eids.extend(a.get("evidence_ids", []))
+    return {
+        "atoms": mix,
+        "days": days,
+        "cost": cost,
+        "fit": fit,
+        "risk_raw": min(risk_raw, 1.0),
+        "strategic": strategic,
+        "evidence_ids": eids,
+    }
 
-        mix_stats.append({
-            "atoms": mix,
-            "days": days,
-            "cost": cost,
-            "fit": fit,
-            "risk_raw": min(risk_raw, 1.0),
-            "strategic": strategic,
-            "evidence_ids": eids,
-        })
 
-    days_vals = [m["days"] for m in mix_stats]
-    cost_vals = [m["cost"] for m in mix_stats]
-    days_mm = _minmax([float(d) for d in days_vals])
+def _score_pool(
+    entries: list[dict],
+    weights: dict[str, float],
+) -> list[int]:
+    """Min-max normalize speed/cost across ALL entries and return scores."""
+    days_vals = [float(e["days"]) for e in entries]
+    cost_vals = [e["cost"] for e in entries]
+    days_mm = _minmax(days_vals)
     cost_mm = _minmax(cost_vals)
 
-    scored: list[dict] = []
-    for i, ms in enumerate(mix_stats):
+    scores: list[int] = []
+    for i, e in enumerate(entries):
         speed_n = 1.0 - days_mm[i]
         cost_n = 1.0 - cost_mm[i]
-        fit_n = ms["fit"]
-        risk_n = 1.0 - ms["risk_raw"]
-        strat_n = ms["strategic"]
+        fit_n = e["fit"]
+        risk_n = 1.0 - e["risk_raw"]
+        strat_n = e["strategic"]
 
         raw = (weights["speed"] * speed_n
                + weights["cost"] * cost_n
                + weights["fit"] * fit_n
                + weights["risk"] * risk_n
                + weights["strategic"] * strat_n)
-        score = round(raw * 100)
+        scores.append(round(raw * 100))
 
-        scored.append({
-            "mix_id": f"mix-{i + 1}",
-            "atoms": [
-                {"type": a["type"], "person_id": a["person_id"],
-                 "location": a["location"], "option_category": a["option_category"]}
-                for a in ms["atoms"]
-            ],
-            "score": score,
-            "speed": round(speed_n, 4),
-            "cost": round(cost_n, 4),
-            "fit": round(fit_n, 4),
-            "risk": round(ms["risk_raw"], 4),
-            "strategic": round(strat_n, 4),
-            "evidence_ids": ms["evidence_ids"],
-        })
-
-    scored.sort(key=lambda m: -m["score"])
-    return scored[:3]
+    return scores
 
 
-# ── Five canonical options ───────────────────────────────────────────────────
+# ── Build card selection (Build-band only) ───────────────────────────────────
 
 
-def _build_option_build(
-    ripple_result: dict,
-    build_plans: dict[str, dict],
-    match_results: dict[str, dict],
+def _best_atom_for_card(
+    atoms: list[dict],
+    category: str,
+    weights: dict[str, float],
     dejareq_result: dict,
-    sr_penalty: float,
-) -> dict:
-    candidates = ripple_result.get("candidates", [])
-    if candidates:
-        best = candidates[0]
-        pid = best["person_id"]
-        fit = match_results.get(pid, {}).get("match", 0) / 100.0
-        weeks = best.get("readiness_weeks", 0)
-        cost = best.get("net_cost_lpa", 0.0)
-        eids = list(match_results.get(pid, {}).get("evidence_ids", []))
-        red_flags = best.get("red_flags", 0)
-        what = f"Promote {pid} via ripple chain"
+    sr_ledger: list[dict],
+    duration_months: int = _DEFAULT_DURATION_MONTHS,
+) -> dict | None:
+    """Pick the best atom for an option card.
+
+    For "build": only Build-band atoms (type=="build", match 70-84) are
+    eligible; redeploy atoms (85-100) stay valid in mixes.
+    For other categories: all atoms in that category, minus those that
+    cannot cover the full need duration standalone.
+    """
+    if category == "build":
+        candidates = [a for a in atoms
+                      if a["option_category"] == "build"
+                      and a["type"] in _BUILD_CARD_TYPES]
     else:
-        fit = 0.0
-        weeks = 0
-        cost = 0.0
-        eids = []
-        red_flags = 0
-        what = "No internal candidate available"
+        candidates = [a for a in atoms if a["option_category"] == category]
 
-    risk_raw = 0.10 + _dejareq_delta(dejareq_result, "build")
-    if red_flags > 0:
-        risk_raw += 0.05 * red_flags
-    risk_raw += sr_penalty
-    risk_raw = min(risk_raw, 1.0)
+    valid = [
+        a for a in candidates
+        if _atom_coverage_months(a) is None
+        or _atom_coverage_months(a) >= duration_months
+    ]
+    if not valid:
+        return None
 
-    return {
-        "option_id": "build",
-        "name": "Build",
-        "what_it_means": what,
-        "ready_by_p80_days": weeks * 7,
-        "year_one_cost_lpa": round(cost, 2),
-        "fit": round(fit, 2),
-        "risk_raw": round(risk_raw, 4),
-        "risk_label": _risk_label(risk_raw),
-        "strategic": _STRATEGIC_PRIOR["build"],
-        "one_line_reason": (
-            f"{int(fit * 100)}% match; ready in {weeks} weeks"
-            if candidates else "No internal candidate"
-        ),
-        "evidence_ids": eids,
-    }
+    # Use a simple ranking for card selection within the same category:
+    # the atom that will score best once it enters the shared pool.
+    # Since we don't have min-max yet, use absolute approximation.
+    max_days = 90.0
+    max_cost = 40.0
 
+    def _approx(a: dict) -> float:
+        speed_n = max(0.0, 1.0 - a["days"] / max_days)
+        cost_n = max(0.0, 1.0 - a["cost_lpa"] / max_cost)
+        fit_n = a["fit"]
+        risk_raw = 0.10 + _dejareq_delta(dejareq_result, a["option_category"])
+        risk_raw += a.get("red_flags", 0) * _RED_FLAG_WEIGHT
+        pid = a.get("person_id")
+        if pid:
+            risk_raw += sum(e["risk_delta"] for e in sr_ledger if e["person_id"] == pid)
+        risk_raw = min(risk_raw, 1.0)
+        strat_n = _STRATEGIC_PRIOR.get(a["option_category"], 0.5)
+        return (weights["speed"] * speed_n
+                + weights["cost"] * cost_n
+                + weights["fit"] * fit_n
+                + weights["risk"] * (1.0 - risk_raw)
+                + weights["strategic"] * strat_n)
 
-def _build_option_buy(
-    market_data: dict,
-    dejareq_result: dict,
-) -> dict:
-    ttf_p80 = int(market_data.get("ttf_p80", 90))
-    sal_p50 = float(market_data.get("sal_p50", 0))
-    supply = int(market_data.get("supply", 0))
-    location = market_data.get("location", "")
-
-    risk_raw = 0.20 + _dejareq_delta(dejareq_result, "buy")
-    if supply < 20:
-        risk_raw += 0.15
-    risk_raw = min(risk_raw, 1.0)
-
-    return {
-        "option_id": "buy",
-        "name": "Buy",
-        "what_it_means": f"Hire externally in {location}",
-        "ready_by_p80_days": ttf_p80,
-        "year_one_cost_lpa": round(sal_p50, 2),
-        "fit": _BUY_FIT_DEFAULT,
-        "risk_raw": round(risk_raw, 4),
-        "risk_label": _risk_label(risk_raw),
-        "strategic": _STRATEGIC_PRIOR["buy"],
-        "one_line_reason": f"P80 {ttf_p80} days; supply {supply}; ₹{sal_p50}L",
-        "evidence_ids": [],
-    }
+    return max(valid, key=_approx)
 
 
-def _build_option_borrow(
-    borrow_analyses: list[dict],
-    dejareq_result: dict,
-    duration_months: int,
-    sr_penalty: float,
-) -> dict:
-    if borrow_analyses:
-        best = borrow_analyses[0]
-        cid = best["person_id"]
-        fit = best.get("fit", 0) / 100.0
-        if duration_months <= 3:
-            cost = best.get("extend_cost_3m", 0.0)
-        else:
-            cost = best.get("extend_cost_12m", 0.0)
-        what = f"Extend contractor {cid}"
+_OPTION_META: dict[str, dict] = {
+    "build": {"option_id": "build", "name": "Build"},
+    "buy": {"option_id": "buy", "name": "Buy"},
+    "borrow": {"option_id": "borrow", "name": "Borrow"},
+    "relocate": {"option_id": "relocate", "name": "Relocate"},
+}
+
+
+def _option_card_text(atom: dict, category: str) -> tuple[str, str]:
+    """Return (what_it_means, one_line_reason) for an option card."""
+    pid = atom.get("person_id")
+    if category == "build":
+        what = f"Promote {pid} via ripple chain" if pid else "No internal candidate"
+        weeks = atom["days"] // 7
+        reason = (f"{int(atom['fit'] * 100)}% match; ready in {weeks} weeks"
+                  if pid else "No internal candidate")
+    elif category == "buy":
+        loc = atom.get("location", "")
+        what = f"Hire externally in {loc}"
+        reason = f"P80 {atom['days']} days; ₹{atom['cost_lpa']}L"
+    elif category == "borrow":
+        what = f"Extend contractor {pid}" if pid else "No contractor"
+        reason = (f"{pid} available now; ₹{atom['cost_lpa']}L/year"
+                  if pid else "No contractor")
     else:
-        cid = ""
-        fit = 0.0
-        cost = 0.0
-        what = "No contractor available"
-
-    risk_raw = 0.15 + _dejareq_delta(dejareq_result, "borrow") + sr_penalty
-    risk_raw = min(risk_raw, 1.0)
-
-    return {
-        "option_id": "borrow",
-        "name": "Borrow",
-        "what_it_means": what,
-        "ready_by_p80_days": _BORROW_READY_DAYS if borrow_analyses else 90,
-        "year_one_cost_lpa": round(cost, 2),
-        "fit": round(fit, 2),
-        "risk_raw": round(risk_raw, 4),
-        "risk_label": _risk_label(risk_raw),
-        "strategic": _STRATEGIC_PRIOR["borrow"],
-        "one_line_reason": (
-            f"{cid} available now; ₹{cost}L/year"
-            if borrow_analyses else "No contractor available"
-        ),
-        "evidence_ids": [],
-    }
+        loc = atom.get("location", "")
+        what = f"Hire in {loc}" if loc else "No alternative location"
+        reason = (f"{loc}: P80 {atom['days']} days, ₹{atom['cost_lpa']}L"
+                  if loc else "No alternative")
+    return what, reason
 
 
-def _build_option_relocate(
-    location_results: list[dict],
-    requested_location: str,
-    dejareq_result: dict,
-) -> dict:
-    alt = [r for r in location_results if r.get("location") != requested_location]
-    if alt:
-        best = alt[0]
-        loc = best["location"]
-        ttf_p80 = int(best.get("ttf_p80", 60))
-        pay = float(best.get("pay_p50_lpa", 0))
-        supply = int(best.get("supply", 0))
-        what = f"Hire in {loc} instead of {requested_location}"
-    else:
-        loc = ""
-        ttf_p80 = 90
-        pay = 0.0
-        supply = 0
-        what = "No alternative location"
-
-    risk_raw = 0.25 + _dejareq_delta(dejareq_result, "buy")
-    risk_raw = min(risk_raw, 1.0)
-
-    return {
-        "option_id": "relocate",
-        "name": "Relocate",
-        "what_it_means": what,
-        "ready_by_p80_days": ttf_p80,
-        "year_one_cost_lpa": round(pay, 2),
-        "fit": _RELOCATE_FIT_DEFAULT,
-        "risk_raw": round(risk_raw, 4),
-        "risk_label": _risk_label(risk_raw),
-        "strategic": _STRATEGIC_PRIOR["relocate"],
-        "one_line_reason": (
-            f"{loc}: supply {supply}, P80 {ttf_p80} days, ₹{pay}L"
-            if alt else "No alternative location"
-        ),
-        "evidence_ids": [],
-    }
-
-
-def _build_option_automate(
-    automation_result: dict,
-) -> dict:
-    pct = automation_result.get("hours_saved_pct", 0)
+def _build_option_automate(automation_result: dict) -> dict:
     low = automation_result.get("range_low", 0)
     high = automation_result.get("range_high", 0)
     return {
@@ -554,9 +555,7 @@ def _build_option_automate(
         "ready_by_p80_days": _AUTOMATE_READY_DAYS,
         "year_one_cost_lpa": _AUTOMATE_COST_LPA,
         "fit": 0.0,
-        "risk_raw": 0.05,
         "risk_label": "Low",
-        "strategic": _STRATEGIC_PRIOR["automate"],
         "score": "add-on",
         "one_line_reason": f"Absorbs ~{low:.0f}-{high:.0f}% of routine hours",
         "evidence_ids": list(automation_result.get("evidence_ids", [])),
@@ -591,58 +590,126 @@ def generate_options(
     )
     sr_total, sr_ledger = _self_report_penalty(all_person_ids, evidence_results)
 
-    build_opt = _build_option_build(
-        ripple_result, build_plans, match_results, dejareq_result,
-        sr_penalty=sr_total,
-    )
-    buy_opt = _build_option_buy(market_data, dejareq_result)
-    borrow_opt = _build_option_borrow(
-        borrow_analyses, dejareq_result, duration_months, sr_penalty=sr_total,
-    )
-    relocate_opt = _build_option_relocate(
-        location_results, market_data.get("location", ""), dejareq_result,
-    )
-    automate_opt = _build_option_automate(automation_result)
-
-    scored_options = [build_opt, buy_opt, borrow_opt, relocate_opt]
-
-    days_vals = [o["ready_by_p80_days"] for o in scored_options]
-    cost_vals = [o["year_one_cost_lpa"] for o in scored_options]
-    days_mm = _minmax([float(d) for d in days_vals])
-    cost_mm = _minmax(cost_vals)
-
-    for i, opt in enumerate(scored_options):
-        speed_n = 1.0 - days_mm[i]
-        cost_n = 1.0 - cost_mm[i]
-        fit_n = opt["fit"]
-        risk_n = 1.0 - opt["risk_raw"]
-        strat_n = opt["strategic"]
-
-        raw = (w["speed"] * speed_n
-               + w["cost"] * cost_n
-               + w["fit"] * fit_n
-               + w["risk"] * risk_n
-               + w["strategic"] * strat_n)
-        opt["score"] = round(raw * 100)
-
-    for opt in scored_options:
-        del opt["risk_raw"]
-        del opt["strategic"]
-
-    automate_opt.pop("risk_raw", None)
-    automate_opt.pop("strategic", None)
-
-    options = scored_options + [automate_opt]
-
     atoms = _generate_atoms(
         match_results, build_plans, borrow_analyses,
         location_results, automation_result, market_data,
         ripple_result=ripple_result,
     )
-    mixes = _generate_mixes(atoms, headcount)
-    filtered = _filter_mixes(mixes, borrow_analyses)
-    top_mixes = _score_mixes(filtered, w, dejareq_result, sr_ledger)
 
+    # ── Pick representative atom per option card ──────────────────────
+    card_atoms: dict[str, dict | None] = {}
+    for cat in ("build", "buy", "borrow", "relocate"):
+        card_atoms[cat] = _best_atom_for_card(
+            atoms, cat, w, dejareq_result, sr_ledger,
+            duration_months=duration_months,
+        )
+
+    # ── Generate and filter all mixes ─────────────────────────────────
+    mixes = _generate_mixes(atoms, headcount)
+    filtered = _filter_mixes(mixes, borrow_analyses, duration_months=duration_months)
+
+    # ── Build unified scoring pool ────────────────────────────────────
+    # Option cards (as single-atom mixes) + all valid mixes, in one pool
+    # so min-max normalization is shared.
+    pool: list[dict] = []          # entry stats
+    pool_labels: list[str] = []    # "card:<cat>" or "mix"
+
+    for cat in ("build", "buy", "borrow", "relocate"):
+        atom = card_atoms[cat]
+        if atom:
+            pool.append(_compute_entry_stats([atom], dejareq_result, sr_ledger))
+            pool_labels.append(f"card:{cat}")
+        else:
+            pool.append({
+                "atoms": [],
+                "days": 90,
+                "cost": 0.0,
+                "fit": 0.0,
+                "risk_raw": 0.5,
+                "strategic": _STRATEGIC_PRIOR[cat],
+                "evidence_ids": [],
+            })
+            pool_labels.append(f"card:{cat}")
+
+    for mix in filtered:
+        pool.append(_compute_entry_stats(mix, dejareq_result, sr_ledger))
+        pool_labels.append("mix")
+
+    # ── Score the entire pool with shared min-max ─────────────────────
+    all_scores = _score_pool(pool, w)
+
+    # ── Build option card dicts ───────────────────────────────────────
+    options: list[dict] = []
+    for idx, cat in enumerate(("build", "buy", "borrow", "relocate")):
+        atom = card_atoms[cat]
+        entry = pool[idx]
+        score = all_scores[idx]
+
+        if atom:
+            what, reason = _option_card_text(atom, cat)
+            options.append({
+                **_OPTION_META[cat],
+                "what_it_means": what,
+                "ready_by_p80_days": entry["days"],
+                "year_one_cost_lpa": round(entry["cost"], 2),
+                "fit": round(entry["fit"], 2),
+                "risk_label": _risk_label(entry["risk_raw"]),
+                "score": score,
+                "one_line_reason": reason,
+                "evidence_ids": entry["evidence_ids"],
+            })
+        else:
+            options.append({
+                **_OPTION_META[cat],
+                "what_it_means": f"No {cat} candidate",
+                "ready_by_p80_days": 90,
+                "year_one_cost_lpa": 0.0,
+                "fit": 0.0,
+                "risk_label": "Medium",
+                "score": score,
+                "one_line_reason": f"No {cat} candidate available",
+                "evidence_ids": [],
+            })
+
+    automate_opt = _build_option_automate(automation_result)
+    options.append(automate_opt)
+
+    # ── Build top-3 mixes from pool ───────────────────────────────────
+    n_cards = 4
+    mix_scored: list[dict] = []
+    for i in range(n_cards, len(pool)):
+        ms = pool[i]
+        score = all_scores[i]
+
+        # Compute per-dimension values for output (using same shared min-max)
+        days_vals = [float(e["days"]) for e in pool]
+        cost_vals = [e["cost"] for e in pool]
+        days_mm = _minmax(days_vals)
+        cost_mm = _minmax(cost_vals)
+        speed_n = 1.0 - days_mm[i]
+        cost_n = 1.0 - cost_mm[i]
+
+        mix_scored.append({
+            "mix_id": f"mix-{i - n_cards + 1}",
+            "atoms": [
+                {"type": a["type"], "person_id": a["person_id"],
+                 "location": a["location"], "option_category": a["option_category"]}
+                for a in ms["atoms"]
+            ],
+            "score": score,
+            "cost_lpa": round(ms["cost"], 2),
+            "speed": round(speed_n, 4),
+            "cost": round(cost_n, 4),
+            "fit": round(ms["fit"], 4),
+            "risk": round(ms["risk_raw"], 4),
+            "strategic": round(ms["strategic"], 4),
+            "evidence_ids": ms["evidence_ids"],
+        })
+
+    mix_scored.sort(key=lambda m: (-m["score"], m["cost_lpa"], len(m["atoms"])))
+    top_mixes = mix_scored[:3]
+
+    # ── Assumption ledger ─────────────────────────────────────────────
     weight_shifts: list[dict] = []
     if deadline_days < 60:
         weight_shifts.append({"shift": "deadline < 60 days", "effect": "speed +0.10"})

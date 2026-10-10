@@ -68,8 +68,8 @@ talentlens/
 | Junior external hire | P50 21 days, ₹7L | Ripple |
 | External Lead (Platform backfill) | P50 76 days | Ripple |
 | Build chain year-one cost | ₹12L (₹7L junior + ₹4.5L raises + ₹0.5L upskill) | Ripple, five-option table |
-| Recommended mix | Arjun 3-month bridge (₹6L) + Build chain (₹12L) = ₹18L; score 84 | Redline panel, five-option table |
-| Option scores | Mix 84, Build 78, Borrow 71, Relocate 64, Buy 41, Automate add-on | Five-option table |
+| Recommended mix | Arjun 3-month bridge (₹6L) + Build chain (₹12L) = ₹18L; score 89 | Redline panel, five-option table |
+| Option scores | Mix 89, Borrow 87, Build 73, Relocate 62, Buy 42, Automate add-on | Five-option table |
 | Sourcing channels | Past finalists 3 (2 remote-ready); referral 38% / 34 days; supplier A 45% / 9 days; job board 22% / 52 days | Section 7B |
 | Rahul - AWS evidence | Assessment 35/100 on 12 Mar 2026; self-reported "intermediate" (ignored) → 35%, solid tag, no warning | Skill Evidence Tags |
 | Priya - Kubernetes evidence | Assessment 40/100 on 18 Aug 2026; self-reported "expert" → 40%, warning (50 points apart) | Skill Evidence Tags, Ripple |
@@ -80,11 +80,11 @@ talentlens/
 
 | Option | What it means here | Ready by (P80) | Year-one cost | Fit | Risk | Score /100 | One-line reason |
 |--------|--------------------|----------------|---------------|-----|------|------------|-----------------|
-| Recommended mix | Borrow Arjun as a 3-month bridge + Build Priya | Day 0 | ₹18L | 82-84% | Low | 84 | Covers the 30-day deadline now; keeps the skill in-house after week 6 |
-| Build | Priya moves up; Rahul backfills; 1 junior hire (Ripple chain) | Week 6 | ₹12L | 82% | Low | 78 | Cheapest and stays; misses the 30-day deadline on its own |
-| Borrow | Extend contractor Arjun (C-17) for 12 months | Day 0 | ₹24L | 84% | Medium | 71 | Fastest; past Borrow lost knowledge (Deja Req +0.10 risk) |
-| Relocate | Hire Senior in Remote-India instead of Bengaluru on-site | Day 40 | ₹29L | Market | Medium-high | 64 | 15x the supply of Bengaluru; still an external hire (churn pattern) |
-| Buy | Hire Senior in Bengaluru on-site, as requested | Day 81 | ₹32L | Market | High | 41 | Misses deadline; budget below P50; two past external hires left < 12 months |
+| Recommended mix | Borrow Arjun as a 3-month bridge + Build Priya | Day 0 | ₹18L | 82-84% | Low | 89 | Covers the 30-day deadline now; keeps the skill in-house after week 6 |
+| Build | Priya moves up; Rahul backfills; 1 junior hire (Ripple chain) | Week 6 | ₹12L | 82% | Low | 73 | Cheapest and stays; misses the 30-day deadline on its own |
+| Borrow | Extend contractor Arjun (C-17) for 12 months | Day 0 | ₹24L | 84% | Medium | 87 | Fastest; past Borrow lost knowledge (Deja Req +0.10 risk) |
+| Relocate | Hire Senior in Remote-India instead of Bengaluru on-site | Day 40 | ₹29L | Market | Medium-high | 62 | 15x the supply of Bengaluru; still an external hire (churn pattern) |
+| Buy | Hire Senior in Bengaluru on-site, as requested | Day 81 | ₹32L | Market | High | 42 | Misses deadline; budget below P50; two past external hires left < 12 months |
 | Automate | AI coding-assistant seats for the team (add-on) | Day 7 | ~₹1L (simulated) | -- | Low | add-on | Absorbs ~25-35% of routine hours (test writing, boilerplate, docs); does not replace the hire |
 
 ### Section 7A: Relocate card (verbatim)
