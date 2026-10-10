@@ -878,6 +878,7 @@
           "display_name": "Karthik",
           "status": "green",
           "reason": "Match 87%",
+          "flags": [],
           "children": [
             {
               "seat": "lead/Platform",
@@ -885,6 +886,23 @@
               "display_name": null,
               "status": "red",
               "reason": "Bus factor = 1 (terraform). No internal backfill ≥ 70%; external Lead P50 76 days",
+              "flags": [
+                {
+                  "type": "bus_factor",
+                  "skill": "terraform",
+                  "p50_days": null
+                },
+                {
+                  "type": "no_internal_backfill",
+                  "skill": null,
+                  "p50_days": null
+                },
+                {
+                  "type": "hard_market",
+                  "skill": null,
+                  "p50_days": 76
+                }
+              ],
               "children": []
             }
           ]
@@ -906,6 +924,7 @@
           "display_name": "Priya",
           "status": "green",
           "reason": "Match 81%; ready week 6",
+          "flags": [],
           "children": [
             {
               "seat": "mid/Checkout",
@@ -913,6 +932,7 @@
               "display_name": "Rahul",
               "status": "green",
               "reason": "Internal backfill E-072 (match 76%); ready now",
+              "flags": [],
               "children": [
                 {
                   "seat": "junior/Checkout",
@@ -920,6 +940,7 @@
                   "display_name": null,
                   "status": "green",
                   "reason": "External hire: P50 21 days, 100 candidates",
+                  "flags": [],
                   "children": []
                 }
               ]

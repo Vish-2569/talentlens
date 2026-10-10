@@ -173,6 +173,23 @@ async def test_demo_story(client, raw):
         f"Karthik must have ≥ 2 red flags (bus-factor + dead-end); got {red_flags}"
     )
 
+    # ── Karthik: structured flags on chain nodes ─────────────────────────
+    def _collect_flags(node: dict) -> list[dict]:
+        result_flags = list(node.get("flags", []))
+        for child in node.get("children", []):
+            result_flags.extend(_collect_flags(child))
+        return result_flags
+
+    k_flags = _collect_flags(k_ripple["chain"])
+    flag_types = [f["type"] for f in k_flags]
+    assert "bus_factor" in flag_types, f"bus_factor flag missing; got {flag_types}"
+    assert "no_internal_backfill" in flag_types, f"no_internal_backfill flag missing; got {flag_types}"
+    assert "hard_market" in flag_types, f"hard_market flag missing; got {flag_types}"
+    bf = next(f for f in k_flags if f["type"] == "bus_factor")
+    assert bf["skill"] == "terraform", f"bus_factor skill should be terraform; got {bf['skill']}"
+    hm = next(f for f in k_flags if f["type"] == "hard_market")
+    assert hm["p50_days"] == 76, f"hard_market p50_days should be 76; got {hm['p50_days']}"
+
     # ── Contractor Arjun — 84 %, 4 weeks, ₹24L ───────────────────────────
     contractors = opts["contractor_cards"]
     arjun = next((c for c in contractors if c["person_id"] == ARJUN), None)

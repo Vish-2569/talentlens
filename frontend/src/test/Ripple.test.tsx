@@ -68,22 +68,35 @@ describe("TC09: Priya's chain — 3 nodes, all green, net impact values", () => 
 
 describe("TC10: Karthik's chain — bus-factor flag and hard-to-fill node", () => {
   const deadEnd = karthik.chain.children![0];
+  const deadEndFlags = deadEnd.flags ?? [];
 
-  it("dead-end node reason contains bus-factor signal from the API", () => {
+  it("fixture has bus_factor flag with skill=terraform on the dead-end node", () => {
+    const bf = deadEndFlags.find((f) => f.type === "bus_factor");
+    expect(bf).toBeDefined();
+    expect(bf!.skill).toBe("terraform");
+  });
+
+  it("fixture has no_internal_backfill and hard_market flags on the dead-end node", () => {
+    expect(
+      deadEndFlags.find((f) => f.type === "no_internal_backfill"),
+    ).toBeDefined();
+    const hm = deadEndFlags.find((f) => f.type === "hard_market");
+    expect(hm).toBeDefined();
+    expect(hm!.p50_days).toBe(76);
+  });
+
+  it("renders 'Bus factor = 1' label from bus_factor flag", () => {
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
-    expect(deadEnd.reason.toLowerCase()).toContain("bus factor");
     expect(screen.getByText("Bus factor = 1")).toBeInTheDocument();
   });
 
-  it("dead-end node reason contains hard-to-fill signal from the API", () => {
+  it("renders 'Hard to fill' label from no_internal_backfill flag", () => {
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
-    expect(deadEnd.reason).toMatch(/No internal backfill/);
-    expect(deadEnd.reason).toMatch(/external.*P50 76 days/);
-    expect(screen.getByText(deadEnd.reason)).toBeInTheDocument();
+    expect(screen.getByText("Hard to fill")).toBeInTheDocument();
   });
 
   it("shows red_flags count from fixture in net impact", () => {

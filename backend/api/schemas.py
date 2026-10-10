@@ -53,6 +53,19 @@ class RippleStatus(str, Enum):
     pending = "pending"
 
 
+class RippleFlagType(str, Enum):
+    bus_factor = "bus_factor"
+    no_internal_backfill = "no_internal_backfill"
+    hard_market = "hard_market"
+
+
+class RippleFlag(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    type: RippleFlagType
+    skill: Optional[str] = None
+    p50_days: Optional[int] = None
+
+
 class EvidenceSource(str, Enum):
     assessment = "assessment"
     certification = "certification"
@@ -263,6 +276,7 @@ class RippleNode(BaseModel):
     display_name: Optional[str] = None
     status: RippleStatus
     reason: str
+    flags: list[RippleFlag] = Field(default_factory=list)
     children: list[RippleNode] = Field(default_factory=list)
 
 

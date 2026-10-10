@@ -155,6 +155,43 @@
           }
         }
       }
+    },
+    "/{full_path}": {
+      "get": {
+        "summary": "Spa Fallback",
+        "operationId": "spa_fallback__full_path__get",
+        "parameters": [
+          {
+            "name": "full_path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Full Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1521,6 +1558,50 @@
         ],
         "title": "RippleCandidate"
       },
+      "RippleFlag": {
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/RippleFlagType"
+          },
+          "skill": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skill"
+          },
+          "p50_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P50 Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "RippleFlag"
+      },
+      "RippleFlagType": {
+        "type": "string",
+        "enum": [
+          "bus_factor",
+          "no_internal_backfill",
+          "hard_market"
+        ],
+        "title": "RippleFlagType"
+      },
       "RippleNode": {
         "properties": {
           "seat": {
@@ -1555,6 +1636,13 @@
           "reason": {
             "type": "string",
             "title": "Reason"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/RippleFlag"
+            },
+            "type": "array",
+            "title": "Flags"
           },
           "children": {
             "items": {

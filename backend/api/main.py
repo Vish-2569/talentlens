@@ -40,6 +40,7 @@ from backend.api.schemas import (
     RelocateRow,
     Ripple,
     RippleCandidate,
+    RippleFlag,
     RippleNode,
     ScenarioResult,
     SkillScore,
@@ -261,9 +262,33 @@ def _chain_list_to_node(chain: list[dict], name_map: dict[str, str]) -> RippleNo
     if not chain:
         raise ValueError("Empty chain")
 
+    mover_bf = chain[0].get("bus_factor_flags", [])
+
+    def _build_flags(n: dict, is_first_red: bool) -> list[RippleFlag]:
+        flags: list[RippleFlag] = []
+        if is_first_red:
+            for skill in mover_bf:
+                flags.append(RippleFlag(type="bus_factor", skill=skill))
+        if n.get("person_id") is None and n.get("status") == "red":
+            flags.append(RippleFlag(type="no_internal_backfill"))
+            ext_days = n.get("external_days")
+            if ext_days is not None:
+                flags.append(RippleFlag(type="hard_market", p50_days=int(ext_days)))
+        return flags
+
+    first_red_found = False
+
     def _build(idx: int) -> RippleNode:
+        nonlocal first_red_found
         n = chain[idx]
         pid = n.get("person_id")
+        is_first_red = (
+            not first_red_found
+            and n.get("status") == "red"
+            and n.get("person_id") is None
+        )
+        if is_first_red:
+            first_red_found = True
         children = [_build(idx + 1)] if idx + 1 < len(chain) else []
         return RippleNode(
             seat=n["seat"],
@@ -271,6 +296,7 @@ def _chain_list_to_node(chain: list[dict], name_map: dict[str, str]) -> RippleNo
             display_name=name_map.get(pid) if pid else None,
             status=n["status"],
             reason=n["reason"],
+            flags=_build_flags(n, is_first_red),
             children=children,
         )
 

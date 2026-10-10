@@ -2,6 +2,7 @@ import { AlertTriangle, Check } from "lucide-react";
 import type { components } from "../api/types";
 
 type RippleNode = components["schemas"]["RippleNode"];
+type RippleFlag = components["schemas"]["RippleFlag"];
 
 interface Props {
   node: RippleNode;
@@ -9,23 +10,38 @@ interface Props {
   onPersonClick: (personId: string, displayName: string) => void;
 }
 
-function statusConfig(status: string, reason: string) {
-  if (status === "red") {
-    const label = reason.toLowerCase().includes("bus factor")
-      ? "Bus factor = 1"
-      : "Hard to fill";
+function hasFlag(flags: RippleFlag[], type: string): boolean {
+  return flags.some((f) => f.type === type);
+}
+
+function statusLabels(node: RippleNode): {
+  borderClass: string;
+  Icon: typeof AlertTriangle;
+  iconClass: string;
+  labels: string[];
+} {
+  const flags = node.flags ?? [];
+  if (node.status === "red") {
+    const labels: string[] = [];
+    if (hasFlag(flags, "bus_factor")) labels.push("Bus factor = 1");
+    if (
+      hasFlag(flags, "no_internal_backfill") ||
+      hasFlag(flags, "hard_market")
+    )
+      labels.push("Hard to fill");
+    if (labels.length === 0) labels.push("Hard to fill");
     return {
       borderClass: "border-2 border-redline",
       Icon: AlertTriangle,
       iconClass: "text-redline",
-      label,
+      labels,
     };
   }
   return {
     borderClass: "border border-green",
     Icon: Check,
     iconClass: "text-green",
-    label: "Can be filled",
+    labels: ["Can be filled"],
   };
 }
 
@@ -36,8 +52,8 @@ function formatSeat(seat: string): string {
 }
 
 function TreeNode({ node, depth = 0, onPersonClick }: Props) {
-  const cfg = statusConfig(node.status, node.reason);
-  const { Icon, iconClass, label, borderClass } = cfg;
+  const cfg = statusLabels(node);
+  const { Icon, iconClass, labels, borderClass } = cfg;
   const indent = depth * 24;
 
   return (
@@ -66,10 +82,14 @@ function TreeNode({ node, depth = 0, onPersonClick }: Props) {
             )}
             <p className="mt-1 font-sans text-xs text-muted">{node.reason}</p>
           </div>
-          <span className={`flex shrink-0 items-center gap-1 font-sans text-xs font-medium ${iconClass}`}>
-            <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
-            {label}
-          </span>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            {labels.map((lbl) => (
+              <span key={lbl} className={`flex items-center gap-1 font-sans text-xs font-medium ${iconClass}`}>
+                <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
+                {lbl}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

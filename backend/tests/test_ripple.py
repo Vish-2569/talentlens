@@ -210,6 +210,18 @@ def test_backfill_exactly_70_qualifies(store):
         assert chain[0]["person_id"] == "E-FAKE"
 
 
+def test_karthik_bus_factor_flags_on_mover(result):
+    karthik = _get(result, "E-031")
+    mover = karthik["chain"][0]
+    assert "terraform" in mover.get("bus_factor_flags", [])
+
+
+def test_karthik_dead_end_has_external_days(result):
+    karthik = _get(result, "E-031")
+    dead_end = next(n for n in karthik["chain"] if n["status"] == "red")
+    assert dead_end["external_days"] == 76
+
+
 def test_backfill_69_9_rejected(store):
     """A candidate scoring 69.9 should NOT qualify as a backfill."""
     from unittest.mock import patch
