@@ -1,0 +1,96 @@
+[
+  {
+    "skill": "aws",
+    "value": 35,
+    "source": "assessment",
+    "observed_on": "2026-03-12",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 35/100, taken 12 Mar 2026. Also self-reported as 'intermediate' (ignored: assessment is more recent and more reliable).",
+    "ignored": [
+      {
+        "source": "self",
+        "value": 55,
+        "reason": "assessment is more reliable"
+      }
+    ]
+  },
+  {
+    "skill": "mongodb",
+    "value": 21,
+    "source": "self",
+    "observed_on": "2025-08-01",
+    "confidence": 0.7,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Self-reported as 'beginner', Aug 2025. No assessment, certification or project record. Discounted to 21% (× 0.7).",
+    "ignored": []
+  },
+  {
+    "skill": "react",
+    "value": 68,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 68/100, taken 1 Jun 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "nodejs",
+    "value": 64,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 64/100, taken 1 Jun 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "javascript",
+    "value": 75,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 75/100, taken 1 Jun 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "html_css",
+    "value": 75,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 75/100, taken 1 Jun 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "git",
+    "value": 80,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 80/100, taken 1 Jun 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "jest",
+    "value": 65,
+    "source": "assessment",
+    "observed_on": "2026-06-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 65/100, taken 1 Jun 2026.",
+    "ignored": []
+  }
+]

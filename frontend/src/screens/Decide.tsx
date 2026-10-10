@@ -2,9 +2,9 @@ import { EmptyState } from "../components/ui";
 import { useAppState } from "../state/context";
 
 export function Decide() {
-  const { analysis } = useAppState();
+  const { result } = useAppState();
 
-  if (!analysis) {
+  if (!result) {
     return (
       <section aria-labelledby="decide-heading">
         <h2 id="decide-heading" className="sr-only">

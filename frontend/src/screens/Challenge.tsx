@@ -5,7 +5,7 @@ const DEMO_SENTENCE =
   "Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.";
 
 export function Challenge() {
-  const { analysis } = useAppState();
+  const { result } = useAppState();
 
   return (
     <section aria-labelledby="challenge-heading" id="challenge-tab">
@@ -23,7 +23,7 @@ export function Challenge() {
         </blockquote>
       </div>
 
-      {!analysis && (
+      {!result && (
         <EmptyState
           title="Submit a requisition to begin"
           description="Enter job requirements above and click Analyse."

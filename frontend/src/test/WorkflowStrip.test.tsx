@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { WorkflowStrip } from "../components/WorkflowStrip";
 import { getStepStates } from "../components/workflowSteps";
-import { FIXTURE_ANALYSIS } from "../fixtures/analysis";
+import { FIXTURE_ANALYSIS } from "../fixtures";
 
 describe("getStepStates (pure function)", () => {
   it("all steps unlit when result is null", () => {
@@ -59,13 +59,13 @@ describe("getStepStates (pure function)", () => {
     expect(steps.map((s) => s.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
-  it("lit steps have tab 0 for steps 1-2, tab 1 for steps 3-7, tab 2 for steps 8-9", () => {
+  it("lit steps have challenge tab for steps 1-2, options for steps 3-7, decide for steps 8-9", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, true);
-    expect(steps[0].tab).toBe(0);
-    expect(steps[1].tab).toBe(0);
-    for (let i = 2; i <= 6; i++) expect(steps[i].tab).toBe(1);
-    expect(steps[7].tab).toBe(2);
-    expect(steps[8].tab).toBe(2);
+    expect(steps[0].tab).toBe("challenge");
+    expect(steps[1].tab).toBe("challenge");
+    for (let i = 2; i <= 6; i++) expect(steps[i].tab).toBe("options");
+    expect(steps[7].tab).toBe("decide");
+    expect(steps[8].tab).toBe("decide");
   });
 });
 

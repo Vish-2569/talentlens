@@ -1,0 +1,1475 @@
+{
+  "parsed": {
+    "req_id": "REQ-F6BF22D6",
+    "level": {
+      "value": "senior",
+      "span": "Senior",
+      "span_start": 0,
+      "span_end": 6,
+      "label": "stated"
+    },
+    "headcount": {
+      "value": 1,
+      "span": null,
+      "span_start": null,
+      "span_end": null,
+      "label": "inferred"
+    },
+    "location": {
+      "value": "bengaluru",
+      "span": "Bengaluru",
+      "span_start": 29,
+      "span_end": 38,
+      "label": "stated"
+    },
+    "work_mode": {
+      "value": "onsite",
+      "span": "on-site",
+      "span_start": 40,
+      "span_end": 47,
+      "label": "stated"
+    },
+    "min_years": {
+      "value": 5,
+      "span": "5+ years",
+      "span_start": 49,
+      "span_end": 57,
+      "label": "stated"
+    },
+    "budget_lpa": {
+      "value": 28,
+      "span": "₹28L",
+      "span_start": 107,
+      "span_end": 111,
+      "label": "stated"
+    },
+    "need_by_days": {
+      "value": 30,
+      "span": "30 days",
+      "span_start": 121,
+      "span_end": 128,
+      "label": "stated"
+    },
+    "duration_months": {
+      "value": null,
+      "span": null,
+      "span_start": null,
+      "span_end": null,
+      "label": "inferred"
+    },
+    "criticality": {
+      "value": null,
+      "span": null,
+      "span_start": null,
+      "span_end": null,
+      "label": "inferred"
+    },
+    "skills": [
+      {
+        "skill_id": "kubernetes",
+        "importance": "must",
+        "confidence": 1
+      },
+      {
+        "skill_id": "nodejs",
+        "importance": "must",
+        "confidence": 1
+      },
+      {
+        "skill_id": "react",
+        "importance": "must",
+        "confidence": 1
+      }
+    ],
+    "title_normalization": {
+      "raw_titles_count": 12,
+      "role": "Full Stack Developer",
+      "levels": [
+        "junior",
+        "mid",
+        "senior",
+        "lead"
+      ],
+      "mappings": [
+        {
+          "raw_title": "SDE-2 (Full Stack)",
+          "source_system": "hris",
+          "role": "Full Stack Developer",
+          "level": "mid",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "MERN Stack Developer",
+          "source_system": "ats",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "Full-Stack Engineer – Contract",
+          "source_system": "vms",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "Web Developer",
+          "source_system": "jobboard",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "onet",
+          "confidence": 0.9,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1254.00"
+        },
+        {
+          "raw_title": "Sr. Full Stack Developer",
+          "source_system": "ats",
+          "role": "Full Stack Developer",
+          "level": "senior",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "Full Stack Developer III",
+          "source_system": "hris",
+          "role": "Full Stack Developer",
+          "level": "senior",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "Lead Full Stack Engineer",
+          "source_system": "hris",
+          "role": "Full Stack Developer",
+          "level": "lead",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "SDE-1",
+          "source_system": "hris",
+          "role": "Full Stack Developer",
+          "level": "junior",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "React + Node Developer",
+          "source_system": "jobboard",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "MEAN Stack Developer",
+          "source_system": "ats",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "Full Stack Web Developer",
+          "source_system": "jobboard",
+          "role": "Full Stack Developer",
+          "level": null,
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        },
+        {
+          "raw_title": "SDE-3 (Full Stack)",
+          "source_system": "hris",
+          "role": "Full Stack Developer",
+          "level": "senior",
+          "method": "manual",
+          "confidence": 1,
+          "esco_uri": "http://data.europa.eu/esco/occupation/f2b15a0e-e65a-438a-affb-29b9d50b77d1",
+          "onet_code": "15-1252.00"
+        }
+      ]
+    }
+  },
+  "dejareq": {
+    "match_count": 4,
+    "banner_text": "You've hired a Senior Full Stack Developer for the Payments team 4 times in the last 2 years.",
+    "chip": null,
+    "timeline": [
+      {
+        "req_id": "REQ-004",
+        "opened": "2026-06",
+        "decision": "build",
+        "time_to_fill_days": 0,
+        "ramp_note": null,
+        "first_year_cost_lpa": 4,
+        "outcome_text": "Still in role, rated Exceeds",
+        "evidence_ids": [
+          "REQ-004",
+          "E-010"
+        ]
+      },
+      {
+        "req_id": "REQ-003",
+        "opened": "2026-03",
+        "decision": "borrow",
+        "time_to_fill_days": 6,
+        "ramp_note": null,
+        "first_year_cost_lpa": 24,
+        "outcome_text": "Contract ended, knowledge lost",
+        "evidence_ids": [
+          "REQ-003",
+          "C-09"
+        ]
+      },
+      {
+        "req_id": "REQ-002",
+        "opened": "2025-10",
+        "decision": "buy",
+        "time_to_fill_days": 74,
+        "ramp_note": null,
+        "first_year_cost_lpa": 33,
+        "outcome_text": "Left after 7 months (counter offer)",
+        "evidence_ids": [
+          "REQ-002",
+          "E-020"
+        ]
+      },
+      {
+        "req_id": "REQ-001",
+        "opened": "2024-11",
+        "decision": "buy",
+        "time_to_fill_days": 68,
+        "ramp_note": null,
+        "first_year_cost_lpa": 31,
+        "outcome_text": "Left after 9 months (role mismatch)",
+        "evidence_ids": [
+          "REQ-001",
+          "E-018"
+        ]
+      }
+    ],
+    "averages_by_decision": [
+      {
+        "decision": "build",
+        "count": 1,
+        "avg_tenure_months": null,
+        "avg_cost_lpa": 4,
+        "avg_time_to_fill_days": 0
+      },
+      {
+        "decision": "borrow",
+        "count": 1,
+        "avg_tenure_months": null,
+        "avg_cost_lpa": 24,
+        "avg_time_to_fill_days": 6
+      },
+      {
+        "decision": "buy",
+        "count": 2,
+        "avg_tenure_months": 8,
+        "avg_cost_lpa": 32,
+        "avg_time_to_fill_days": 71
+      }
+    ],
+    "patterns": [
+      {
+        "name": "churn",
+        "fired": true,
+        "text": "churn pattern: 2 external hires left in avg 8 months",
+        "risk_option": "buy",
+        "risk_penalty": 0.2
+      },
+      {
+        "name": "knowledge_loss",
+        "fired": true,
+        "text": "knowledge loss: 1 borrow ended without conversion",
+        "risk_option": "borrow",
+        "risk_penalty": 0.1
+      },
+      {
+        "name": "what_worked",
+        "fired": true,
+        "text": "The build is still in role.",
+        "risk_option": null,
+        "risk_penalty": 0
+      }
+    ],
+    "insight_text": "Pattern: external hires for this role left in under a year (average 8 months, 2 of 2). The one internal move is still in role. This requisition implies Buy. Your own history says that hasn't worked."
+  },
+  "redline": {
+    "constraints": [
+      {
+        "id": "c-location",
+        "kind": "location",
+        "value": "bengaluru, on-site",
+        "phrase": "Bengaluru, on-site",
+        "span_start": 29,
+        "span_end": 47,
+        "source": "stated",
+        "severity": "red",
+        "hover_text": "Only 14 matching candidates, P50 62 days to fill. Remote-India: 210 candidates, P50 28 days. Pune's P50 pay is 19% lower.",
+        "cost": {
+          "supply_delta": 196,
+          "days_delta": -34,
+          "rupees_delta_lpa": -3
+        },
+        "relaxed_value": "remote_india"
+      },
+      {
+        "id": "c-years",
+        "kind": "years",
+        "value": "5+ years",
+        "phrase": "5+ years",
+        "span_start": 49,
+        "span_end": 57,
+        "source": "stated",
+        "severity": "amber",
+        "hover_text": "Only 1 internal employee qualifies today (E-031, lead, Platform). 3 more with 3.5–4 years have an 80%+ skill match; changing to 3+ widens Build from 1 to 4 candidates.",
+        "cost": {
+          "supply_delta": null,
+          "days_delta": null,
+          "rupees_delta_lpa": null
+        },
+        "relaxed_value": "3+ years"
+      },
+      {
+        "id": "c-skill-kubernetes",
+        "kind": "skill",
+        "value": "must know Kubernetes",
+        "phrase": "must know React, Node.js and Kubernetes",
+        "span_start": 59,
+        "span_end": 98,
+        "source": "stated",
+        "severity": "red",
+        "hover_text": "This one skill removes 70% of supply (47 → 14). Contractor C-17 already has it; his contract ends in 4 weeks: conversion candidate.",
+        "cost": {
+          "supply_delta": 33,
+          "days_delta": null,
+          "rupees_delta_lpa": null
+        },
+        "relaxed_value": "nice-to-have"
+      },
+      {
+        "id": "c-budget",
+        "kind": "budget",
+        "value": "₹28L",
+        "phrase": "budget ₹28L",
+        "span_start": 100,
+        "span_end": 111,
+        "source": "stated",
+        "severity": "amber",
+        "hover_text": "12.5% below the Bengaluru Senior P50 of ₹32L. Expect about 1.25× longer time to fill and lower offer acceptance.",
+        "cost": {
+          "supply_delta": null,
+          "days_delta": null,
+          "rupees_delta_lpa": 4
+        },
+        "relaxed_value": "₹32L (market P50)"
+      },
+      {
+        "id": "c-deadline",
+        "kind": "deadline",
+        "value": "30 days",
+        "phrase": "need in 30 days",
+        "span_start": 113,
+        "span_end": 128,
+        "source": "stated",
+        "severity": "red",
+        "hover_text": "Not achievable via Buy (Bengaluru P80 is 81 days; even Remote-India P80 is 40 days). Only Borrow meets this.",
+        "cost": {
+          "supply_delta": null,
+          "days_delta": 51,
+          "rupees_delta_lpa": null
+        },
+        "relaxed_value": "81 days (Buy P80)"
+      }
+    ],
+    "constraint_order": [
+      "location",
+      "years",
+      "skill",
+      "budget",
+      "deadline"
+    ],
+    "scenarios": {
+      "10000": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "10001": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "10010": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "10011": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "10100": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "10101": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "10110": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "10111": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "11000": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "11001": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "11010": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "11011": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 28 days, ₹29L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 40,
+            "year_one_cost_lpa": 29,
+            "panel_line": "Hire in remote_india"
+          }
+        ]
+      },
+      "11100": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "11101": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "11110": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "11111": {
+        "top_option_id": "mix",
+        "panel_text": "Borrow E-045 + C-17: available now, ₹18L in year one.",
+        "options": [
+          {
+            "option_id": "mix",
+            "name": "Recommended mix",
+            "score": 90,
+            "ready_by_p80_days": 0,
+            "year_one_cost_lpa": 18,
+            "panel_line": "E-045 + C-17"
+          }
+        ]
+      },
+      "00000": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00001": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00010": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00011": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00100": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00101": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00110": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "00111": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01000": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01001": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01010": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01011": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01100": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01101": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01110": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      },
+      "01111": {
+        "top_option_id": "buy",
+        "panel_text": "Buy: P50 62 days, ₹32L.",
+        "options": [
+          {
+            "option_id": "buy",
+            "name": "Buy",
+            "score": 86,
+            "ready_by_p80_days": 81,
+            "year_one_cost_lpa": 32,
+            "panel_line": "Hire in bengaluru"
+          }
+        ]
+      }
+    }
+  },
+  "ripple": {
+    "candidates": [
+      {
+        "person_id": "E-031",
+        "display_name": "Karthik",
+        "match": 87,
+        "chain": {
+          "seat": "senior/Payments",
+          "person_id": "E-031",
+          "display_name": "Karthik",
+          "status": "green",
+          "reason": "Match 87%",
+          "children": [
+            {
+              "seat": "lead/Platform",
+              "person_id": null,
+              "display_name": null,
+              "status": "red",
+              "reason": "No internal backfill; external P50 76 days",
+              "children": []
+            }
+          ]
+        },
+        "net_impact": {
+          "days_to_fill_last_gap": 76,
+          "total_cost_lpa": 42,
+          "promotions": 0,
+          "red_flags": 2
+        }
+      },
+      {
+        "person_id": "E-045",
+        "display_name": "Priya",
+        "match": 81,
+        "chain": {
+          "seat": "senior/Payments",
+          "person_id": "E-045",
+          "display_name": "Priya",
+          "status": "green",
+          "reason": "Match 81%; ready week 6",
+          "children": [
+            {
+              "seat": "mid/Checkout",
+              "person_id": "E-072",
+              "display_name": "Rahul",
+              "status": "green",
+              "reason": "Internal backfill E-072 (match 76%); ready now",
+              "children": [
+                {
+                  "seat": "junior/Checkout",
+                  "person_id": null,
+                  "display_name": null,
+                  "status": "green",
+                  "reason": "External hire: P50 21 days, 100 candidates",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "net_impact": {
+          "days_to_fill_last_gap": 21,
+          "total_cost_lpa": 12,
+          "promotions": 2,
+          "red_flags": 0
+        }
+      }
+    ]
+  },
+  "options": {
+    "five": [
+      {
+        "id": "mix",
+        "name": "Recommended mix",
+        "what_it_means": "Priya + Arjun",
+        "ready_by_p80_days": 0,
+        "year_one_cost_lpa": 18,
+        "fit": "—",
+        "risk_label": "Medium",
+        "risk_value": 0.3,
+        "score": 89,
+        "reason": "Recommended mix combining bridge and build options",
+        "evidence_ids": [
+          "kubernetes",
+          "graphql",
+          "docker",
+          "react",
+          "nodejs",
+          "typescript",
+          "javascript",
+          "html_css",
+          "git",
+          "ci_cd",
+          "postgresql",
+          "rest_apis",
+          "jest"
+        ]
+      },
+      {
+        "id": "borrow",
+        "name": "Borrow",
+        "what_it_means": "Extend contractor C-17",
+        "ready_by_p80_days": 0,
+        "year_one_cost_lpa": 24,
+        "fit": "84%",
+        "risk_label": "Low",
+        "risk_value": 0.25,
+        "score": 87,
+        "reason": "C-17 available now; ₹24.0L/year",
+        "evidence_ids": []
+      },
+      {
+        "id": "build",
+        "name": "Build",
+        "what_it_means": "Promote E-045 via ripple chain",
+        "ready_by_p80_days": 42,
+        "year_one_cost_lpa": 12,
+        "fit": "81%",
+        "risk_label": "Low",
+        "risk_value": 0.15,
+        "score": 73,
+        "reason": "81% match; ready in 6 weeks",
+        "evidence_ids": [
+          "kubernetes",
+          "graphql",
+          "docker",
+          "react",
+          "nodejs",
+          "typescript",
+          "javascript",
+          "html_css",
+          "git",
+          "ci_cd",
+          "postgresql",
+          "rest_apis",
+          "jest"
+        ]
+      },
+      {
+        "id": "relocate",
+        "name": "Relocate",
+        "what_it_means": "Hire in remote_india",
+        "ready_by_p80_days": 40,
+        "year_one_cost_lpa": 29,
+        "fit": "Market",
+        "risk_label": "Medium",
+        "risk_value": 0.3,
+        "score": 62,
+        "reason": "remote_india: P80 40 days, ₹29.0L",
+        "evidence_ids": []
+      },
+      {
+        "id": "buy",
+        "name": "Buy",
+        "what_it_means": "Hire externally in bengaluru",
+        "ready_by_p80_days": 81,
+        "year_one_cost_lpa": 32,
+        "fit": "Market",
+        "risk_label": "Medium",
+        "risk_value": 0.3,
+        "score": 42,
+        "reason": "P80 81 days; ₹32.0L",
+        "evidence_ids": []
+      }
+    ],
+    "mixes": [
+      {
+        "id": "mix-34",
+        "name": "Priya + Arjun",
+        "atoms": [
+          "build-E-045",
+          "bridge-C-17"
+        ],
+        "score": 89,
+        "ready_by_p80_days": 0,
+        "year_one_cost_lpa": 18,
+        "reason": "Bridge-then-build strategy"
+      },
+      {
+        "id": "mix-820",
+        "name": "Priya + Arjun",
+        "atoms": [
+          "build-E-045",
+          "bridge-C-17",
+          "automate-None"
+        ],
+        "score": 88,
+        "ready_by_p80_days": 0,
+        "year_one_cost_lpa": 19,
+        "reason": "Alternative mix"
+      },
+      {
+        "id": "mix-3",
+        "name": "Arjun",
+        "atoms": [
+          "extend-C-17"
+        ],
+        "score": 87,
+        "ready_by_p80_days": 0,
+        "year_one_cost_lpa": 24,
+        "reason": "Alternative mix"
+      }
+    ],
+    "relocate_card": [
+      {
+        "location": "Remote-India",
+        "supply": 210,
+        "ttf_p50": 28,
+        "ttf_p80": 40,
+        "pay_p50_lpa": 29,
+        "score": 0.79
+      },
+      {
+        "location": "Hyderabad (on-site)",
+        "supply": 31,
+        "ttf_p50": 44,
+        "ttf_p80": 58,
+        "pay_p50_lpa": 30,
+        "score": 0.36
+      },
+      {
+        "location": "Pune (on-site)",
+        "supply": 26,
+        "ttf_p50": 47,
+        "ttf_p80": 62,
+        "pay_p50_lpa": 26,
+        "score": 0.34
+      },
+      {
+        "location": "Bengaluru (on-site, as requested)",
+        "supply": 14,
+        "ttf_p50": 62,
+        "ttf_p80": 81,
+        "pay_p50_lpa": 32,
+        "score": 0
+      }
+    ],
+    "market_card": {
+      "location": "bengaluru",
+      "level": "senior",
+      "supply": 14,
+      "demand": 8,
+      "sal_p25": 24,
+      "sal_p50": 32,
+      "sal_p75": 40,
+      "ttf_p50": 62,
+      "ttf_p80": 81
+    },
+    "contractor_cards": [
+      {
+        "person_id": "C-17",
+        "display_name": "Arjun",
+        "fit": 84,
+        "availability": "Contract ends in 4 weeks",
+        "extend_cost_lpa": 24,
+        "convert_saving_lpa": null,
+        "conversion_signal": true,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-17"
+        ]
+      },
+      {
+        "person_id": "C-09",
+        "display_name": "Suresh",
+        "fit": 33,
+        "availability": "Contract ends in 1 weeks",
+        "extend_cost_lpa": 24,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-09"
+        ]
+      },
+      {
+        "person_id": "C-03",
+        "display_name": "Diya",
+        "fit": 33,
+        "availability": "Contract ends in 16 weeks",
+        "extend_cost_lpa": 29.6,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-03"
+        ]
+      },
+      {
+        "person_id": "C-05",
+        "display_name": "Nandini",
+        "fit": 33,
+        "availability": "Contract ends in 12 weeks",
+        "extend_cost_lpa": 21.1,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-05"
+        ]
+      },
+      {
+        "person_id": "C-08",
+        "display_name": "Amrita",
+        "fit": 31,
+        "availability": "Contract ends in 12 weeks",
+        "extend_cost_lpa": 19.8,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-08"
+        ]
+      },
+      {
+        "person_id": "C-11",
+        "display_name": "Dominic",
+        "fit": 33,
+        "availability": "Contract ends in 22 weeks",
+        "extend_cost_lpa": 28.9,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-11"
+        ]
+      },
+      {
+        "person_id": "C-14",
+        "display_name": "Siddharth",
+        "fit": 29,
+        "availability": "Contract ends in 24 weeks",
+        "extend_cost_lpa": 23.4,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-14"
+        ]
+      },
+      {
+        "person_id": "C-20",
+        "display_name": "Divya",
+        "fit": 26,
+        "availability": "Contract ends in 10 weeks",
+        "extend_cost_lpa": 17.4,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-20"
+        ]
+      },
+      {
+        "person_id": "C-22",
+        "display_name": "Simon",
+        "fit": 32,
+        "availability": "Contract ends in 7 weeks",
+        "extend_cost_lpa": 27.2,
+        "convert_saving_lpa": null,
+        "conversion_signal": false,
+        "compliance_flag": false,
+        "evidence_ids": [
+          "C-22"
+        ]
+      }
+    ],
+    "internal_candidates": [
+      {
+        "person_id": "E-031",
+        "display_name": "Karthik",
+        "match": 87,
+        "band": "redeploy",
+        "readiness_weeks": 0,
+        "build_cost_lpa": 0,
+        "evidence_ids": [
+          "terraform",
+          "python",
+          "react",
+          "nodejs",
+          "kubernetes",
+          "typescript",
+          "javascript",
+          "docker",
+          "aws",
+          "system_design",
+          "microservices",
+          "git",
+          "ci_cd",
+          "postgresql",
+          "rest_apis",
+          "linux"
+        ]
+      },
+      {
+        "person_id": "E-045",
+        "display_name": "Priya",
+        "match": 81,
+        "band": "Build",
+        "readiness_weeks": 6,
+        "build_cost_lpa": 0.5,
+        "evidence_ids": [
+          "kubernetes",
+          "graphql",
+          "docker",
+          "react",
+          "nodejs",
+          "typescript",
+          "javascript",
+          "html_css",
+          "git",
+          "ci_cd",
+          "postgresql",
+          "rest_apis",
+          "jest"
+        ]
+      },
+      {
+        "person_id": "E-072",
+        "display_name": "Rahul",
+        "match": 63,
+        "band": "long-term pipeline",
+        "readiness_weeks": 16,
+        "build_cost_lpa": 0.5,
+        "evidence_ids": [
+          "aws",
+          "mongodb",
+          "react",
+          "nodejs",
+          "javascript",
+          "html_css",
+          "git",
+          "jest"
+        ]
+      }
+    ],
+    "sourcing": {
+      "channels": [
+        {
+          "rank": 1,
+          "channel": "Past finalists (ATS rediscovery)",
+          "evidence": "3 candidates reached the final round for this role in the last 12 months and were not hired (offer declined or headcount closed); 2 open to remote; all opted in to the talent pool",
+          "use_for": "Buy / Relocate"
+        },
+        {
+          "rank": 2,
+          "channel": "Employee referral",
+          "evidence": "Fill rate 38%, median 34 days to hire",
+          "use_for": "Buy / Relocate"
+        },
+        {
+          "rank": 3,
+          "channel": "Staffing supplier A (via MSP)",
+          "evidence": "Fill rate 45%, median 9 days to first submission, bill rate within budget",
+          "use_for": "Borrow"
+        },
+        {
+          "rank": 4,
+          "channel": "Job board",
+          "evidence": "Fill rate 22%, median 52 days to hire",
+          "use_for": "Buy"
+        },
+        {
+          "rank": null,
+          "channel": "Campus",
+          "evidence": "Not applicable for Senior level",
+          "use_for": "--"
+        }
+      ],
+      "past_finalists": [
+        {
+          "candidate_id": "PF-01",
+          "stage_reached": "final",
+          "outcome": "declined",
+          "decided_on": "2026-04-15",
+          "open_to_remote": true
+        },
+        {
+          "candidate_id": "PF-02",
+          "stage_reached": "final",
+          "outcome": "closed",
+          "decided_on": "2026-02-10",
+          "open_to_remote": true
+        },
+        {
+          "candidate_id": "PF-03",
+          "stage_reached": "final",
+          "outcome": "declined",
+          "decided_on": "2025-12-01",
+          "open_to_remote": false
+        }
+      ],
+      "suppliers": [
+        {
+          "supplier_id": "SUP-01",
+          "name": "Staffing Supplier A",
+          "fill_rate": 0.45,
+          "median_days_to_submit": 9,
+          "avg_bill_rate": 2
+        },
+        {
+          "supplier_id": "SUP-02",
+          "name": "Staffing Supplier B",
+          "fill_rate": 0.3,
+          "median_days_to_submit": 14,
+          "avg_bill_rate": 2.2
+        },
+        {
+          "supplier_id": "SUP-03",
+          "name": "Staffing Supplier C",
+          "fill_rate": 0.25,
+          "median_days_to_submit": 18,
+          "avg_bill_rate": 1.8
+        }
+      ]
+    },
+    "decision_boundaries": [
+      "Relaxing location + skill changes top option from buy to mix."
+    ],
+    "weights": {
+      "speed": 0.4,
+      "cost": 0.2,
+      "fit": 0.2,
+      "risk": 0.15,
+      "strategic": 0.05
+    }
+  },
+  "brief": {
+    "sections": [
+      {
+        "key": "request",
+        "title": "The request, as received and as challenged",
+        "markdown": "**Original:** \"Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.\"\n\n**Redline marks:** 3 red (location, skill, deadline), 2 amber (years, budget).\n\n**Self-report risk items:** 3 skill(s) with self-report-only evidence.\n\n**Déjà Req penalty:** buy +0.20 risk (churn pattern: 2 external hires left in avg 8 months).\n\n**Déjà Req penalty:** borrow +0.10 risk (knowledge loss: 1 borrow ended without conversion).\n\n**Assumption Ledger:** see Redline details above."
+      },
+      {
+        "key": "history",
+        "title": "What happened last time",
+        "markdown": "4 past requisitions for this role. External hires left in under a year (avg 8 months, 2 of 2). The one internal move is still in role, rated Exceeds. Cost story: Buy spent ₹64L vs Build ₹4L (₹60L difference). Pattern: external hires for this role left in under a year (average 8 months, 2 of 2). The one internal move is still in role. This requisition implies Buy. Your own history says that hasn't worked."
+      },
+      {
+        "key": "supply",
+        "title": "Supply indicators",
+        "markdown": "| Location | Supply | P50 TTF | P80 TTF |\n|---|---|---|---|\n| remote_india | 210 | 28 days | 40 days |\n| hyderabad | 31 | 44 days | 58 days |\n| pune | 26 | 47 days | 62 days |\n| bengaluru | 14 | 62 days | 81 days |"
+      },
+      {
+        "key": "internal",
+        "title": "Internal matches and development paths",
+        "markdown": "- **Karthik**: 87% match, redeploy band. ⚠ Bus factor: terraform. 2 red flag(s) in chain.\n- **Priya**: 81% match, Build band. Ready week 6 (upskill ₹0.5L).\n- **Rahul**: 63% match, long-term pipeline band. Ready week 16 (upskill ₹0.5L)."
+      },
+      {
+        "key": "contractors",
+        "title": "Contractor options",
+        "markdown": "- **Arjun (C-17)**: 84% match. Contract ends in 4 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L. Conversion signal: positive.\n- **Suresh (C-09)**: 33% match. Contract ends in 1 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L.\n- **Diya (C-03)**: 33% match. Contract ends in 16 weeks. 12-month extension ₹29.6L, 3-month bridge ₹7.4L.\n- **Nandini (C-05)**: 33% match. Contract ends in 12 weeks. 12-month extension ₹21.1L, 3-month bridge ₹5.28L.\n- **Amrita (C-08)**: 31% match. Contract ends in 12 weeks. 12-month extension ₹19.8L, 3-month bridge ₹4.95L.\n- **Dominic (C-11)**: 33% match. Contract ends in 22 weeks. 12-month extension ₹28.9L, 3-month bridge ₹7.22L.\n- **Siddharth (C-14)**: 29% match. Contract ends in 24 weeks. 12-month extension ₹23.4L, 3-month bridge ₹5.85L.\n- **Divya (C-20)**: 26% match. Contract ends in 10 weeks. 12-month extension ₹17.4L, 3-month bridge ₹4.35L.\n- **Simon (C-22)**: 32% match. Contract ends in 7 weeks. 12-month extension ₹27.2L, 3-month bridge ₹6.8L."
+      },
+      {
+        "key": "compensation",
+        "title": "Compensation guidance",
+        "markdown": "Bengaluru Senior: P25 ₹24L, P50 ₹32L, P75 ₹40L. Budget ₹28L is 12.5% below P50. Expect ~1.14× longer time to fill and lower offer acceptance."
+      },
+      {
+        "key": "locations",
+        "title": "Location alternatives",
+        "markdown": "remote_india: 210 candidates, P50 28 days, ₹29L (score 0.79). hyderabad: 31 candidates, P50 44 days, ₹30L (score 0.36). pune: 26 candidates, P50 47 days, ₹26L (score 0.34). bengaluru: 14 candidates, P50 62 days, ₹32L (score 0.00). remote_india P50 pay is 9% below bengaluru."
+      },
+      {
+        "key": "options",
+        "title": "Option comparison and recommendation",
+        "markdown": "| Option | Score | Ready by | Cost | Risk |\n|---|---|---|---|---|\n| Build | 73 | Week 6 | ₹12L | Low |\n| Buy | 42 | Week 11 | ₹32L | Medium |\n| Borrow | 87 | Day 0 | ₹24L | Low |\n| Relocate | 62 | Week 5 | ₹29L | Medium |\n| Automate | add-on | Day 7 | ₹1L | Low |\n\n**Recommended mix:** mix-34 — score 89, ₹18L."
+      },
+      {
+        "key": "sourcing",
+        "title": "Sourcing channels and talent pools",
+        "markdown": "1. Past finalists (ATS rediscovery): 3 candidates reached the final round for this role in the last 12 months and were not hired (offer declined or headcount closed); 2 open to remote; all opted in to the talent pool\n2. Employee referral: Fill rate 38%, median 34 days to hire\n3. Staffing supplier A (via MSP): Fill rate 45%, median 9 days to first submission, bill rate within budget\n4. Job board: Fill rate 22%, median 52 days to hire\n- Campus: Not applicable for Senior level"
+      },
+      {
+        "key": "actions",
+        "title": "Recommended next actions",
+        "markdown": "1. Extend C-17 contract for 3-month bridge.\n2. Start E-045 upskill (6 weeks).\n3. Contact 3 past finalists from ATS."
+      },
+      {
+        "key": "data_quality",
+        "title": "Evidence and data quality",
+        "markdown": "Shortlist: 2 skill conflicts, 1 stale score, 3 self-report-only skills. All market data is simulated. Reference data fetched on 2026-10-08T17:31:10.944870+00:00. Skill/occupation data © O*NET (CC BY 4.0) and ESCO."
+      },
+      {
+        "key": "decision",
+        "title": "Human decision",
+        "markdown": "Pending approval. Approver, choice, reason and timestamp will be recorded in the Decision Log."
+      }
+    ],
+    "markdown": "# Workforce Intelligence Brief\n\n## The request, as received and as challenged\n\n**Original:** \"Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.\"\n\n**Redline marks:** 3 red (location, skill, deadline), 2 amber (years, budget).\n\n**Self-report risk items:** 3 skill(s) with self-report-only evidence.\n\n**Déjà Req penalty:** buy +0.20 risk (churn pattern: 2 external hires left in avg 8 months).\n\n**Déjà Req penalty:** borrow +0.10 risk (knowledge loss: 1 borrow ended without conversion).\n\n**Assumption Ledger:** see Redline details above.\n\n## What happened last time\n\n4 past requisitions for this role. External hires left in under a year (avg 8 months, 2 of 2). The one internal move is still in role, rated Exceeds. Cost story: Buy spent ₹64L vs Build ₹4L (₹60L difference). Pattern: external hires for this role left in under a year (average 8 months, 2 of 2). The one internal move is still in role. This requisition implies Buy. Your own history says that hasn't worked.\n\n## Supply indicators\n\n| Location | Supply | P50 TTF | P80 TTF |\n|---|---|---|---|\n| remote_india | 210 | 28 days | 40 days |\n| hyderabad | 31 | 44 days | 58 days |\n| pune | 26 | 47 days | 62 days |\n| bengaluru | 14 | 62 days | 81 days |\n\n## Internal matches and development paths\n\n- **Karthik**: 87% match, redeploy band. ⚠ Bus factor: terraform. 2 red flag(s) in chain.\n- **Priya**: 81% match, Build band. Ready week 6 (upskill ₹0.5L).\n- **Rahul**: 63% match, long-term pipeline band. Ready week 16 (upskill ₹0.5L).\n\n## Contractor options\n\n- **Arjun (C-17)**: 84% match. Contract ends in 4 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L. Conversion signal: positive.\n- **Suresh (C-09)**: 33% match. Contract ends in 1 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L.\n- **Diya (C-03)**: 33% match. Contract ends in 16 weeks. 12-month extension ₹29.6L, 3-month bridge ₹7.4L.\n- **Nandini (C-05)**: 33% match. Contract ends in 12 weeks. 12-month extension ₹21.1L, 3-month bridge ₹5.28L.\n- **Amrita (C-08)**: 31% match. Contract ends in 12 weeks. 12-month extension ₹19.8L, 3-month bridge ₹4.95L.\n- **Dominic (C-11)**: 33% match. Contract ends in 22 weeks. 12-month extension ₹28.9L, 3-month bridge ₹7.22L.\n- **Siddharth (C-14)**: 29% match. Contract ends in 24 weeks. 12-month extension ₹23.4L, 3-month bridge ₹5.85L.\n- **Divya (C-20)**: 26% match. Contract ends in 10 weeks. 12-month extension ₹17.4L, 3-month bridge ₹4.35L.\n- **Simon (C-22)**: 32% match. Contract ends in 7 weeks. 12-month extension ₹27.2L, 3-month bridge ₹6.8L.\n\n## Compensation guidance\n\nBengaluru Senior: P25 ₹24L, P50 ₹32L, P75 ₹40L. Budget ₹28L is 12.5% below P50. Expect ~1.14× longer time to fill and lower offer acceptance.\n\n## Location alternatives\n\nremote_india: 210 candidates, P50 28 days, ₹29L (score 0.79). hyderabad: 31 candidates, P50 44 days, ₹30L (score 0.36). pune: 26 candidates, P50 47 days, ₹26L (score 0.34). bengaluru: 14 candidates, P50 62 days, ₹32L (score 0.00). remote_india P50 pay is 9% below bengaluru.\n\n## Option comparison and recommendation\n\n| Option | Score | Ready by | Cost | Risk |\n|---|---|---|---|---|\n| Build | 73 | Week 6 | ₹12L | Low |\n| Buy | 42 | Week 11 | ₹32L | Medium |\n| Borrow | 87 | Day 0 | ₹24L | Low |\n| Relocate | 62 | Week 5 | ₹29L | Medium |\n| Automate | add-on | Day 7 | ₹1L | Low |\n\n**Recommended mix:** mix-34 — score 89, ₹18L.\n\n## Sourcing channels and talent pools\n\n1. Past finalists (ATS rediscovery): 3 candidates reached the final round for this role in the last 12 months and were not hired (offer declined or headcount closed); 2 open to remote; all opted in to the talent pool\n2. Employee referral: Fill rate 38%, median 34 days to hire\n3. Staffing supplier A (via MSP): Fill rate 45%, median 9 days to first submission, bill rate within budget\n4. Job board: Fill rate 22%, median 52 days to hire\n- Campus: Not applicable for Senior level\n\n## Recommended next actions\n\n1. Extend C-17 contract for 3-month bridge.\n2. Start E-045 upskill (6 weeks).\n3. Contact 3 past finalists from ATS.\n\n## Evidence and data quality\n\nShortlist: 2 skill conflicts, 1 stale score, 3 self-report-only skills. All market data is simulated. Reference data fetched on 2026-10-08T17:31:10.944870+00:00. Skill/occupation data © O*NET (CC BY 4.0) and ESCO.\n\n## Human decision\n\nPending approval. Approver, choice, reason and timestamp will be recorded in the Decision Log.",
+    "html": "<!DOCTYPE html>\n<html lang=\"en\"><head><meta charset=\"utf-8\">\n<title>Workforce Intelligence Brief</title>\n<style>body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #1a1a1a; }\nh1 { font-size: 1.6em; border-bottom: 2px solid #333; padding-bottom: 0.3em; }\nh2 { font-size: 1.2em; margin-top: 1.5em; color: #2c3e50; }\ntable { border-collapse: collapse; width: 100%; margin: 0.5em 0; }\nth, td { border: 1px solid #ccc; padding: 0.4em 0.8em; text-align: left; }\nth { background: #f5f5f5; }\nstrong { font-weight: 600; }\n@media print { body { margin: 0; } }\n</style>\n</head><body>\n<h1>Workforce Intelligence Brief</h1>\n<h2>The request, as received and as challenged</h2>\n<p><strong>Original:</strong> &quot;Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.&quot;</p>\n<p><strong>Redline marks:</strong> 3 red (location, skill, deadline), 2 amber (years, budget).</p>\n<p><strong>Self-report risk items:</strong> 3 skill(s) with self-report-only evidence.</p>\n<p><strong>Déjà Req penalty:</strong> buy +0.20 risk (churn pattern: 2 external hires left in avg 8 months).</p>\n<p><strong>Déjà Req penalty:</strong> borrow +0.10 risk (knowledge loss: 1 borrow ended without conversion).</p>\n<p><strong>Assumption Ledger:</strong> see Redline details above.</p>\n<h2>What happened last time</h2>\n<p>4 past requisitions for this role. External hires left in under a year (avg 8 months, 2 of 2). The one internal move is still in role, rated Exceeds. Cost story: Buy spent ₹64L vs Build ₹4L (₹60L difference). Pattern: external hires for this role left in under a year (average 8 months, 2 of 2). The one internal move is still in role. This requisition implies Buy. Your own history says that hasn&#x27;t worked.</p>\n<h2>Supply indicators</h2>\n<table>\n<thead><tr><th>Location</th><th>Supply</th><th>P50 TTF</th><th>P80 TTF</th></tr></thead><tbody>\n<tr><td>remote_india</td><td>210</td><td>28 days</td><td>40 days</td></tr>\n<tr><td>hyderabad</td><td>31</td><td>44 days</td><td>58 days</td></tr>\n<tr><td>pune</td><td>26</td><td>47 days</td><td>62 days</td></tr>\n<tr><td>bengaluru</td><td>14</td><td>62 days</td><td>81 days</td></tr>\n</tbody></table>\n<h2>Internal matches and development paths</h2>\n<ul>\n<li><strong>Karthik</strong>: 87% match, redeploy band. ⚠ Bus factor: terraform. 2 red flag(s) in chain.</li>\n<li><strong>Priya</strong>: 81% match, Build band. Ready week 6 (upskill ₹0.5L).</li>\n<li><strong>Rahul</strong>: 63% match, long-term pipeline band. Ready week 16 (upskill ₹0.5L).</li>\n</ul>\n<h2>Contractor options</h2>\n<ul>\n<li><strong>Arjun (C-17)</strong>: 84% match. Contract ends in 4 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L. Conversion signal: positive.</li>\n<li><strong>Suresh (C-09)</strong>: 33% match. Contract ends in 1 weeks. 12-month extension ₹24.0L, 3-month bridge ₹6.0L.</li>\n<li><strong>Diya (C-03)</strong>: 33% match. Contract ends in 16 weeks. 12-month extension ₹29.6L, 3-month bridge ₹7.4L.</li>\n<li><strong>Nandini (C-05)</strong>: 33% match. Contract ends in 12 weeks. 12-month extension ₹21.1L, 3-month bridge ₹5.28L.</li>\n<li><strong>Amrita (C-08)</strong>: 31% match. Contract ends in 12 weeks. 12-month extension ₹19.8L, 3-month bridge ₹4.95L.</li>\n<li><strong>Dominic (C-11)</strong>: 33% match. Contract ends in 22 weeks. 12-month extension ₹28.9L, 3-month bridge ₹7.22L.</li>\n<li><strong>Siddharth (C-14)</strong>: 29% match. Contract ends in 24 weeks. 12-month extension ₹23.4L, 3-month bridge ₹5.85L.</li>\n<li><strong>Divya (C-20)</strong>: 26% match. Contract ends in 10 weeks. 12-month extension ₹17.4L, 3-month bridge ₹4.35L.</li>\n<li><strong>Simon (C-22)</strong>: 32% match. Contract ends in 7 weeks. 12-month extension ₹27.2L, 3-month bridge ₹6.8L.</li>\n</ul>\n<h2>Compensation guidance</h2>\n<p>Bengaluru Senior: P25 ₹24L, P50 ₹32L, P75 ₹40L. Budget ₹28L is 12.5% below P50. Expect ~1.14× longer time to fill and lower offer acceptance.</p>\n<h2>Location alternatives</h2>\n<p>remote_india: 210 candidates, P50 28 days, ₹29L (score 0.79). hyderabad: 31 candidates, P50 44 days, ₹30L (score 0.36). pune: 26 candidates, P50 47 days, ₹26L (score 0.34). bengaluru: 14 candidates, P50 62 days, ₹32L (score 0.00). remote_india P50 pay is 9% below bengaluru.</p>\n<h2>Option comparison and recommendation</h2>\n<table>\n<thead><tr><th>Option</th><th>Score</th><th>Ready by</th><th>Cost</th><th>Risk</th></tr></thead><tbody>\n<tr><td>Build</td><td>73</td><td>Week 6</td><td>₹12L</td><td>Low</td></tr>\n<tr><td>Buy</td><td>42</td><td>Week 11</td><td>₹32L</td><td>Medium</td></tr>\n<tr><td>Borrow</td><td>87</td><td>Day 0</td><td>₹24L</td><td>Low</td></tr>\n<tr><td>Relocate</td><td>62</td><td>Week 5</td><td>₹29L</td><td>Medium</td></tr>\n<tr><td>Automate</td><td>add-on</td><td>Day 7</td><td>₹1L</td><td>Low</td></tr>\n</tbody></table>\n<p><strong>Recommended mix:</strong> mix-34 — score 89, ₹18L.</p>\n<h2>Sourcing channels and talent pools</h2>\n<ol>\n<li>Past finalists (ATS rediscovery): 3 candidates reached the final round for this role in the last 12 months and were not hired (offer declined or headcount closed); 2 open to remote; all opted in to the talent pool</li>\n<li>Employee referral: Fill rate 38%, median 34 days to hire</li>\n<li>Staffing supplier A (via MSP): Fill rate 45%, median 9 days to first submission, bill rate within budget</li>\n<li>Job board: Fill rate 22%, median 52 days to hire</li>\n<li>Campus: Not applicable for Senior level</li>\n</ol>\n<h2>Recommended next actions</h2>\n<ol>\n<li>Extend C-17 contract for 3-month bridge.</li>\n<li>Start E-045 upskill (6 weeks).</li>\n<li>Contact 3 past finalists from ATS.</li>\n</ol>\n<h2>Evidence and data quality</h2>\n<p>Shortlist: 2 skill conflicts, 1 stale score, 3 self-report-only skills. All market data is simulated. Reference data fetched on 2026-10-08T17:31:10.944870+00:00. Skill/occupation data © O*NET (CC BY 4.0) and ESCO.</p>\n<h2>Human decision</h2>\n<p>Pending approval. Approver, choice, reason and timestamp will be recorded in the Decision Log.</p>\n</body></html>"
+  },
+  "data_quality": {
+    "conflicts": 2,
+    "stale": 1,
+    "self_report_only": 3,
+    "line": "Shortlist: 2 skill conflicts, 1 stale score, 3 self-report-only skills"
+  },
+  "tokens": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_hit": false,
+    "est_cost": 0
+  }
+}

@@ -2,9 +2,9 @@ import { EmptyState } from "../components/ui";
 import { useAppState } from "../state/context";
 
 export function Options() {
-  const { analysis } = useAppState();
+  const { result } = useAppState();
 
-  if (!analysis) {
+  if (!result) {
     return (
       <section aria-labelledby="options-heading">
         <h2 id="options-heading" className="sr-only">

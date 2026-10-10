@@ -1,0 +1,151 @@
+[
+  {
+    "skill": "kubernetes",
+    "value": 40,
+    "source": "assessment",
+    "observed_on": "2026-08-18",
+    "confidence": 1,
+    "stale": false,
+    "conflict": true,
+    "tooltip": "Assessment score 40/100, taken 18 Aug 2026. Also self-reported as 'expert' (ignored: assessment is more recent and more reliable). ⚠ Sources disagree by 50 points.",
+    "ignored": [
+      {
+        "source": "self",
+        "value": 90,
+        "reason": "assessment is more reliable"
+      }
+    ]
+  },
+  {
+    "skill": "graphql",
+    "value": 39,
+    "source": "self",
+    "observed_on": "2025-02-15",
+    "confidence": 0.7,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Self-reported as 'intermediate', Feb 2025. No assessment, certification or project record. Discounted to 39% (× 0.7).",
+    "ignored": []
+  },
+  {
+    "skill": "docker",
+    "value": 70,
+    "source": "assessment",
+    "observed_on": "2024-09-15",
+    "confidence": 0.85,
+    "stale": true,
+    "conflict": false,
+    "tooltip": "Assessment score 70/100, taken 15 Sep 2024.",
+    "ignored": []
+  },
+  {
+    "skill": "react",
+    "value": 90,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 90/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "nodejs",
+    "value": 88,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 88/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "typescript",
+    "value": 82,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 82/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "javascript",
+    "value": 85,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 85/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "html_css",
+    "value": 82,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 82/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "git",
+    "value": 85,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 85/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "ci_cd",
+    "value": 70,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 70/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "postgresql",
+    "value": 78,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 78/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "rest_apis",
+    "value": 80,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 80/100, taken 1 May 2026.",
+    "ignored": []
+  },
+  {
+    "skill": "jest",
+    "value": 80,
+    "source": "assessment",
+    "observed_on": "2026-05-01",
+    "confidence": 1,
+    "stale": false,
+    "conflict": false,
+    "tooltip": "Assessment score 80/100, taken 1 May 2026.",
+    "ignored": []
+  }
+]
