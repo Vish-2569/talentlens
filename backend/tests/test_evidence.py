@@ -78,7 +78,7 @@ def test_normalize_self_expert():
 # ── TC23: Rahul AWS ───────────────────────────────────────────────────
 
 
-def test_rahul_aws(store):
+def test_tc23_rahul_aws(store):
     ev = store.evidence.skill_evidence(person_id="E-072")
     scores = resolve_person("E-072", ev, today=TODAY)
     aws = next(s for s in scores if s["skill"] == "aws")
@@ -93,7 +93,7 @@ def test_rahul_aws(store):
 # ── TC24: Self-only intermediate → 39 ────────────────────────────────
 
 
-def test_self_only_intermediate_39(store):
+def test_tc24_self_only_intermediate_39(store):
     ev = store.evidence.skill_evidence(person_id="E-045")
     scores = resolve_person("E-045", ev, today=TODAY)
     gql = next(s for s in scores if s["skill"] == "graphql")
@@ -105,7 +105,7 @@ def test_self_only_intermediate_39(store):
 # ── TC25: Priya Kubernetes conflict ───────────────────────────────────
 
 
-def test_priya_kubernetes_conflict(store):
+def test_tc25_priya_kubernetes_conflict(store):
     ev = store.evidence.skill_evidence(person_id="E-045")
     scores = resolve_person("E-045", ev, today=TODAY)
     k8s = next(s for s in scores if s["skill"] == "kubernetes")
@@ -130,7 +130,7 @@ def test_karthik_terraform_certification(store):
 # ── TC26: Stale assessment + recent certification → cert used ─────────
 
 
-def test_stale_assessment_cert_wins():
+def test_tc26_stale_assessment_cert_wins():
     ev_df = pd.DataFrame([
         {"person_id": "T-01", "skill_id": "aws", "source": "assessment",
          "value": "80", "observed_on": "2024-01-01", "detail": ""},
@@ -149,7 +149,7 @@ def test_stale_assessment_cert_wins():
 # ── TC27: Two assessments → most recent used ──────────────────────────
 
 
-def test_two_assessments_most_recent():
+def test_tc27_two_assessments_most_recent():
     ev_df = pd.DataFrame([
         {"person_id": "T-02", "skill_id": "react", "source": "assessment",
          "value": "60", "observed_on": "2025-06-01", "detail": ""},
@@ -177,7 +177,7 @@ def test_conflict_boundary_29_no_conflict():
     assert aws["conflict"] is False
 
 
-def test_conflict_boundary_30_conflict():
+def test_tc28_conflict_boundary_30_conflict():
     ev_df = pd.DataFrame([
         {"person_id": "T-04", "skill_id": "aws", "source": "assessment",
          "value": "60", "observed_on": "2026-06-01", "detail": ""},
@@ -205,29 +205,3 @@ def test_data_quality_counts(store):
     assert "conflict" in dq["line"].lower()
     assert "stale" in dq["line"].lower()
     assert "self-report" in dq["line"].lower()
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc23_rahul_aws_35(store):
-    test_rahul_aws(store)
-
-
-def test_tc24_self_only_intermediate_39(store):
-    test_self_only_intermediate_39(store)
-
-
-def test_tc25_priya_kubernetes_conflict(store):
-    test_priya_kubernetes_conflict(store)
-
-
-def test_tc26_stale_assessment_cert_wins():
-    test_stale_assessment_cert_wins()
-
-
-def test_tc27_two_assessments_most_recent():
-    test_two_assessments_most_recent()
-
-
-def test_tc28_conflict_boundary():
-    test_conflict_boundary_30_conflict()

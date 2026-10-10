@@ -59,7 +59,7 @@ def test_priya_in_top2(result):
     assert "E-045" in ids
 
 
-def test_priya_chain_3_nodes(result):
+def test_tc09_priya_chain_3_nodes(result):
     priya = _get(result, "E-045")
     assert len(priya["chain"]) == 3
 
@@ -100,7 +100,7 @@ def test_karthik_in_top2(result):
     assert "E-031" in ids
 
 
-def test_karthik_bus_factor_terraform(result):
+def test_tc10_karthik_bus_factor_terraform(result):
     karthik = _get(result, "E-031")
     all_flags = [f for node in karthik["chain"] for f in node.get("bus_factor_flags", [])]
     assert "terraform" in all_flags, f"Expected terraform in bus_factor_flags, got: {all_flags}"
@@ -122,7 +122,7 @@ def test_karthik_dead_end_is_lead_platform(result):
 # ── TC11: open_to_move=false never appears; depth cap ───────────────
 
 
-def test_closed_employees_not_in_chains(result):
+def test_tc11_closed_employees_not_in_chains(result):
     for cand in result["candidates"]:
         for node in cand["chain"]:
             pid = node.get("person_id")
@@ -230,17 +230,3 @@ def test_backfill_69_9_rejected(store):
             today=TODAY,
         )
         assert chain[0]["person_id"] is None, "69.9 should fall through to external hire"
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc09_priya_chain_3_green_nodes(result):
-    test_priya_chain_3_nodes(result)
-
-
-def test_tc10_karthik_bus_factor_terraform(result):
-    test_karthik_bus_factor_terraform(result)
-
-
-def test_tc11_closed_employees_not_in_chains(result):
-    test_closed_employees_not_in_chains(result)

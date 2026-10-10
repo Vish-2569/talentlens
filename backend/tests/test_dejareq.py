@@ -44,7 +44,7 @@ def _run(store, parsed_req):
 # ── TC01: Demo requisition → banner, 4 timeline rows ───────────────
 
 
-def test_demo_banner_4_times(store):
+def test_tc01_demo_banner_4_times(store):
     result = _run(store, DEMO_PARSED_REQ)
     assert "4 times in the last 2 years" in result["banner"]
 
@@ -69,7 +69,7 @@ def test_demo_timeline_evidence_ids(store):
 # ── TC02: Junior requisition → no banner ────────────────────────────
 
 
-def test_junior_no_banner(store):
+def test_tc02_junior_no_banner(store):
     result = _run(store, JUNIOR_PARSED_REQ)
     assert "banner" not in result
     assert result["match_count"] == 0
@@ -78,7 +78,7 @@ def test_junior_no_banner(store):
 # ── TC03: Churn, knowledge loss, cost story ─────────────────────────
 
 
-def test_avg_external_tenure_8_months(store):
+def test_tc03_avg_external_tenure_8_months(store):
     result = _run(store, DEMO_PARSED_REQ)
     assert result["averages"]["buy"]["avg_tenure_months"] == 8
 
@@ -171,26 +171,3 @@ def test_low_overlap_req_no_match(store):
         today=TODAY,
     )
     assert result["match_count"] == 0
-
-
-# ── TC-named aliases (Phase 14A: test names must contain TC ID) ───────────────
-
-def test_tc01_demo_banner_4_rows(store):
-    result = _run(store, DEMO_PARSED_REQ)
-    assert "4 times in the last 2 years" in result["banner"]
-    assert len(result["timeline"]) == 4
-
-
-def test_tc02_junior_no_banner(store):
-    result = _run(store, JUNIOR_PARSED_REQ)
-    assert result.get("match_count", 0) == 0
-
-
-def test_tc03_avg_external_tenure_8_months(store):
-    result = _run(store, DEMO_PARSED_REQ)
-    buy = result["averages"]["buy"]
-    assert buy["avg_tenure_months"] == pytest.approx(8.0, abs=0.5)
-
-
-def test_tc04_low_overlap_no_match(store):
-    test_low_overlap_req_no_match(store)

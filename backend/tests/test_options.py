@@ -198,15 +198,22 @@ def test_options_five_names(result):
     assert names == {"Build", "Buy", "Borrow", "Relocate", "Automate"}
 
 
-def test_options_required_fields(result):
+def test_tc33_options_five_required_fields(result):
+    """TC33: all 5 options have time, cost, fit, risk_label, reason; mix is scored."""
     required = {
         "option_id", "name", "what_it_means", "ready_by_p80_days",
         "year_one_cost_lpa", "fit", "risk_label", "score",
         "one_line_reason", "evidence_ids",
     }
+    assert len(result["options"]) == 5, "Exactly 5 options required"
     for opt in result["options"]:
         missing = required - set(opt.keys())
         assert not missing, f"{opt['name']} missing fields: {missing}"
+    # Mix must be numerically scored (not "add-on")
+    top_mixes = result.get("top_mixes", [])
+    assert top_mixes and isinstance(top_mixes[0]["score"], (int, float)), (
+        "Mix option must carry a numeric score"
+    )
 
 
 def test_options_time_is_int(result):
@@ -351,7 +358,7 @@ def test_weights_tight_deadline_boosts_speed():
 # ── TC29: Self-report-only must-have adds +0.05 risk ────────────────────────
 
 
-def test_self_report_penalty_synthetic():
+def test_tc29_self_report_penalty_synthetic():
     evidence = {
         "E-999": [
             {"skill": "graphql", "source": "self", "ignored": [],
@@ -681,9 +688,3 @@ def test_tiebreak_fewer_atoms_wins(result):
         f"bridge+build (idx {bb_idx}) must rank above "
         f"bridge+build+automate (idx {bba_idx})"
     )
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc29_self_report_adds_risk():
-    test_self_report_penalty_synthetic()

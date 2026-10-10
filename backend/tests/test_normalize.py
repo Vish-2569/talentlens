@@ -27,7 +27,7 @@ def _skill(store, token):
 # ── TC31: Title normalization ─────────────────────────────────────────
 
 
-def test_sde2_full_stack_mid(store):
+def test_tc31_sde2_full_stack_mid(store):
     r = _title(store, "SDE-2 (Full Stack)", "hris")
     assert r["role"] == "Full Stack Developer"
     assert r["level"] == "mid"
@@ -74,7 +74,7 @@ def test_full_stack_dev_iii_senior(store):
 # ── TC32: Rejection ───────────────────────────────────────────────────
 
 
-def test_data_analyst_rejected(store):
+def test_tc32_data_analyst_rejected(store):
     r = _title(store, "Data Analyst", "jobboard")
     assert r["rejected"] is True
     assert "reason" in r
@@ -88,7 +88,7 @@ def test_random_nonsense_rejected(store):
 # ── TC13: Skill normalization ─────────────────────────────────────────
 
 
-def test_k8s_to_kubernetes(store):
+def test_tc13_k8s_to_kubernetes(store):
     assert _skill(store, "k8s")["skill_id"] == "kubernetes"
 
 
@@ -107,7 +107,7 @@ def test_exact_skill(store):
 # ── TC14: Unknown skill ───────────────────────────────────────────────
 
 
-def test_blorkify_unknown(store):
+def test_tc14_blorkify_unknown(store):
     r = _skill(store, "Blorkify")
     assert r["unknown"] is True
 
@@ -168,21 +168,3 @@ def test_panel_has_all_source_systems(store):
     )
     systems = {m["source_system"] for m in panel["mappings"]}
     assert systems >= {"hris", "ats", "vms", "jobboard"}
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc13_skill_k8s_normalization(store):
-    test_k8s_to_kubernetes(store)
-
-
-def test_tc14_unknown_skill_blorkify(store):
-    test_blorkify_unknown(store)
-
-
-def test_tc31_title_sde2_mid(store):
-    test_sde2_full_stack_mid(store)
-
-
-def test_tc32_title_data_analyst_rejected(store):
-    test_data_analyst_rejected(store)

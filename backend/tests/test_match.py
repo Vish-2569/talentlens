@@ -47,7 +47,7 @@ def _ctr_skills(store, pid):
 # ── TC12: Karthik = 88, band "redeploy" ─────────────────────────────
 
 
-def test_karthik_88(store):
+def test_tc12_karthik_88(store):
     ev = _resolve(store, "E-031")
     sk = _emp_skills(store, "E-031")
     edges = store.reference.skill_edges()
@@ -60,7 +60,7 @@ def test_karthik_88(store):
 # ── TC12: Priya = 82, band "Build" ──────────────────────────────────
 
 
-def test_priya_82(store):
+def test_tc12_priya_82(store):
     ev = _resolve(store, "E-045")
     sk = _emp_skills(store, "E-045")
     edges = store.reference.skill_edges()
@@ -73,7 +73,7 @@ def test_priya_82(store):
 # ── TC12: Arjun = 84 ────────────────────────────────────────────────
 
 
-def test_arjun_84(store):
+def test_tc12_arjun_84(store):
     ev = _resolve(store, "C-17")
     sk = _ctr_skills(store, "C-17")
     edges = store.reference.skill_edges()
@@ -86,7 +86,7 @@ def test_arjun_84(store):
 # ── TC12: Rahul = 76 for mid ────────────────────────────────────────
 
 
-def test_rahul_76_for_mid(store):
+def test_tc12_rahul_76_for_mid(store):
     ev = _resolve(store, "E-072")
     sk = _emp_skills(store, "E-072")
     edges = store.reference.skill_edges()
@@ -136,21 +136,3 @@ def test_band_boundaries():
     assert band(69) == "long-term pipeline"
     assert band(50) == "long-term pipeline"
     assert band(49) == "hidden"
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc12_karthik_88(store):
-    test_karthik_88(store)
-
-
-def test_tc12_priya_82(store):
-    test_priya_82(store)
-
-
-def test_tc12_arjun_84(store):
-    test_arjun_84(store)
-
-
-def test_tc12_rahul_76(store):
-    test_rahul_76_for_mid(store)

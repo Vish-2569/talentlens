@@ -291,7 +291,7 @@ def brief_result(pipeline, actions_result):
 # ── TC36: All 12 sections present, in order, none empty ──────────────────────
 
 
-def test_all_12_sections_present_in_order(brief_result):
+def test_tc36_all_12_sections_present_in_order(brief_result):
     sections = brief_result["sections"]
     assert len(sections) == 12
     keys = [s["key"] for s in sections]
@@ -495,9 +495,3 @@ def test_xss_in_decision_reason_escaped_in_html(pipeline, actions_result):
         reference_meta=pipeline["reference_meta"],
     )
     assert "<script>" not in result["html"]
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc36_all_12_sections_present(brief_result):
-    test_all_12_sections_present_in_order(brief_result)

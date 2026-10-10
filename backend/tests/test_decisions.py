@@ -39,7 +39,7 @@ def _setup_req(db, req_id="REQ-T01"):
 # ── TC22: Empty or whitespace reason ─────────────────────────────────────────
 
 
-def test_empty_reason_raises(db):
+def test_tc22_empty_reason_raises(db):
     _setup_req(db)
     with pytest.raises(ValueError, match="[Rr]eason"):
         record_decision(db, "REQ-T01", "mix", "Approve", MASK,
@@ -224,9 +224,3 @@ def test_reason_trimmed(db):
                     OPTIONS_JSON)
     rows = db.get_decisions("REQ-T05")
     assert rows[0]["reason"] == "trimmed reason"
-
-
-# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
-
-def test_tc22_empty_reason_raises(db):
-    test_empty_reason_raises(db)

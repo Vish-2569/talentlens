@@ -67,7 +67,7 @@ async def test_tc18_xss_escaped_in_html(client):
 # ── CORS: foreign origin is rejected ─────────────────────────────────────────
 
 @pytest.mark.anyio
-async def test_cors_rejects_foreign_origin(client):
+async def test_security_cors_rejects_foreign_origin(client):
     resp = await client.options(
         "/api/analyze",
         headers={
@@ -123,14 +123,6 @@ async def test_tc21_offline_mode(monkeypatch):
     assert by_id["mix"] == 89.0
     assert by_id["buy"] == 42.0
     assert llm.get_meter().calls == 0, "No LLM calls must occur in offline mode"
-
-
-# ── TC33: CORS rejects untrusted origin ──────────────────────────────────────
-
-@pytest.mark.anyio
-async def test_tc33_cors_rejects_foreign_origin(client):
-    """TC33: preflight from an untrusted origin must NOT receive a wildcard ACAO header."""
-    await test_cors_rejects_foreign_origin(client)
 
 
 def test_key_redacted_in_log_records():
