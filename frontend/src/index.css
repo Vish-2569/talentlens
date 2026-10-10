@@ -1,0 +1,39 @@
+/* Fonts – bundled, no CDN */
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/source-serif-4/600.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    background-color: #FBFAF7;
+    color: #1B1F2A;
+  }
+
+  /* Tabular numerals on all mono elements */
+  .font-mono, [class*="font-mono"] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible 2 px focus ring on all interactive elements */
+  :focus-visible {
+    outline: 2px solid #1F3A5F;
+    outline-offset: 2px;
+  }
+
+  /* Honour reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

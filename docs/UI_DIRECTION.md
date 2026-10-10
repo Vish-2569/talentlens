@@ -105,3 +105,22 @@ All tags readable in greyscale: shape (solid / half / outline), icon and text la
 - `aria-live="polite"` live regions announce changes, e.g. "Recommendation updated: Borrow Arjun + Build Priya, ₹18L"
 - No information by colour alone; charts have text equivalents
 - Usable from 1280 px (demo laptop) down to 768 px; nothing breaks at 200 % zoom
+
+## Contrast Ratios (verified)
+
+All ratios computed with the WCAG 2.1 relative-luminance formula. WCAG AA requires ≥ 4.5:1 for normal text.
+
+| Foreground | Background | Ratio | Pass |
+|---|---|---|---|
+| ink `#1B1F2A` | paper `#FBFAF7` | 15.8:1 | AA ✓ |
+| ink `#1B1F2A` | surface `#FFFFFF` | 16.5:1 | AA ✓ |
+| muted-ink `#5B6170` | paper `#FBFAF7` | 5.9:1 | AA ✓ |
+| muted-ink `#5B6170` | surface `#FFFFFF` | 6.2:1 | AA ✓ |
+| accent `#1F3A5F` | paper `#FBFAF7` | 11.0:1 | AA ✓ |
+| accent `#1F3A5F` | surface `#FFFFFF` | 11.5:1 | AA ✓ |
+| redline `#B42318` | paper `#FBFAF7` | 6.3:1 | AA ✓ |
+| redline `#B42318` | surface `#FFFFFF` | 6.6:1 | AA ✓ |
+| amber `#B54708` | paper `#FBFAF7` | 5.2:1 | AA ✓ |
+| amber `#B54708` | surface `#FFFFFF` | 5.4:1 | AA ✓ |
+| green `#067647` | paper `#FBFAF7` | 5.5:1 | AA ✓ |
+| green `#067647` | surface `#FFFFFF` | 5.7:1 | AA ✓ |
