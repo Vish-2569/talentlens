@@ -230,3 +230,17 @@ def test_backfill_69_9_rejected(store):
             today=TODAY,
         )
         assert chain[0]["person_id"] is None, "69.9 should fall through to external hire"
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc09_priya_chain_3_green_nodes(result):
+    test_priya_chain_3_nodes(result)
+
+
+def test_tc10_karthik_bus_factor_terraform(result):
+    test_karthik_bus_factor_terraform(result)
+
+
+def test_tc11_closed_employees_not_in_chains(result):
+    test_closed_employees_not_in_chains(result)

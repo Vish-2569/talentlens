@@ -205,3 +205,29 @@ def test_data_quality_counts(store):
     assert "conflict" in dq["line"].lower()
     assert "stale" in dq["line"].lower()
     assert "self-report" in dq["line"].lower()
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc23_rahul_aws_35(store):
+    test_rahul_aws(store)
+
+
+def test_tc24_self_only_intermediate_39(store):
+    test_self_only_intermediate_39(store)
+
+
+def test_tc25_priya_kubernetes_conflict(store):
+    test_priya_kubernetes_conflict(store)
+
+
+def test_tc26_stale_assessment_cert_wins():
+    test_stale_assessment_cert_wins()
+
+
+def test_tc27_two_assessments_most_recent():
+    test_two_assessments_most_recent()
+
+
+def test_tc28_conflict_boundary():
+    test_conflict_boundary_30_conflict()

@@ -136,3 +136,21 @@ def test_band_boundaries():
     assert band(69) == "long-term pipeline"
     assert band(50) == "long-term pipeline"
     assert band(49) == "hidden"
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc12_karthik_88(store):
+    test_karthik_88(store)
+
+
+def test_tc12_priya_82(store):
+    test_priya_82(store)
+
+
+def test_tc12_arjun_84(store):
+    test_arjun_84(store)
+
+
+def test_tc12_rahul_76(store):
+    test_rahul_76_for_mid(store)

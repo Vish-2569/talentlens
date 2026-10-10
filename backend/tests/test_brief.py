@@ -495,3 +495,9 @@ def test_xss_in_decision_reason_escaped_in_html(pipeline, actions_result):
         reference_meta=pipeline["reference_meta"],
     )
     assert "<script>" not in result["html"]
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc36_all_12_sections_present(brief_result):
+    test_all_12_sections_present_in_order(brief_result)

@@ -168,3 +168,21 @@ def test_panel_has_all_source_systems(store):
     )
     systems = {m["source_system"] for m in panel["mappings"]}
     assert systems >= {"hris", "ats", "vms", "jobboard"}
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc13_skill_k8s_normalization(store):
+    test_k8s_to_kubernetes(store)
+
+
+def test_tc14_unknown_skill_blorkify(store):
+    test_blorkify_unknown(store)
+
+
+def test_tc31_title_sde2_mid(store):
+    test_sde2_full_stack_mid(store)
+
+
+def test_tc32_title_data_analyst_rejected(store):
+    test_data_analyst_rejected(store)

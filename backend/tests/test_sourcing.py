@@ -172,3 +172,13 @@ def test_supplier_a_top(sourcing_result):
     assert sups[0]["supplier_id"] == "SUP-01"
     assert sups[0]["fill_rate"] == pytest.approx(0.45)
     assert sups[0]["median_days_to_submit"] == 9
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc34_relocate_card_order(relocate_card):
+    test_relocate_card_order(relocate_card)
+
+
+def test_tc35_three_past_finalists(sourcing_result):
+    test_three_past_finalists(sourcing_result)

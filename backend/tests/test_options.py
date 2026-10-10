@@ -681,3 +681,9 @@ def test_tiebreak_fewer_atoms_wins(result):
         f"bridge+build (idx {bb_idx}) must rank above "
         f"bridge+build+automate (idx {bba_idx})"
     )
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc29_self_report_adds_risk():
+    test_self_report_penalty_synthetic()

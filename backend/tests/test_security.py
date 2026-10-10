@@ -125,6 +125,14 @@ async def test_tc21_offline_mode(monkeypatch):
     assert llm.get_meter().calls == 0, "No LLM calls must occur in offline mode"
 
 
+# ── TC33: CORS rejects untrusted origin ──────────────────────────────────────
+
+@pytest.mark.anyio
+async def test_tc33_cors_rejects_foreign_origin(client):
+    """TC33: preflight from an untrusted origin must NOT receive a wildcard ACAO header."""
+    await test_cors_rejects_foreign_origin(client)
+
+
 def test_key_redacted_in_log_records():
     """GeminiKeyFilter rewrites record.msg and record.args before emit."""
     from backend import log_filter as _lf

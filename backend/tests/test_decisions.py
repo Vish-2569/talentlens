@@ -224,3 +224,9 @@ def test_reason_trimmed(db):
                     OPTIONS_JSON)
     rows = db.get_decisions("REQ-T05")
     assert rows[0]["reason"] == "trimmed reason"
+
+
+# ── TC-named aliases (Phase 14A) ──────────────────────────────────────────────
+
+def test_tc22_empty_reason_raises(db):
+    test_empty_reason_raises(db)
