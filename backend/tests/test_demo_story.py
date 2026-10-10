@@ -313,11 +313,13 @@ async def test_determinism_3_runs(client):
 
 @pytest.mark.anyio
 async def test_performance_analyze_under_2s(client):
-    """POST /api/analyze with LLM-cached result must complete in under 2 seconds."""
-    # Warm the cache with one call first (module-scoped client already did this via raw fixture).
-    start = time.perf_counter()
-    resp = await client.post("/api/analyze", json={"text": DEMO})
-    elapsed = time.perf_counter() - start
-
-    assert resp.status_code == 200
-    assert elapsed < 3.0, f"POST /api/analyze took {elapsed:.2f} s (limit: 3.0 s with LLM cached)"
+    """Median of 3 warm POST /api/analyze calls must be under 2 seconds."""
+    times: list[float] = []
+    for _ in range(3):
+        start = time.perf_counter()
+        resp = await client.post("/api/analyze", json={"text": DEMO})
+        elapsed = time.perf_counter() - start
+        assert resp.status_code == 200
+        times.append(elapsed)
+    median = sorted(times)[1]
+    assert median < 2.0, f"Median of 3 runs: {median:.2f} s (limit: 2.0 s)"

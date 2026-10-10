@@ -127,6 +127,29 @@ Cache file committed at `backend/cache/llm_cache.sqlite` (3 entries; gitignored 
 
 ---
 
+## Performance — POST /api/analyze
+
+Measured 2026-10-10 after optimisation commit `45d4f57`. Demo sentence, LLM cache warm, Windows 11 dev machine.
+
+**Live server (uvicorn, 5 warm runs):**
+
+| Run | Time |
+|-----|------|
+| 1 | 0.485 s |
+| 2 | 0.438 s |
+| 3 | 0.454 s |
+| 4 | 0.446 s |
+| 5 | 0.489 s |
+| **Median** | **0.454 s** |
+
+**Before optimisation:** median 6.912 s (15× slower).
+
+**Test assertion:** median of 3 in-process runs < 2.0 s (`test_demo_story.py::test_performance_analyze_under_2s`).
+
+**Optimisations applied:** precompute edge_lookup once in DataStore; replace iterrows with groupby in adapter skill-dict builders; batch 32 scenario DB writes; hoist invariant _minmax out of per-mix loop. API output byte-identical before and after.
+
+---
+
 ## Static Analysis Results (Phase 14C)
 
 | Check | Result |
