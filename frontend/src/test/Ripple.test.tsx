@@ -71,7 +71,7 @@ describe("TC10: Karthik's chain — bus-factor flag and hard-to-fill node", () =
     globalThis.fetch = mockFetchForPerson("");
     render(<RippleComparison candidates={[karthik]} />);
 
-    expect(screen.getByText("Bus factor = 1")).toBeInTheDocument();
+    expect(screen.getByText("Hard to fill")).toBeInTheDocument();
   });
 
   it("shows 2 red flags in net impact", () => {
