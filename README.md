@@ -5,14 +5,7 @@ Three hero features — Deja Req · Requisition Redline · Ripple Effect — bac
 
 ---
 
-## Backend
-
-### Requirements
-
-- Python 3.11+
-- All dependencies pinned in `requirements.txt`
-
-### Setup
+## Quick start (demo)
 
 ```bash
 python -m venv .venv
@@ -22,6 +15,26 @@ python -m venv .venv
 source .venv/bin/activate
 
 pip install -r requirements.txt
+cp .env.example .env          # then set GEMINI_API_KEY
+
+python backend/data/seed.py   # generate synthetic data (once)
+
+cd frontend && npm install && npm run build && cd ..
+python -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000
+```
+
+Open `http://127.0.0.1:8000/` — the backend serves the built frontend with SPA fallback.
+
+## Development
+
+Start the backend and frontend dev server separately:
+
+```bash
+# Terminal 1 — backend
+python -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000 --reload
+
+# Terminal 2 — frontend (Vite proxies /api to :8000)
+cd frontend && npm run dev
 ```
 
 ### Environment
@@ -29,8 +42,6 @@ pip install -r requirements.txt
 ```bash
 cp .env.example .env
 ```
-
-Edit `.env` and set at minimum:
 
 | Variable | Description |
 |---|---|
@@ -40,14 +51,11 @@ Edit `.env` and set at minimum:
 
 ### Reference data (prep, run once)
 
-`backend/scripts/fetch_reference.py` is a **prep-only** script — never called at runtime.
-It reads O\*NET skill/task data from locally downloaded database files (O\*NET database
-xlsx files from the O\*NET Resource Center at [onetcenter.org](https://www.onetcenter.org/database.html),
-not the O\*NET Web Services API) placed in `backend/data/onet_raw/`, and calls the live ESCO API.
-Output goes to `backend/cache/reference.json`.
+`backend/scripts/fetch_reference.py` reads O\*NET skill/task data from locally downloaded
+database files placed in `backend/data/onet_raw/` and calls the live ESCO API. Output goes
+to `backend/cache/reference.json`.
 
 ```bash
-# After placing O*NET xlsx files in backend/data/onet_raw/:
 python backend/scripts/fetch_reference.py
 ```
 
@@ -63,17 +71,18 @@ python backend/data/seed.py
 
 ```bash
 pytest backend/tests/
+cd frontend && npm test && npm run lint
 ```
 
-### Run the API
+### Regenerate API types
+
+After any backend schema change:
 
 ```bash
-python -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000
+python -c "from backend.api.main import app; import json; open('openapi.json','w').write(json.dumps(app.openapi(),indent=2))"
+cd frontend && npm run gen:types
+npm run check:contract   # fails if openapi.json is newer than types.ts
 ```
-
-The server binds to `127.0.0.1` only (loopback). FastAPI automatically serves the compiled
-frontend from `frontend/dist/` at `/` with a SPA fallback when that directory exists.
-During development the frontend dev server runs separately (default `http://localhost:5173`).
 
 ---
 

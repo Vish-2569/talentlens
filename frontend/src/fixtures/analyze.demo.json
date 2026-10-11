@@ -81,6 +81,8 @@
         "confidence": 1
       }
     ],
+    "unrecognized_skills": [],
+    "location_note": null,
     "title_normalization": {
       "raw_titles_count": 12,
       "role": "Full Stack Developer",
@@ -212,9 +214,7 @@
           "onet_code": "15-1252.00"
         }
       ]
-    },
-    "unrecognized_skills": [],
-    "location_note": null
+    }
   },
   "dejareq": {
     "match_count": 4,
