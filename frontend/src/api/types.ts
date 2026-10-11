@@ -462,6 +462,13 @@ export interface components {
             criticality: components["schemas"]["ParsedField"];
             /** Skills */
             skills: components["schemas"]["ParsedSkill"][];
+            /**
+             * Unrecognized Skills
+             * @default []
+             */
+            unrecognized_skills: string[];
+            /** Location Note */
+            location_note?: string | null;
             title_normalization: components["schemas"]["TitleNormalization"];
         };
         /** ParsedSkill */

@@ -286,24 +286,24 @@ describe("TC22: Steps 8 and 9 light after decision", () => {
     const fetchMock = makeOkFetch(okResponse);
     renderDecideWithStrip(fetchMock);
 
-    // Before decision: step 8 is a span (unlit)
+    // Before decision: step 8 is a button but shows "pending" in aria-label
     const stripBefore = screen.getByRole("navigation", {
       name: "Workflow progress",
     });
-    const step8spanBefore = within(stripBefore).queryByRole("button", {
+    const step8Before = within(stripBefore).getByRole("button", {
       name: /Human decision/,
     });
-    expect(step8spanBefore).toBeNull();
+    expect(step8Before.getAttribute("aria-label")).toContain("pending");
 
     await fillAndSubmit(user);
     await screen.findByText("Decision recorded");
 
-    // After decision: step 8 and 9 are buttons (lit) within the workflow strip
+    // After decision: step 8 and 9 are lit buttons (no "pending" in aria-label)
     const strip = screen.getByRole("navigation", {
       name: "Workflow progress",
     });
     const step8 = within(strip).getByRole("button", { name: /Human decision/ });
-    expect(step8).toBeTruthy();
+    expect(step8.getAttribute("aria-label")).not.toContain("pending");
 
     const step9 = within(strip).getByRole("button", {
       name: /Recruiting action/,

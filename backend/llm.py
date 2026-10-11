@@ -106,7 +106,7 @@ def _cache_key(text: str, model: str) -> str:
 class LLMCache:
     def __init__(self, db_path: Path) -> None:
         db_path.parent.mkdir(parents=True, exist_ok=True)
-        self._conn = sqlite3.connect(str(db_path))
+        self._conn = sqlite3.connect(str(db_path), check_same_thread=False)
         self._conn.execute(
             "CREATE TABLE IF NOT EXISTS llm_cache "
             "(key TEXT PRIMARY KEY, response TEXT, created_at REAL)"

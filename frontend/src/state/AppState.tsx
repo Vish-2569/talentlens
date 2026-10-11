@@ -68,6 +68,11 @@ export function reducer(state: AppState, action: Action): AppState {
         ...state,
         status: "loading",
         requestText: action.payload.requestText,
+        result: null,
+        mask: "00000",
+        decision: null,
+        selectedPersonId: null,
+        activeTab: "challenge",
         error: null,
       };
 

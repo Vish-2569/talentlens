@@ -23,6 +23,13 @@ _CITY_MAP: dict[str, re.Pattern[str]] = {
     "remote_india": re.compile(r"\bremote[\s\-]*india\b", re.I),
 }
 
+_OTHER_CITY_RE = re.compile(
+    r"\b(?:chennai|mumbai|delhi|noida|gurgaon|gurugram|kolkata"
+    r"|jaipur|ahmedabad|chandigarh|kochi|thiruvananthapuram"
+    r"|lucknow|indore|coimbatore|vizag|visakhapatnam)\b",
+    re.I,
+)
+
 _WORK_MODE_MAP: dict[str, re.Pattern[str]] = {
     "onsite": re.compile(r"\b(?:on[\s\-]*site|onsite|in[\s\-]*office)\b", re.I),
     "hybrid": re.compile(r"\bhybrid\b", re.I),
@@ -143,6 +150,61 @@ def _extract_skills(
     return list(found.values())
 
 
+_SKILL_LIKE = re.compile(
+    r"(?:(?:[A-Z][a-z]+){2,})"        # CamelCase (SpringBoot, GraphQL already matched)
+    r"|(?:[A-Za-z][A-Za-z0-9]*(?:[.\-][A-Za-z0-9]+)+)"  # dotted/hyphenated (Spring-Boot, Vue.js)
+    r"|(?:[A-Z][a-zA-Z0-9]{2,})"      # PascalCase single word ≥3 chars
+)
+
+
+def _detect_unrecognized(
+    text: str,
+    found_ids: set[str],
+    skills_df: pd.DataFrame,
+    skill_aliases_df: pd.DataFrame,
+) -> list[str]:
+    """Return skill-like tokens near must/nice cues that weren't matched."""
+    all_known: set[str] = set()
+    for _, row in skills_df.iterrows():
+        all_known.add(str(row["id"]).lower())
+        if pd.notna(row.get("name")):
+            all_known.add(str(row["name"]).strip().lower())
+    for _, row in skill_aliases_df.iterrows():
+        all_known.add(str(row["alias"]).strip().lower())
+
+    cue_zones: list[tuple[int, int]] = []
+    for m in _MUST_CUE.finditer(text):
+        cue_zones.append((m.end(), min(m.end() + 200, len(text))))
+    for m in _NICE_CUE.finditer(text):
+        cue_zones.append((m.end(), min(m.end() + 200, len(text))))
+    if not cue_zones:
+        cue_zones = [(0, len(text))]
+
+    skip_lower = {"full", "stack", "developer", "senior", "junior", "lead", "mid",
+            "india", "remote", "bengaluru", "bangalore", "hyderabad", "pune",
+            "chennai", "mumbai", "delhi", "kolkata", "none", "engineer",
+            "software", "web", "backend", "frontend", "site", "office",
+            "years", "budget", "need", "must", "know", "have", "role",
+            "team", "level", "hire", "contract", "salary", "pay",
+            "on-site", "onsite", "on-shore", "off-site", "in-office",
+            "hybrid", "remote-india", "full-stack", "mid-level",
+            "lakh", "lakhs", "days"}
+    unrecognized: list[str] = []
+    seen: set[str] = set()
+    for start, end in cue_zones:
+        zone = text[start:end]
+        for m in _SKILL_LIKE.finditer(zone):
+            token = m.group()
+            low = token.lower()
+            if low in all_known or low in seen or low in skip_lower:
+                continue
+            if low.rstrip("s") in all_known:
+                continue
+            seen.add(low)
+            unrecognized.append(token)
+    return unrecognized
+
+
 # ── Main entry point ──────────────────────────────────────────────────
 
 def regex_parse(
@@ -173,6 +235,11 @@ def regex_parse(
             f["ambiguous"] = True
             fields[name] = f
 
+    if "location" not in fields:
+        om = _OTHER_CITY_RE.search(text)
+        if om:
+            fields["location"] = _field("other", om.group(), om.start(), om.end())
+
     bm = _BUDGET_RE.search(text)
     if bm:
         fields["budget_lpa"] = _field(
@@ -192,6 +259,9 @@ def regex_parse(
         )
 
     fields["skills"] = _extract_skills(text, skills_df, skill_aliases_df)
+    fields["unrecognized_skills"] = _detect_unrecognized(
+        text, {s["skill_id"] for s in fields["skills"]}, skills_df, skill_aliases_df,
+    )
 
     needs_llm = [
         f for f in REQUIRED_FIELDS

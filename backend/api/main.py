@@ -385,8 +385,26 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
 
     # 6. Flat values
     _NONE_LIKE = frozenset({None, "None", "null", ""})
+    _KNOWN_LOCATIONS = frozenset({"bengaluru", "hyderabad", "pune", "remote_india"})
     level = str(v) if (v := fields["level"]["value"]) not in _NONE_LIKE else "senior"
-    location = str(v) if (v := fields["location"]["value"]) not in _NONE_LIKE else "bengaluru"
+    raw_location = str(v) if (v := fields["location"]["value"]) not in _NONE_LIKE else "bengaluru"
+    location_field_override: dict | None = None
+    if raw_location not in _KNOWN_LOCATIONS:
+        location = "remote_india"
+        loc_display = (
+            fields.get("location", {}).get("span")
+            or raw_location.replace("_", " ").title()
+        )
+        location_note = (
+            f"{loc_display} is outside the market data "
+            f"(Bengaluru, Hyderabad, Pune, Remote-India); "
+            f"location constraint priced against Remote-India as nearest proxy."
+        )
+        location_field_override = dict(fields.get("location", {}))
+        location_field_override["value"] = raw_location
+    else:
+        location = raw_location
+        location_note = None
     work_mode = str(v) if (v := fields["work_mode"]["value"]) not in _NONE_LIKE else "onsite"
     min_years = int(fields["min_years"]["value"] or 0)
     budget_lpa = float(fields["budget_lpa"]["value"] or 0)
@@ -682,6 +700,8 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         name_map=name_map,
         base_location=location,
         store=store,
+        location_note=location_note,
+        location_field_override=location_field_override,
     )
 
 
@@ -707,6 +727,8 @@ def _build_analysis_result(  # noqa: C901
     name_map: dict[str, str],
     base_location: str,
     store: DataStore,
+    location_note: str | None = None,
+    location_field_override: dict | None = None,
 ) -> AnalysisResult:
 
     # ── parsed ──────────────────────────────────────────────────────────────
@@ -746,11 +768,21 @@ def _build_analysis_result(  # noqa: C901
         mappings=mappings,
     )
 
+    loc_field = _pf("location")
+    if location_field_override:
+        loc_field = ParsedField(
+            value=location_field_override.get("value"),
+            span=location_field_override.get("span"),
+            span_start=location_field_override.get("span_start"),
+            span_end=location_field_override.get("span_end"),
+            label=location_field_override.get("label", "inferred"),
+        )
+
     parsed = ParsedRequisition(
         req_id=req_id,
         level=_pf("level"),
         headcount=_pf("headcount"),
-        location=_pf("location"),
+        location=loc_field,
         work_mode=_pf("work_mode"),
         min_years=_pf("min_years"),
         budget_lpa=_pf("budget_lpa"),
@@ -758,6 +790,8 @@ def _build_analysis_result(  # noqa: C901
         duration_months=_pf("duration_months"),
         criticality=_pf("criticality"),
         skills=parsed_skills,
+        unrecognized_skills=fields.get("unrecognized_skills", []),
+        location_note=location_note,
         title_normalization=tn,
     )
 
@@ -1192,7 +1226,17 @@ def health() -> Health:
 def analyze(req: AnalyzeRequest, stub: bool = Query(default=False)) -> AnalysisResult:
     if stub:
         return AnalysisResult.model_validate(_load_stub())
-    return _run_analysis(req.text, settings.demo_today)
+    try:
+        return _run_analysis(req.text, settings.demo_today)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        import logging as _logging
+        _logging.getLogger(__name__).exception("Unhandled error in analysis")
+        raise HTTPException(
+            status_code=422,
+            detail=f"Could not analyse this requisition: {exc}",
+        ) from exc
 
 
 _VALID_OPTIONS = ["mix", "build", "borrow", "relocate", "buy",

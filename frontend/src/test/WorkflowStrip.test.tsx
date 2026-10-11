@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { WorkflowStrip } from "../components/WorkflowStrip";
-import { getStepStates } from "../components/workflowSteps";
+import { getStepStates, STEP_DEFS } from "../components/workflowSteps";
 import { FIXTURE_ANALYSIS } from "../fixtures";
 
 describe("getStepStates (pure function)", () => {
@@ -13,11 +13,9 @@ describe("getStepStates (pure function)", () => {
 
   it("steps 1-7 lit and 8-9 unlit when analysis exists but no decision", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    // Steps 1–7 should be lit
     for (let i = 1; i <= 7; i++) {
       expect(steps[i - 1].lit, `step ${i} should be lit`).toBe(true);
     }
-    // Steps 8 and 9 require a decision
     expect(steps[7].lit).toBe(false); // step 8
     expect(steps[8].lit).toBe(false); // step 9
   });
@@ -69,6 +67,29 @@ describe("getStepStates (pure function)", () => {
   });
 });
 
+describe("STEP_DEFS target mapping", () => {
+  const expected: { id: number; tab: string; scrollTarget: string }[] = [
+    { id: 1, tab: "challenge", scrollTarget: "challenge-input" },
+    { id: 2, tab: "challenge", scrollTarget: "redline-section" },
+    { id: 3, tab: "options", scrollTarget: "ripple-section" },
+    { id: 4, tab: "options", scrollTarget: "contractor-section" },
+    { id: 5, tab: "options", scrollTarget: "market-section" },
+    { id: 6, tab: "options", scrollTarget: "relocate-section" },
+    { id: 7, tab: "options", scrollTarget: "options-section" },
+    { id: 8, tab: "decide", scrollTarget: "decision-form" },
+    { id: 9, tab: "decide", scrollTarget: "actions-section" },
+  ];
+
+  for (const { id, tab, scrollTarget } of expected) {
+    it(`step ${id} targets tab "${tab}" and scrolls to "${scrollTarget}"`, () => {
+      const def = STEP_DEFS.find((d) => d.id === id);
+      expect(def).toBeDefined();
+      expect(def!.tab).toBe(tab);
+      expect(def!.scrollTarget).toBe(scrollTarget);
+    });
+  }
+});
+
 describe("WorkflowStrip component", () => {
   it("renders 9 steps", () => {
     const steps = getStepStates(null, false);
@@ -77,19 +98,33 @@ describe("WorkflowStrip component", () => {
     expect(listItems).toHaveLength(9);
   });
 
-  it("lit steps render as buttons, unlit steps render as spans", () => {
+  it("lit steps render as buttons", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
     render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
-    // Steps 1-7 are lit → buttons
     const buttons = screen.getAllByRole("button");
-    expect(buttons.length).toBeGreaterThanOrEqual(7);
+    // Steps 1-7 lit + steps 8-9 always clickable = 9
+    expect(buttons.length).toBe(9);
   });
 
-  it("unlit steps include '(pending)' visually hidden text", () => {
+  it("steps 8-9 are always buttons even when unlit", () => {
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    // steps 8 and 9 are unlit but still buttons
+    expect(steps[7].lit).toBe(false);
+    expect(steps[8].lit).toBe(false);
+    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
+    const buttons = screen.getAllByRole("button");
+    const labels = buttons.map((b) => b.getAttribute("aria-label") ?? "");
+    expect(labels.some((l) => l.includes("pending: approve on Decide"))).toBe(
+      true,
+    );
+  });
+
+  it("unlit non-decide steps include '(pending)' visually hidden text", () => {
     const steps = getStepStates(null, false);
     render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
+    // Steps 1-7 are unlit non-decide → show (pending)
     const pendingTexts = screen.getAllByText("(pending)");
-    expect(pendingTexts).toHaveLength(9);
+    expect(pendingTexts.length).toBe(7);
   });
 
   it("clicking a lit step calls onStepClick with the step", async () => {
@@ -102,5 +137,57 @@ describe("WorkflowStrip component", () => {
     await user.click(firstButton);
     expect(handler).toHaveBeenCalledOnce();
     expect(handler.mock.calls[0][0].id).toBe(1);
+  });
+
+  it("clicking unlit step 8 calls onStepClick with decide tab", async () => {
+    const user = userEvent.setup();
+    const handler = vi.fn();
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    render(<WorkflowStrip steps={steps} onStepClick={handler} />);
+
+    const buttons = screen.getAllByRole("button");
+    // Step 8 should be at index 7 (0-based)
+    const step8 = buttons.find((b) =>
+      b.getAttribute("aria-label")?.includes("Human decision"),
+    );
+    expect(step8).toBeDefined();
+    await user.click(step8!);
+    expect(handler).toHaveBeenCalledOnce();
+    const clickedStep = handler.mock.calls[0][0];
+    expect(clickedStep.id).toBe(8);
+    expect(clickedStep.tab).toBe("decide");
+    expect(clickedStep.scrollTarget).toBe("decision-form");
+  });
+
+  it("clicking unlit step 9 calls onStepClick targeting actions-section", async () => {
+    const user = userEvent.setup();
+    const handler = vi.fn();
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    render(<WorkflowStrip steps={steps} onStepClick={handler} />);
+
+    const buttons = screen.getAllByRole("button");
+    const step9 = buttons.find((b) =>
+      b.getAttribute("aria-label")?.includes("Recruiting action"),
+    );
+    expect(step9).toBeDefined();
+    await user.click(step9!);
+    expect(handler).toHaveBeenCalledOnce();
+    const clickedStep = handler.mock.calls[0][0];
+    expect(clickedStep.id).toBe(9);
+    expect(clickedStep.tab).toBe("decide");
+    expect(clickedStep.scrollTarget).toBe("actions-section");
+  });
+
+  it("uses short labels in visible text", () => {
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
+    // Short labels should be visible
+    expect(screen.getByText("Need")).toBeDefined();
+    expect(screen.getByText("Skills")).toBeDefined();
+    expect(screen.getByText("Internal")).toBeDefined();
+    expect(screen.getByText("Market")).toBeDefined();
+    expect(screen.getByText("Options")).toBeDefined();
+    expect(screen.getByText("Decision")).toBeDefined();
+    expect(screen.getByText("Action")).toBeDefined();
   });
 });

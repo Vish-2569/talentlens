@@ -6,6 +6,7 @@ type AnalysisResult = components["schemas"]["AnalysisResult"];
 export interface StepDef {
   id: number;
   label: string;
+  shortLabel: string;
   tab: TabId;
   scrollTarget: string;
 }
@@ -15,15 +16,15 @@ export interface StepState extends StepDef {
 }
 
 export const STEP_DEFS: StepDef[] = [
-  { id: 1, label: "Workforce need",            tab: "challenge", scrollTarget: "challenge-input" },
-  { id: 2, label: "Role / skill analysis",     tab: "challenge", scrollTarget: "redline-section" },
-  { id: 3, label: "Internal talent",           tab: "options",   scrollTarget: "ripple-section" },
-  { id: 4, label: "Contractor talent",         tab: "options",   scrollTarget: "contractor-section" },
-  { id: 5, label: "External market",           tab: "options",   scrollTarget: "market-section" },
-  { id: 6, label: "Location and compensation", tab: "options",   scrollTarget: "relocate-section" },
-  { id: 7, label: "Five options",              tab: "options",   scrollTarget: "options-section" },
-  { id: 8, label: "Human decision",            tab: "decide",    scrollTarget: "decision-form" },
-  { id: 9, label: "Recruiting action",         tab: "decide",    scrollTarget: "actions-section" },
+  { id: 1, label: "Workforce need",            shortLabel: "Need",      tab: "challenge", scrollTarget: "challenge-input" },
+  { id: 2, label: "Role / skill analysis",     shortLabel: "Skills",    tab: "challenge", scrollTarget: "redline-section" },
+  { id: 3, label: "Internal talent",           shortLabel: "Internal",  tab: "options",   scrollTarget: "ripple-section" },
+  { id: 4, label: "Contractor talent",         shortLabel: "Contractors", tab: "options", scrollTarget: "contractor-section" },
+  { id: 5, label: "External market",           shortLabel: "Market",    tab: "options",   scrollTarget: "market-section" },
+  { id: 6, label: "Location and compensation", shortLabel: "Location",  tab: "options",   scrollTarget: "relocate-section" },
+  { id: 7, label: "Five options",              shortLabel: "Options",   tab: "options",   scrollTarget: "options-section" },
+  { id: 8, label: "Human decision",            shortLabel: "Decision",  tab: "decide",    scrollTarget: "decision-form" },
+  { id: 9, label: "Recruiting action",         shortLabel: "Action",    tab: "decide",    scrollTarget: "actions-section" },
 ];
 
 export function getStepStates(

@@ -12,6 +12,36 @@ describe("reducer — ANALYZE_START", () => {
     expect(s.requestText).toBe("hello");
     expect(s.error).toBeNull();
   });
+
+  it("clears previous result, decision, mask, and resets tab on new analysis", () => {
+    const stateWithResult = reducer(INITIAL_STATE, {
+      type: "ANALYZE_SUCCESS",
+      payload: FIXTURE_ANALYSIS,
+    });
+    const withDecision = {
+      ...stateWithResult,
+      activeTab: "options" as const,
+      decision: {
+        req_id: "R1",
+        option_id: "buy",
+        verb: "Approve" as const,
+        decided_by: "Alice",
+        relaxed_mask: "00000",
+        reason: "ok",
+        recorded_at: "2026-01-01T00:00:00Z",
+      },
+      selectedPersonId: "E-031",
+    };
+    const s = reducer(withDecision, {
+      type: "ANALYZE_START",
+      payload: { requestText: "new req" },
+    });
+    expect(s.result).toBeNull();
+    expect(s.decision).toBeNull();
+    expect(s.selectedPersonId).toBeNull();
+    expect(s.mask).toBe("00000");
+    expect(s.activeTab).toBe("challenge");
+  });
 });
 
 describe("reducer — ANALYZE_SUCCESS", () => {

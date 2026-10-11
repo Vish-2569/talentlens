@@ -212,7 +212,9 @@
           "onet_code": "15-1252.00"
         }
       ]
-    }
+    },
+    "unrecognized_skills": [],
+    "location_note": null
   },
   "dejareq": {
     "match_count": 4,

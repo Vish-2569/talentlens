@@ -173,6 +173,8 @@ class ParsedRequisition(BaseModel):
     duration_months: ParsedField
     criticality: ParsedField
     skills: list[ParsedSkill]
+    unrecognized_skills: list[str] = []
+    location_note: Optional[str] = None
     title_normalization: TitleNormalization
 
 
