@@ -13,14 +13,14 @@ describe("reducer — ANALYZE_START", () => {
     expect(s.error).toBeNull();
   });
 
-  it("clears previous result, decision, mask, and resets tab on new analysis", () => {
+  it("clears previous result, decision, mask, and resets step on new analysis", () => {
     const stateWithResult = reducer(INITIAL_STATE, {
       type: "ANALYZE_SUCCESS",
       payload: FIXTURE_ANALYSIS,
     });
     const withDecision = {
       ...stateWithResult,
-      activeTab: "options" as const,
+      activeStep: 5,
       decision: {
         req_id: "R1",
         option_id: "buy",
@@ -40,7 +40,7 @@ describe("reducer — ANALYZE_START", () => {
     expect(s.decision).toBeNull();
     expect(s.selectedPersonId).toBeNull();
     expect(s.mask).toBe("00000");
-    expect(s.activeTab).toBe("challenge");
+    expect(s.activeStep).toBe(1);
   });
 });
 
@@ -77,6 +77,12 @@ describe("reducer — ANALYZE_SUCCESS", () => {
     expect(s.decision).toBeNull();
     expect(s.selectedPersonId).toBeNull();
   });
+
+  it("resets activeStep to 1 on success", () => {
+    let s = reducer(INITIAL_STATE, { type: "SET_STEP", payload: 5 });
+    s = reducer(s, { type: "ANALYZE_SUCCESS", payload: FIXTURE_ANALYSIS });
+    expect(s.activeStep).toBe(1);
+  });
 });
 
 describe("reducer — ANALYZE_ERROR", () => {
@@ -90,10 +96,10 @@ describe("reducer — ANALYZE_ERROR", () => {
   });
 });
 
-describe("reducer — SET_TAB", () => {
-  it("switches activeTab", () => {
-    const s = reducer(INITIAL_STATE, { type: "SET_TAB", payload: "options" });
-    expect(s.activeTab).toBe("options");
+describe("reducer — SET_STEP", () => {
+  it("switches activeStep", () => {
+    const s = reducer(INITIAL_STATE, { type: "SET_STEP", payload: 5 });
+    expect(s.activeStep).toBe(5);
   });
 });
 
@@ -177,16 +183,6 @@ describe("currentScenario selector", () => {
     });
     const scenario = currentScenario(s);
     expect(scenario).not.toBeNull();
-    // All-zeros mask should exist in the fixture
     expect(typeof scenario).toBe("object");
-  });
-});
-
-describe("reset on new analysis", () => {
-  it("activeTab is not reset by ANALYZE_SUCCESS (tab stays put)", () => {
-    let s = reducer(INITIAL_STATE, { type: "SET_TAB", payload: "options" });
-    s = reducer(s, { type: "ANALYZE_SUCCESS", payload: FIXTURE_ANALYSIS });
-    // Tab is NOT reset — user stays on their current tab
-    expect(s.activeTab).toBe("options");
   });
 });

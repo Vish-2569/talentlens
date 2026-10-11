@@ -19,15 +19,13 @@ export interface DecisionRecord {
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
-export type TabId = "challenge" | "options" | "decide";
-
 export interface AppState {
   status: "idle" | "loading" | "ready" | "error";
   requestText: string;
   result: AnalysisResult | null;
   /** 5-bit string aligned with redline.constraint_order; "0" = keep, "1" = relax */
   mask: string;
-  activeTab: TabId;
+  activeStep: number;
   selectedPersonId: string | null;
   decision: DecisionRecord | null;
   error: string | null;
@@ -39,7 +37,7 @@ export type Action =
   | { type: "ANALYZE_START"; payload: { requestText: string } }
   | { type: "ANALYZE_SUCCESS"; payload: AnalysisResult }
   | { type: "ANALYZE_ERROR"; payload: string }
-  | { type: "SET_TAB"; payload: TabId }
+  | { type: "SET_STEP"; payload: number }
   | { type: "TOGGLE_CONSTRAINT"; payload: { index: number; relaxed: boolean } }
   | { type: "RESET_MASK" }
   | { type: "SELECT_PERSON"; payload: string | null }
@@ -53,7 +51,7 @@ export const INITIAL_STATE: AppState = {
   requestText: "",
   result: null,
   mask: "00000",
-  activeTab: "challenge",
+  activeStep: 1,
   selectedPersonId: null,
   decision: null,
   error: null,
@@ -72,7 +70,7 @@ export function reducer(state: AppState, action: Action): AppState {
         mask: "00000",
         decision: null,
         selectedPersonId: null,
-        activeTab: "challenge",
+        activeStep: 1,
         error: null,
       };
 
@@ -86,6 +84,7 @@ export function reducer(state: AppState, action: Action): AppState {
         mask: "0".repeat(constraintCount),
         decision: null,
         selectedPersonId: null,
+        activeStep: 1,
         error: null,
       };
     }
@@ -93,8 +92,8 @@ export function reducer(state: AppState, action: Action): AppState {
     case "ANALYZE_ERROR":
       return { ...state, status: "error", error: action.payload };
 
-    case "SET_TAB":
-      return { ...state, activeTab: action.payload };
+    case "SET_STEP":
+      return { ...state, activeStep: action.payload };
 
     case "TOGGLE_CONSTRAINT": {
       const chars = state.mask.split("");

@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { Button } from "./ui";
 import { useAppState, useAppDispatch, currentScenario } from "../state/context";
 import { postDecision, ApiError } from "../api/client";
-import { describeMaskNote } from "../screens/Options";
+import { describeMaskNote } from "./maskNote";
 import type { components } from "../api/types";
 
 type ConstraintKind = components["schemas"]["ConstraintKind"];

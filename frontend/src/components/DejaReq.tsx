@@ -130,12 +130,8 @@ export function DejaReq({ dejareq }: Props) {
   const buildAvg = averages_by_decision.find((a) => a.decision === "build");
 
   function navigateToOptions() {
-    dispatch({ type: "SET_TAB", payload: "options" });
-    requestAnimationFrame(() => {
-      const el = document.getElementById("five-option-table");
-      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-      el?.focus({ preventScroll: true });
-    });
+    dispatch({ type: "SET_STEP", payload: 7 });
+    window.location.hash = "#step-7";
   }
 
   if (match_count < 2 && chip) {

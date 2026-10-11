@@ -38,6 +38,21 @@ describe("getStepStates (pure function)", () => {
     expect(steps.every((s) => !s.lit)).toBe(true);
   });
 
+  it("steps 2-9 disabled when result is null", () => {
+    const steps = getStepStates(null, false);
+    expect(steps[0].disabled).toBe(false);
+    for (let i = 1; i < 9; i++) {
+      expect(steps[i].disabled, `step ${i + 1} disabled`).toBe(true);
+    }
+  });
+
+  it("no steps disabled when result exists", () => {
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    for (const s of steps) {
+      expect(s.disabled, `step ${s.id} not disabled`).toBe(false);
+    }
+  });
+
   it("steps 1-7 lit and 8-9 unlit when analysis exists but no decision", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
     for (let i = 1; i <= 7; i++) {
@@ -84,35 +99,32 @@ describe("getStepStates (pure function)", () => {
     expect(steps.map((s) => s.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
-  it("lit steps have challenge tab for steps 1-2, options for steps 3-7, decide for steps 8-9", () => {
-    const steps = getStepStates(FIXTURE_ANALYSIS, true);
-    expect(steps[0].tab).toBe("challenge");
-    expect(steps[1].tab).toBe("challenge");
-    for (let i = 2; i <= 6; i++) expect(steps[i].tab).toBe("options");
-    expect(steps[7].tab).toBe("decide");
-    expect(steps[8].tab).toBe("decide");
+  it("each step has a headingId", () => {
+    const steps = getStepStates(null, false);
+    for (const s of steps) {
+      expect(s.headingId).toBe(`step-${s.id}-heading`);
+    }
   });
 });
 
 describe("STEP_DEFS target mapping", () => {
-  const expected: { id: number; tab: string; scrollTarget: string }[] = [
-    { id: 1, tab: "challenge", scrollTarget: "challenge-input" },
-    { id: 2, tab: "challenge", scrollTarget: "redline-section" },
-    { id: 3, tab: "options", scrollTarget: "ripple-section" },
-    { id: 4, tab: "options", scrollTarget: "contractor-section" },
-    { id: 5, tab: "options", scrollTarget: "market-section" },
-    { id: 6, tab: "options", scrollTarget: "relocate-section" },
-    { id: 7, tab: "options", scrollTarget: "options-section" },
-    { id: 8, tab: "decide", scrollTarget: "decision-form" },
-    { id: 9, tab: "decide", scrollTarget: "actions-section" },
+  const expected: { id: number; headingId: string }[] = [
+    { id: 1, headingId: "step-1-heading" },
+    { id: 2, headingId: "step-2-heading" },
+    { id: 3, headingId: "step-3-heading" },
+    { id: 4, headingId: "step-4-heading" },
+    { id: 5, headingId: "step-5-heading" },
+    { id: 6, headingId: "step-6-heading" },
+    { id: 7, headingId: "step-7-heading" },
+    { id: 8, headingId: "step-8-heading" },
+    { id: 9, headingId: "step-9-heading" },
   ];
 
-  for (const { id, tab, scrollTarget } of expected) {
-    it(`step ${id} targets tab "${tab}" and scrolls to "${scrollTarget}"`, () => {
+  for (const { id, headingId } of expected) {
+    it(`step ${id} targets heading "${headingId}"`, () => {
       const def = STEP_DEFS.find((d) => d.id === id);
       expect(def).toBeDefined();
-      expect(def!.tab).toBe(tab);
-      expect(def!.scrollTarget).toBe(scrollTarget);
+      expect(def!.headingId).toBe(headingId);
     });
   }
 });
@@ -120,45 +132,42 @@ describe("STEP_DEFS target mapping", () => {
 describe("WorkflowStrip component", () => {
   it("renders 9 steps", () => {
     const steps = getStepStates(null, false);
-    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
+    render(<WorkflowStrip steps={steps} activeStep={1} onStepClick={vi.fn()} />);
     const listItems = screen.getAllByRole("listitem");
     expect(listItems).toHaveLength(9);
   });
 
-  it("lit steps render as buttons", () => {
+  it("active step has aria-current=step", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
+    render(<WorkflowStrip steps={steps} activeStep={3} onStepClick={vi.fn()} />);
     const buttons = screen.getAllByRole("button");
-    // Steps 1-7 lit + steps 8-9 always clickable = 9
-    expect(buttons.length).toBe(9);
-  });
-
-  it("steps 8-9 are always buttons even when unlit", () => {
-    const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    // steps 8 and 9 are unlit but still buttons
-    expect(steps[7].lit).toBe(false);
-    expect(steps[8].lit).toBe(false);
-    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
-    const buttons = screen.getAllByRole("button");
-    const labels = buttons.map((b) => b.getAttribute("aria-label") ?? "");
-    expect(labels.some((l) => l.includes("pending: approve on Decide"))).toBe(
-      true,
+    const current = buttons.find(
+      (b) => b.getAttribute("aria-current") === "step",
     );
+    expect(current).toBeDefined();
+    expect(current!.getAttribute("aria-label")).toContain("Internal talent");
   });
 
-  it("unlit non-decide steps include '(pending)' visually hidden text", () => {
+  it("disabled steps render as spans, not buttons", () => {
     const steps = getStepStates(null, false);
-    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
-    // Steps 1-7 are unlit non-decide → show (pending)
-    const pendingTexts = screen.getAllByText("(pending)");
-    expect(pendingTexts.length).toBe(7);
+    render(<WorkflowStrip steps={steps} activeStep={1} onStepClick={vi.fn()} />);
+    const buttons = screen.getAllByRole("button");
+    // Only step 1 should be a button (step 1 is never disabled)
+    expect(buttons).toHaveLength(1);
   });
 
-  it("clicking a lit step calls onStepClick with the step", async () => {
+  it("enabled steps render as buttons after analysis", () => {
+    const steps = getStepStates(FIXTURE_ANALYSIS, false);
+    render(<WorkflowStrip steps={steps} activeStep={1} onStepClick={vi.fn()} />);
+    const buttons = screen.getAllByRole("button");
+    expect(buttons).toHaveLength(9);
+  });
+
+  it("clicking a step calls onStepClick with the step", async () => {
     const user = userEvent.setup();
     const handler = vi.fn();
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    render(<WorkflowStrip steps={steps} onStepClick={handler} />);
+    render(<WorkflowStrip steps={steps} activeStep={1} onStepClick={handler} />);
 
     const firstButton = screen.getAllByRole("button")[0];
     await user.click(firstButton);
@@ -166,49 +175,9 @@ describe("WorkflowStrip component", () => {
     expect(handler.mock.calls[0][0].id).toBe(1);
   });
 
-  it("clicking unlit step 8 calls onStepClick with decide tab", async () => {
-    const user = userEvent.setup();
-    const handler = vi.fn();
-    const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    render(<WorkflowStrip steps={steps} onStepClick={handler} />);
-
-    const buttons = screen.getAllByRole("button");
-    // Step 8 should be at index 7 (0-based)
-    const step8 = buttons.find((b) =>
-      b.getAttribute("aria-label")?.includes("Human decision"),
-    );
-    expect(step8).toBeDefined();
-    await user.click(step8!);
-    expect(handler).toHaveBeenCalledOnce();
-    const clickedStep = handler.mock.calls[0][0];
-    expect(clickedStep.id).toBe(8);
-    expect(clickedStep.tab).toBe("decide");
-    expect(clickedStep.scrollTarget).toBe("decision-form");
-  });
-
-  it("clicking unlit step 9 calls onStepClick targeting actions-section", async () => {
-    const user = userEvent.setup();
-    const handler = vi.fn();
-    const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    render(<WorkflowStrip steps={steps} onStepClick={handler} />);
-
-    const buttons = screen.getAllByRole("button");
-    const step9 = buttons.find((b) =>
-      b.getAttribute("aria-label")?.includes("Recruiting action"),
-    );
-    expect(step9).toBeDefined();
-    await user.click(step9!);
-    expect(handler).toHaveBeenCalledOnce();
-    const clickedStep = handler.mock.calls[0][0];
-    expect(clickedStep.id).toBe(9);
-    expect(clickedStep.tab).toBe("decide");
-    expect(clickedStep.scrollTarget).toBe("actions-section");
-  });
-
   it("uses short labels in visible text", () => {
     const steps = getStepStates(FIXTURE_ANALYSIS, false);
-    render(<WorkflowStrip steps={steps} onStepClick={vi.fn()} />);
-    // Short labels should be visible
+    render(<WorkflowStrip steps={steps} activeStep={1} onStepClick={vi.fn()} />);
     expect(screen.getByText("Need")).toBeDefined();
     expect(screen.getByText("Skills")).toBeDefined();
     expect(screen.getByText("Internal")).toBeDefined();

@@ -136,3 +136,7 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 ## Phase F10b-3: Skill Names via API
 
 - 2026-10-12 | skill_names dict added to AnalysisResult; the API returns the full id→display-name map. Frontend reads skill names from the analysis result in app state instead of a module-level mutable variable, preventing stale names across analyses. | Section 12
+
+## Phase F13: Step-based Navigation
+
+- 2026-10-12 | Replaced 3-tab layout (Challenge / Weigh the options / Decide) with 9-step WorkflowStrip as the sole navigation. Each step click shows only that step's sections; all other sections are hidden. URL hash `#step-N` synced with activeStep state so the browser back button works. Steps 2–9 disabled before analysis ("Run an analysis first"). Steps 8–9 show pending notice until a decision is recorded. Déjà Req "applied in option scores" link dispatches SET_STEP(7). Chosen for demo flow: each step tells one part of the story and forces a linear progression that matches the guided-demo script. | Section 12, 15

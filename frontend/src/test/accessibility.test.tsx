@@ -11,14 +11,15 @@ let originalFetch: typeof globalThis.fetch;
 
 beforeEach(() => {
   originalFetch = globalThis.fetch;
+  window.location.hash = "";
 });
 
 afterEach(() => {
   globalThis.fetch = originalFetch;
   vi.restoreAllMocks();
+  window.location.hash = "";
 });
 
-// Inject fixture into the full App
 function Injector({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -37,10 +38,10 @@ function renderApp() {
   );
 }
 
-// ── TC30: Accessibility — axe audit per tab ──────────────────────────────────
+// ── TC30: Accessibility — axe audit per step ──────────────────────────────────
 
 describe("TC30: Accessibility — axe audit", () => {
-  it("Challenge tab has zero serious/critical axe violations", async () => {
+  it("Step 1 (Need) has zero serious/critical axe violations", async () => {
     const { container } = renderApp();
     await screen.findByText(/Requisition Redline/);
 
@@ -51,13 +52,17 @@ describe("TC30: Accessibility — axe audit", () => {
     expect(serious).toEqual([]);
   }, 15_000);
 
-  it("Options tab has zero serious/critical axe violations", async () => {
+  it("Step 7 (Options) has zero serious/critical axe violations", async () => {
     const user = userEvent.setup();
     const { container } = renderApp();
     await screen.findByText(/Requisition Redline/);
 
-    await user.click(screen.getByRole("tab", { name: "Weigh the options" }));
-    await screen.findByText(/Five options/);
+    // Navigate to step 7
+    const optionsBtn = screen.getAllByRole("button").find(
+      (b) => b.getAttribute("aria-label")?.includes("Five options"),
+    );
+    await user.click(optionsBtn!);
+    await screen.findAllByText(/Recommended mix/);
 
     const results = await axe(container);
     const serious = results.violations.filter(
@@ -66,12 +71,15 @@ describe("TC30: Accessibility — axe audit", () => {
     expect(serious).toEqual([]);
   }, 15_000);
 
-  it("Decide tab has zero serious/critical axe violations", async () => {
+  it("Step 8 (Decision) has zero serious/critical axe violations", async () => {
     const user = userEvent.setup();
     const { container } = renderApp();
     await screen.findByText(/Requisition Redline/);
 
-    await user.click(screen.getByRole("tab", { name: "Decide" }));
+    const decisionBtn = screen.getAllByRole("button").find(
+      (b) => b.getAttribute("aria-label")?.includes("Human decision"),
+    );
+    await user.click(decisionBtn!);
     await screen.findByLabelText(/Approver/);
 
     const results = await axe(container);
@@ -84,7 +92,7 @@ describe("TC30: Accessibility — axe audit", () => {
 
 // ── TC30: Structural accessibility ──────────────────────────────────────────
 
-describe("TC30: skip link, landmarks, focus ring, tab order", () => {
+describe("TC30: skip link, landmarks, focus ring", () => {
   it("skip link targets #main-content", () => {
     renderApp();
     const skip = document.querySelector('a[href="#main-content"]');
@@ -114,16 +122,10 @@ describe("TC30: skip link, landmarks, focus ring, tab order", () => {
     expect(live!.getAttribute("aria-live")).toBe("polite");
   });
 
-  it("tab order: tabs are keyboard-navigable with arrow keys", async () => {
-    const user = userEvent.setup();
+  it("active step has aria-current=step", () => {
     renderApp();
-
-    const challengeTab = screen.getByRole("tab", { name: "Challenge the request" });
-    challengeTab.focus();
-    await user.keyboard("{ArrowRight}");
-
-    expect(
-      screen.getByRole("tab", { name: "Weigh the options" }),
-    ).toHaveAttribute("data-state", "active");
+    const nav = screen.getByRole("navigation", { name: "Workflow progress" });
+    const current = nav.querySelector('[aria-current="step"]');
+    expect(current).toBeTruthy();
   });
 });

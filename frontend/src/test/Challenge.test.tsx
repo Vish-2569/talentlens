@@ -136,10 +136,9 @@ describe("Post-success view", () => {
     expect(screen.getByText(/not in the request/i)).toBeInTheDocument();
   });
 
-  it("title normalization panel is collapsed by default", async () => {
+  it("parsed fields are shown after submit", async () => {
     await submitAndWait();
-    const details = screen.getByText(/12 raw titles/);
-    expect(details).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Parsed fields" })).toBeInTheDocument();
   });
 
   it("TC18: XSS — script tag in request text renders as literal text", async () => {

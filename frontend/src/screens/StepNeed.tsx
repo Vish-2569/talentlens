@@ -1,0 +1,139 @@
+import { useEffect, useRef, useState } from "react";
+import { AssumptionLedger } from "../components/AssumptionLedger";
+import { DejaReq } from "../components/DejaReq";
+import { LiveRecommendation } from "../components/LiveRecommendation";
+import { LoadingStages } from "../components/LoadingStages";
+import { ParsedFields } from "../components/ParsedFields";
+import { RedlineCards } from "../components/RedlineCards";
+import { RedlineText } from "../components/RedlineText";
+import { RequestComposer } from "../components/RequestComposer";
+import { EmptyState } from "../components/ui";
+import { useAppDispatch, useAppState } from "../state/context";
+import { currentScenario } from "../state/AppState";
+
+const DEMO_SENTENCE =
+  "Senior Full Stack Developer, Bengaluru, on-site, 5+ years, must know React, Node.js and Kubernetes, budget ₹28L, need in 30 days.";
+
+export function StepNeed() {
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const { status, result, requestText, mask } = state;
+  const [editing, setEditing] = useState(false);
+
+  const scenario = currentScenario(state);
+  const prevPanelRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const panelText = scenario?.panel_text ?? null;
+    if (panelText && panelText !== prevPanelRef.current) {
+      const el = document.getElementById("recommendation-live");
+      if (el) el.textContent = `Recommendation updated: ${panelText}`;
+    }
+    prevPanelRef.current = panelText;
+  }, [scenario]);
+
+  const composerVisible =
+    status === "idle" ||
+    status === "error" ||
+    status === "loading" ||
+    (status === "ready" && editing);
+
+  const composerHidden = status === "loading";
+
+  return (
+    <section aria-labelledby="step-1-heading">
+      <h2 id="step-1-heading" className="font-serif text-lg font-semibold text-ink mb-4" tabIndex={-1}>
+        Workforce need
+      </h2>
+
+      <div id="challenge-input" className="mb-4">
+        {composerVisible && (
+          <div className={composerHidden ? "hidden" : undefined}>
+            <RequestComposer
+              demoSentence={DEMO_SENTENCE}
+              initialText={requestText}
+            />
+          </div>
+        )}
+
+        {status === "loading" && <LoadingStages />}
+
+        {status === "ready" && !editing && (
+          <div className="flex items-baseline gap-3">
+            <p className="font-sans text-sm text-ink">{requestText}</p>
+            <button
+              onClick={() => setEditing(true)}
+              className="shrink-0 font-sans text-sm font-medium text-accent hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Edit request
+            </button>
+          </div>
+        )}
+      </div>
+
+      {status === "ready" && result && (
+        <>
+          <div className="mb-4">
+            <ParsedFields parsed={result.parsed} skillNames={result.skill_names} />
+          </div>
+
+          <section id="redline-section" aria-labelledby="redline-heading" className="mt-4">
+            <h3 id="redline-heading" className="font-serif text-lg font-semibold text-ink">
+              Requisition Redline
+            </h3>
+            <p className="mt-1 font-sans text-sm text-muted">
+              What each assumption costs — toggle any constraint to see how it changes supply, time and price.
+            </p>
+            <div className="mt-4 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
+              <div>
+                <RedlineText
+                  requestText={requestText}
+                  constraints={result.redline.constraints}
+                  constraintOrder={result.redline.constraint_order}
+                  mask={mask}
+                />
+                <div className="mt-4">
+                  <RedlineCards
+                    constraints={result.redline.constraints}
+                    constraintOrder={result.redline.constraint_order}
+                    mask={mask}
+                    onToggle={(index, relaxed) =>
+                      dispatch({
+                        type: "TOGGLE_CONSTRAINT",
+                        payload: { index, relaxed },
+                      })
+                    }
+                    locationNote={result.parsed.location_note}
+                  />
+                </div>
+                <AssumptionLedger
+                  constraints={result.redline.constraints}
+                  constraintOrder={result.redline.constraint_order}
+                  mask={mask}
+                  decisionBoundaries={result.options.decision_boundaries}
+                />
+
+                <DejaReq dejareq={result.dejareq} />
+              </div>
+              <div className="mt-4 lg:mt-0">
+                <LiveRecommendation
+                  scenario={scenario}
+                  fiveOptions={result.options.five}
+                  mask={mask}
+                  onReset={() => dispatch({ type: "RESET_MASK" })}
+                />
+              </div>
+            </div>
+          </section>
+        </>
+      )}
+
+      {status === "idle" && (
+        <EmptyState
+          title="Submit a requisition to begin"
+          description="Enter job requirements above and click Analyse."
+        />
+      )}
+    </section>
+  );
+}

@@ -7,7 +7,7 @@
  * and brief header equals its fixture field.
  *
  * Also asserts: the same option shows the same score everywhere scores
- * appear (Tab 2 only), and the live panel shows no scores.
+ * appear (step 7 only), and the live panel shows no scores.
  */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -32,11 +32,13 @@ let originalFetch: typeof globalThis.fetch;
 
 beforeEach(() => {
   originalFetch = globalThis.fetch;
+  window.location.hash = "";
 });
 
 afterEach(() => {
   globalThis.fetch = originalFetch;
   vi.restoreAllMocks();
+  window.location.hash = "";
 });
 
 async function submitAndWait() {
@@ -57,7 +59,15 @@ async function submitAndWait() {
   return user;
 }
 
-// ── Tab 1: Redline live panel (no scores) ───────────────────────────────────
+function clickStep(user: ReturnType<typeof userEvent.setup>, label: string) {
+  const btn = screen.getAllByRole("button").find(
+    (b) => b.getAttribute("aria-label")?.includes(label),
+  );
+  expect(btn).toBeDefined();
+  return user.click(btn!);
+}
+
+// ── Step 1: Redline live panel (no scores) ─────────────────────────────────
 
 describe("Sync: LiveRecommendation panel shows no scores", () => {
   it("renders panel_text and ready-by / cost from the default 00000 scenario", async () => {
@@ -67,7 +77,6 @@ describe("Sync: LiveRecommendation panel shows no scores", () => {
     const top = scenario.options[0];
     expect(screen.getByText(displayOptionText(scenario.panel_text))).toBeInTheDocument();
 
-    // Ready-by and cost appear in panel
     if (top.year_one_cost_lpa != null) {
       expect(
         screen.getAllByText(new RegExp(`₹${top.year_one_cost_lpa}L`)).length,
@@ -85,7 +94,7 @@ describe("Sync: LiveRecommendation panel shows no scores", () => {
   });
 });
 
-// ── Tab 1: Déjà Req numbers ─────────────────────────────────────────────────
+// ── Step 1: Déjà Req numbers ───────────────────────────────────────────────
 
 describe("Sync: Déjà Req numbers from fixture", () => {
   async function expandDejaReq(user: ReturnType<typeof userEvent.setup>) {
@@ -131,7 +140,7 @@ describe("Sync: Déjà Req numbers from fixture", () => {
   });
 });
 
-// ── Tab 1: Redline constraint hover texts ───────────────────────────────────
+// ── Step 1: Redline constraint hover texts ─────────────────────────────────
 
 describe("Sync: Redline constraints from fixture", () => {
   it("all constraint phrases present", async () => {
@@ -145,29 +154,22 @@ describe("Sync: Redline constraints from fixture", () => {
   });
 });
 
-// ── Tab 2: Options ──────────────────────────────────────────────────────────
-
-async function goToTab2(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("tab", { name: "Weigh the options" }));
-}
+// ── Step 7: Options ────────────────────────────────────────────────────────
 
 describe("Sync: Five-option table numbers from fixture", () => {
   it("every option's cost, ready-by, fit, risk_label, and reason render", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "Five options");
 
     for (const opt of F.options.five) {
-      // Name
       expect(screen.getAllByText(opt.name).length).toBeGreaterThanOrEqual(1);
 
-      // Cost
       if (opt.year_one_cost_lpa != null) {
         expect(
           screen.getAllByText(new RegExp(`₹${opt.year_one_cost_lpa}L`)).length,
         ).toBeGreaterThanOrEqual(1);
       }
 
-      // Score or Add-on
       if (opt.score != null) {
         expect(
           screen.getAllByText(String(opt.score)).length,
@@ -176,12 +178,10 @@ describe("Sync: Five-option table numbers from fixture", () => {
         expect(screen.getAllByText(/Add-on/).length).toBeGreaterThanOrEqual(1);
       }
 
-      // Risk label
       expect(
         screen.getAllByText(opt.risk_label).length,
       ).toBeGreaterThanOrEqual(1);
 
-      // Reason text (display-name-transformed)
       expect(
         screen.getAllByText(displayOptionText(opt.reason)).length,
       ).toBeGreaterThanOrEqual(1);
@@ -192,7 +192,7 @@ describe("Sync: Five-option table numbers from fixture", () => {
 describe("Sync: Recommended mix numbers from fixture", () => {
   it("top mix score, cost, and ready-by render", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "Five options");
 
     const mix = F.options.mixes[0];
     expect(
@@ -207,10 +207,9 @@ describe("Sync: Recommended mix numbers from fixture", () => {
 describe("Sync: Relocate card numbers from fixture", () => {
   it("all location rows' supply, P50, P80, pay render in table view", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "Location and compensation");
 
-    // Switch to table view
-    await user.click(screen.getByRole("button", { name: "Show as table" }));
+    await user.click(await screen.findByRole("button", { name: "Show as table" }));
 
     for (const row of F.options.relocate_card) {
       expect(
@@ -232,15 +231,13 @@ describe("Sync: Relocate card numbers from fixture", () => {
 describe("Sync: Ripple net-impact numbers from fixture", () => {
   it("each candidate's match, last-gap days, total cost, promotions, red flags render", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "Internal talent");
 
     for (const c of F.ripple.candidates) {
-      // Match percent
       expect(
         screen.getAllByText(new RegExp(`${c.match}%`)).length,
       ).toBeGreaterThanOrEqual(1);
 
-      // Net impact: last gap days
       if (c.net_impact.days_to_fill_last_gap != null) {
         expect(
           screen.getAllByText(
@@ -249,14 +246,12 @@ describe("Sync: Ripple net-impact numbers from fixture", () => {
         ).toBeGreaterThanOrEqual(1);
       }
 
-      // Net impact: total cost
       expect(
         screen.getAllByText(
           new RegExp(`₹${c.net_impact.total_cost_lpa}L`),
         ).length,
       ).toBeGreaterThanOrEqual(1);
 
-      // Net impact: promotions
       expect(
         screen.getAllByText(String(c.net_impact.promotions)).length,
       ).toBeGreaterThanOrEqual(1);
@@ -267,7 +262,7 @@ describe("Sync: Ripple net-impact numbers from fixture", () => {
 describe("Sync: Sourcing panel numbers from fixture", () => {
   it("each sourcing channel name and evidence render", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "External market");
 
     for (const ch of F.options.sourcing.channels) {
       expect(
@@ -278,7 +273,7 @@ describe("Sync: Sourcing panel numbers from fixture", () => {
 
   it("past finalist count renders", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "External market");
 
     const count = F.options.sourcing.past_finalists.length;
     expect(
@@ -287,12 +282,12 @@ describe("Sync: Sourcing panel numbers from fixture", () => {
   });
 });
 
-// ── Tab 2: Score consistency ────────────────────────────────────────────────
+// ── Step 7: Score consistency ──────────────────────────────────────────────
 
-describe("Sync: Score consistency across Tab 2", () => {
+describe("Sync: Score consistency across step 7", () => {
   it("each scored option shows the same score value in every occurrence", async () => {
     const user = await submitAndWait();
-    await goToTab2(user);
+    await clickStep(user, "Five options");
 
     const scoreMap = new Map<string, number>();
     for (const opt of F.options.five) {
@@ -302,7 +297,6 @@ describe("Sync: Score consistency across Tab 2", () => {
       if (mix.score != null) scoreMap.set(mix.id, mix.score);
     }
 
-    // For each unique score, check it appears on screen
     for (const [, score] of scoreMap) {
       expect(
         screen.getAllByText(new RegExp(`\\b${score}\\b`)).length,
@@ -311,12 +305,12 @@ describe("Sync: Score consistency across Tab 2", () => {
   });
 });
 
-// ── Tab 3: Brief header ─────────────────────────────────────────────────────
+// ── Step 8: Brief header ───────────────────────────────────────────────────
 
 describe("Sync: Brief view renders from fixture", () => {
   it("brief heading renders", async () => {
     const user = await submitAndWait();
-    await user.click(screen.getByRole("tab", { name: "Decide" }));
+    await clickStep(user, "Human decision");
     expect(
       screen.getByText("Workforce Intelligence Brief"),
     ).toBeInTheDocument();
@@ -324,7 +318,7 @@ describe("Sync: Brief view renders from fixture", () => {
 
   it("all brief section titles render", async () => {
     const user = await submitAndWait();
-    await user.click(screen.getByRole("tab", { name: "Decide" }));
+    await clickStep(user, "Human decision");
 
     for (const section of F.brief.sections) {
       expect(

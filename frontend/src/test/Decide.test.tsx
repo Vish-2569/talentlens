@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { FIXTURE_ANALYSIS } from "../fixtures";
 import { AppProvider, useAppDispatch, useAppState } from "../state/context";
 import { Decide, parseActionItems } from "../screens/Decide";
+import { StepAction } from "../screens/StepAction";
 import { WorkflowStrip } from "../components/WorkflowStrip";
 import { getStepStates } from "../components/workflowSteps";
 
@@ -60,7 +61,7 @@ function AppWithDecide() {
   const steps = getStepStates(state.result, state.decision !== null);
   return (
     <>
-      <WorkflowStrip steps={steps} onStepClick={vi.fn()} />
+      <WorkflowStrip steps={steps} activeStep={state.activeStep} onStepClick={vi.fn()} />
       <Decide />
     </>
   );
@@ -313,24 +314,32 @@ describe("TC22: Steps 8 and 9 light after decision", () => {
 });
 
 describe("ActionsPanel", () => {
+  function renderActions() {
+    return render(
+      <AppProvider>
+        <Injector>
+          <StepAction />
+        </Injector>
+      </AppProvider>,
+    );
+  }
+
   it("renders action items from brief.actions section", async () => {
-    renderDecide();
+    renderActions();
     const actionsSection = FIXTURE_ANALYSIS.brief.sections.find(
       (s) => s.key === "actions",
     );
     const items = parseActionItems(actionsSection?.markdown ?? "");
 
-    await screen.findByLabelText(/Approver/);
-    const panel = document.getElementById("actions-section")!;
+    const panel = await screen.findByRole("list", { name: "Draft actions" });
     for (const item of items) {
       expect(within(panel).getByText(item)).toBeTruthy();
     }
   });
 
   it("labels each action card 'Draft, not sent'", async () => {
-    renderDecide();
-    await screen.findByLabelText(/Approver/);
-    const panel = document.getElementById("actions-section")!;
+    renderActions();
+    const panel = await screen.findByRole("list", { name: "Draft actions" });
     const labels = within(panel).getAllByText("Draft, not sent");
     const actionsSection = FIXTURE_ANALYSIS.brief.sections.find(
       (s) => s.key === "actions",

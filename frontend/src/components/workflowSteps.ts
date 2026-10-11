@@ -1,5 +1,4 @@
 import type { components } from "../api/types";
-import type { TabId } from "../state/AppState";
 
 type AnalysisResult = components["schemas"]["AnalysisResult"];
 
@@ -7,24 +6,24 @@ export interface StepDef {
   id: number;
   label: string;
   shortLabel: string;
-  tab: TabId;
-  scrollTarget: string;
+  headingId: string;
 }
 
 export interface StepState extends StepDef {
   lit: boolean;
+  disabled: boolean;
 }
 
 export const STEP_DEFS: StepDef[] = [
-  { id: 1, label: "Workforce need",            shortLabel: "Need",      tab: "challenge", scrollTarget: "challenge-input" },
-  { id: 2, label: "Role / skill analysis",     shortLabel: "Skills",    tab: "challenge", scrollTarget: "redline-section" },
-  { id: 3, label: "Internal talent",           shortLabel: "Internal",  tab: "options",   scrollTarget: "ripple-section" },
-  { id: 4, label: "Contractor talent",         shortLabel: "Contractors", tab: "options", scrollTarget: "contractor-section" },
-  { id: 5, label: "External market",           shortLabel: "Market",    tab: "options",   scrollTarget: "market-section" },
-  { id: 6, label: "Location and compensation", shortLabel: "Location",  tab: "options",   scrollTarget: "relocate-section" },
-  { id: 7, label: "Five options",              shortLabel: "Options",   tab: "options",   scrollTarget: "options-section" },
-  { id: 8, label: "Human decision",            shortLabel: "Decision",  tab: "decide",    scrollTarget: "decision-form" },
-  { id: 9, label: "Recruiting action",         shortLabel: "Action",    tab: "decide",    scrollTarget: "actions-section" },
+  { id: 1, label: "Workforce need",            shortLabel: "Need",        headingId: "step-1-heading" },
+  { id: 2, label: "Role / skill analysis",     shortLabel: "Skills",      headingId: "step-2-heading" },
+  { id: 3, label: "Internal talent",           shortLabel: "Internal",    headingId: "step-3-heading" },
+  { id: 4, label: "Contractor talent",         shortLabel: "Contractors", headingId: "step-4-heading" },
+  { id: 5, label: "External market",           shortLabel: "Market",      headingId: "step-5-heading" },
+  { id: 6, label: "Location and compensation", shortLabel: "Location",    headingId: "step-6-heading" },
+  { id: 7, label: "Five options",              shortLabel: "Options",     headingId: "step-7-heading" },
+  { id: 8, label: "Human decision",            shortLabel: "Decision",    headingId: "step-8-heading" },
+  { id: 9, label: "Recruiting action",         shortLabel: "Action",      headingId: "step-9-heading" },
 ];
 
 export function getStepStates(
@@ -32,6 +31,7 @@ export function getStepStates(
   decisionRecorded: boolean,
 ): StepState[] {
   const r = result;
+  const hasResult = r !== null && r !== undefined;
 
   const litMap: Record<number, boolean> = {
     1: r?.parsed !== undefined,
@@ -48,5 +48,6 @@ export function getStepStates(
   return STEP_DEFS.map((def) => ({
     ...def,
     lit: litMap[def.id] ?? false,
+    disabled: def.id >= 2 && !hasResult,
   }));
 }
