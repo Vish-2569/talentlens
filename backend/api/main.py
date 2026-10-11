@@ -1201,6 +1201,9 @@ def _build_analysis_result(  # noqa: C901
         est_cost=float(tokens_snap["est_cost"]),
     )
 
+    skill_df = store.reference.skills()
+    skill_names = dict(zip(skill_df["id"], skill_df["name"]))
+
     return AnalysisResult(
         parsed=parsed,
         dejareq=dejareq_obj,
@@ -1210,6 +1213,7 @@ def _build_analysis_result(  # noqa: C901
         brief=brief_obj,
         data_quality=dq_obj,
         tokens=tokens_obj,
+        skill_names=skill_names,
     )
 
 

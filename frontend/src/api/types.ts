@@ -103,6 +103,10 @@ export interface components {
             brief: components["schemas"]["Brief"];
             data_quality: components["schemas"]["DataQuality"];
             tokens: components["schemas"]["Tokens"];
+            /** Skill Names */
+            skill_names: {
+                [key: string]: string;
+            };
         };
         /** AnalyzeRequest */
         AnalyzeRequest: {

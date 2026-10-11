@@ -1,35 +1,8 @@
-const SKILL_NAMES: Record<string, string> = {
-  react: "React",
-  nodejs: "Node.js",
-  kubernetes: "Kubernetes",
-  typescript: "TypeScript",
-  javascript: "JavaScript",
-  python: "Python",
-  docker: "Docker",
-  aws: "AWS",
-  terraform: "Terraform",
-  graphql: "GraphQL",
-  html_css: "HTML/CSS",
-  git: "Git",
-  ci_cd: "CI/CD",
-  postgresql: "PostgreSQL",
-  mongodb: "MongoDB",
-  rest_apis: "REST APIs",
-  jest: "Jest",
-  system_design: "System Design",
-  microservices: "Microservices",
-  linux: "Linux",
-  agile: "Agile",
-  redis: "Redis",
-  kafka: "Kafka",
-  java: "Java",
-  go: "Go",
-  sql: "SQL",
-  nosql: "NoSQL",
-  testing: "Testing",
-  security: "Security",
-  devops: "DevOps",
-};
+let apiSkillNames: Record<string, string> = {};
+
+export function setApiSkillNames(names: Record<string, string>) {
+  apiSkillNames = names;
+}
 
 const LOCATION_NAMES: Record<string, string> = {
   bengaluru: "Bengaluru",
@@ -52,7 +25,7 @@ const WORK_MODE_NAMES: Record<string, string> = {
 };
 
 export function skillName(id: string): string {
-  return SKILL_NAMES[id] ?? id;
+  return apiSkillNames[id] ?? id;
 }
 
 export function locationName(id: string): string {

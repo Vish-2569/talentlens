@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { analyze } from "../api/client";
 import type { ApiError } from "../api/client";
 import { useAppDispatch, useAppState } from "../state/context";
+import { setApiSkillNames } from "./displayNames";
 import { Button, ErrorBanner } from "./ui";
 
 const MAX_CHARS = 1000;
@@ -30,6 +31,7 @@ export function RequestComposer({ demoSentence, initialText = "" }: Props) {
     dispatch({ type: "ANALYZE_START", payload: { requestText: text } });
     try {
       const result = await analyze({ text });
+      setApiSkillNames(result.skill_names);
       dispatch({ type: "ANALYZE_SUCCESS", payload: result });
     } catch (err: unknown) {
       const apiErr = err as ApiError;

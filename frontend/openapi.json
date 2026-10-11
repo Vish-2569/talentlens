@@ -221,6 +221,13 @@
                     },
                     "tokens": {
                         "$ref": "#/components/schemas/Tokens"
+                    },
+                    "skill_names": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "title": "Skill Names"
                     }
                 },
                 "additionalProperties": false,
@@ -233,7 +240,8 @@
                     "options",
                     "brief",
                     "data_quality",
-                    "tokens"
+                    "tokens",
+                    "skill_names"
                 ],
                 "title": "AnalysisResult"
             },

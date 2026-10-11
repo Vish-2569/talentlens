@@ -495,6 +495,7 @@ class AnalysisResult(BaseModel):
     brief: Brief
     data_quality: DataQuality
     tokens: Tokens
+    skill_names: dict[str, str]
 
 
 # ── Skill score (GET /api/people/{id}/skills) ──────────────────────────
