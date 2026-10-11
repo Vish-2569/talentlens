@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { components } from "../api/types";
-import { Card, SectionHeader } from "./ui";
+import { Card } from "./ui";
 import { RippleTree } from "./RippleTree";
 import { PersonDrawer } from "./PersonDrawer";
 
@@ -67,13 +67,12 @@ export function RippleComparison({ candidates }: Props) {
   const top2 = candidates.slice(0, 2);
 
   return (
-    <section aria-labelledby="ripple-heading">
-      <SectionHeader className="text-lg">
-        <span id="ripple-heading">Moving a person moves the vacancy</span>
-      </SectionHeader>
+    <section id="ripple-section" aria-labelledby="ripple-heading">
+      <h3 id="ripple-heading" className="font-serif text-lg font-semibold text-ink">
+        Ripple Effect
+      </h3>
       <p className="mt-1 font-sans text-sm text-muted">
-        Promoting an internal candidate creates a backfill chain. A higher
-        match score can be the worse decision if the chain is harder to fill.
+        Moving a person moves the vacancy — promoting an internal candidate creates a backfill chain.
       </p>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">

@@ -143,7 +143,12 @@ export function Options() {
       <SectionHeader as="h3">Recommended mix</SectionHeader>
       <RecommendedMix mixes={opts.mixes} />
 
-      <SectionHeader as="h3">All options</SectionHeader>
+      <div id="options-section">
+        <SectionHeader as="h3">Five options</SectionHeader>
+        <p className="mt-1 mb-3 font-sans text-sm text-muted">
+          Every way to fill this seat — scored, side by side.
+        </p>
+      </div>
       <FiveOptionTable options={opts.five as OptionCard[]} />
 
       <WeightSliders
@@ -153,13 +158,19 @@ export function Options() {
         onRerank={handleRerank}
       />
 
-      <SectionHeader as="h3">Location alternatives</SectionHeader>
+      <div id="relocate-section">
+        <SectionHeader as="h3">Location alternatives</SectionHeader>
+      </div>
       <RelocateCard rows={opts.relocate_card} />
 
-      <SectionHeader as="h3">Market snapshot</SectionHeader>
+      <div id="market-section">
+        <SectionHeader as="h3">Market snapshot</SectionHeader>
+      </div>
       <MarketCard data={opts.market_card} />
 
-      <SectionHeader as="h3">Contractors</SectionHeader>
+      <div id="contractor-section">
+        <SectionHeader as="h3">Contractors</SectionHeader>
+      </div>
       <ContractorCards
         cards={opts.contractor_cards}
         onSelectPerson={handleSelectPerson}
@@ -168,7 +179,12 @@ export function Options() {
       <SectionHeader as="h3">Sourcing</SectionHeader>
       <SourcingPanel sourcing={opts.sourcing} />
 
-      <SectionHeader as="h3">Internal candidates</SectionHeader>
+      <div id="evidence-section">
+        <SectionHeader as="h3">Skill Evidence</SectionHeader>
+        <p className="mt-1 mb-3 font-sans text-sm text-muted">
+          Click any name to see assessed, certified, and self-reported skill scores.
+        </p>
+      </div>
       <InternalCandidates
         candidates={opts.internal_candidates}
         onSelectPerson={handleSelectPerson}

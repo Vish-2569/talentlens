@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { SectionHeader } from "./ui";
+import { displayRelaxedValue } from "./displayNames";
 
 type Constraint = components["schemas"]["Constraint"];
 type ConstraintKind = components["schemas"]["ConstraintKind"];
@@ -52,7 +53,7 @@ export function AssumptionLedger({
                   <span>
                     <span className="font-medium text-amber">Relax:</span>{" "}
                     <span className="line-through">{c.phrase}</span>{" "}
-                    → {c.relaxed_value}{" "}
+                    → {c.relaxed_value ? displayRelaxedValue(kind, c.relaxed_value) : "—"}{" "}
                     {costStr && <span className="text-muted">{costStr}</span>}
                   </span>
                 ) : (

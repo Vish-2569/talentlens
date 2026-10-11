@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { Badge } from "./ui";
+import { displayOptionText } from "./displayNames";
 
 type ScenarioResult = components["schemas"]["ScenarioResult"];
 type OptionCard = components["schemas"]["OptionCard"];
@@ -30,7 +31,7 @@ export function LiveRecommendation({ scenario, fiveOptions, mask, onReset }: Pro
       className="rounded border border-hairline bg-surface p-4 lg:sticky lg:top-4"
     >
       <p className="font-sans text-sm font-semibold text-ink">
-        {scenario.panel_text}
+        {displayOptionText(scenario.panel_text)}
       </p>
 
       {top && (

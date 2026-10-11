@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { Badge, InfoTip } from "./ui";
+import { displayValue, skillName } from "./displayNames";
 
 type ParsedRequisition = components["schemas"]["ParsedRequisition"];
 type ParsedField = components["schemas"]["ParsedField"];
@@ -47,11 +48,7 @@ const LABEL_BADGE_VARIANT: Record<
 };
 
 function formatValue(key: string, value: string | number): string {
-  if (key === "budget_lpa") return `₹${value}L`;
-  if (key === "need_by_days") return `${value} days`;
-  if (key === "min_years") return `${value}+ years`;
-  if (key === "duration_months") return `${value} months`;
-  return String(value);
+  return displayValue(key, value);
 }
 
 interface Props {
@@ -126,7 +123,7 @@ export function ParsedFields({ parsed }: Props) {
             role="listitem"
             className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-2 py-1 font-sans text-sm"
           >
-            <span className="text-ink">{skill.skill_id}</span>
+            <span className="text-ink">{skillName(skill.skill_id)}</span>
             <Badge variant={skill.importance === "must" ? "accent" : "muted"}>
               {skill.importance}
             </Badge>

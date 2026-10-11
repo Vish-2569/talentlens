@@ -157,9 +157,15 @@ export function DejaReq({ dejareq }: Props) {
   return (
     <section
       data-testid="dejareq-section"
-      aria-label="Déjà Req — requisition history"
+      aria-labelledby="dejareq-heading"
       className="mt-6"
     >
+      <h3 id="dejareq-heading" className="font-serif text-lg font-semibold text-ink">
+        Déjà Req
+      </h3>
+      <p className="mt-1 mb-3 font-sans text-sm text-muted">
+        What happened last time — your history with this role and team.
+      </p>
       {/* Banner */}
       <button
         type="button"

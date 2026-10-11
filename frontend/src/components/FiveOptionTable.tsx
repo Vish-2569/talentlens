@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { Badge, InfoTip, LiveRegion } from "./ui";
+import { displayOptionText } from "./displayNames";
 
 type OptionCard = components["schemas"]["OptionCard"];
 
@@ -53,7 +54,7 @@ export function FiveOptionTable({ options }: Props) {
                 className="border-b border-hairline last:border-0"
               >
                 <td className="py-2 pr-3 font-semibold text-ink">{opt.name}</td>
-                <td className="py-2 pr-3 text-xs text-muted">{opt.what_it_means}</td>
+                <td className="py-2 pr-3 text-xs text-muted">{displayOptionText(opt.what_it_means)}</td>
                 <td className="py-2 pr-3 text-right font-mono text-xs">
                   {formatReadyBy(opt.ready_by_p80_days)}
                 </td>
@@ -72,7 +73,7 @@ export function FiveOptionTable({ options }: Props) {
                   {opt.score != null ? opt.score : "Add-on"}
                 </td>
                 <td className="py-2 text-xs text-muted">
-                  <span>{opt.reason}</span>
+                  <span>{displayOptionText(opt.reason)}</span>
                   {opt.evidence_ids.length > 0 && (
                     <InfoTip
                       aria-label="Evidence IDs"
@@ -110,7 +111,7 @@ export function FiveOptionTable({ options }: Props) {
                   {opt.score != null ? `${opt.score}/100` : "Add-on"}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-muted">{opt.what_it_means}</p>
+              <p className="mt-1 text-xs text-muted">{displayOptionText(opt.what_it_means)}</p>
               <div className="mt-2 flex flex-wrap gap-2 text-xs text-muted font-mono">
                 <span>{formatReadyBy(opt.ready_by_p80_days)}</span>
                 {opt.year_one_cost_lpa != null && (
@@ -121,7 +122,7 @@ export function FiveOptionTable({ options }: Props) {
                   {opt.risk_label}
                 </Badge>
               </div>
-              <p className="mt-1 text-xs text-muted">{opt.reason}</p>
+              <p className="mt-1 text-xs text-muted">{displayOptionText(opt.reason)}</p>
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import type { KeyboardEvent } from "react";
 import type { components } from "../api/types";
 import { StatusMark } from "./ui";
+import { displayRelaxedValue } from "./displayNames";
 
 type Constraint = components["schemas"]["Constraint"];
 type ConstraintKind = components["schemas"]["ConstraintKind"];
@@ -116,7 +117,7 @@ export function RedlineCards({ constraints, constraintOrder, mask, onToggle, loc
                 </p>
                 {c.relaxed_value && (
                   <p className="mt-1 font-sans text-xs text-muted">
-                    Relax to: {c.relaxed_value}
+                    Relax to: {displayRelaxedValue(kind, c.relaxed_value)}
                   </p>
                 )}
                 {kind === "location" && locationNote && (

@@ -175,8 +175,11 @@ export function DecisionPanel() {
       noValidate
     >
       <h3 id="decision-form-heading" className="font-serif text-base font-semibold">
-        Record decision
+        Human decision
       </h3>
+      <p className="font-sans text-sm text-muted">
+        Nothing auto-executes — record your choice, reason, and next steps.
+      </p>
 
       <p className="font-sans text-xs text-muted">
         Deciding for scenario: {assumeText}.

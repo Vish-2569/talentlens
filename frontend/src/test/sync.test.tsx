@@ -15,6 +15,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { FIXTURE_ANALYSIS } from "../fixtures";
 import { App } from "../App";
 import { AppProvider } from "../state/context";
+import { displayOptionText } from "../components/displayNames";
 
 const F = FIXTURE_ANALYSIS;
 
@@ -64,7 +65,7 @@ describe("Sync: LiveRecommendation panel shows no scores", () => {
 
     const scenario = F.redline.scenarios["00000"];
     const top = scenario.options[0];
-    expect(screen.getByText(scenario.panel_text)).toBeInTheDocument();
+    expect(screen.getByText(displayOptionText(scenario.panel_text))).toBeInTheDocument();
 
     // Ready-by and cost appear in panel
     if (top.year_one_cost_lpa != null) {
@@ -180,9 +181,9 @@ describe("Sync: Five-option table numbers from fixture", () => {
         screen.getAllByText(opt.risk_label).length,
       ).toBeGreaterThanOrEqual(1);
 
-      // Reason text
+      // Reason text (display-name-transformed)
       expect(
-        screen.getAllByText(opt.reason).length,
+        screen.getAllByText(displayOptionText(opt.reason)).length,
       ).toBeGreaterThanOrEqual(1);
     }
   });

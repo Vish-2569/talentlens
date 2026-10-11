@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { InfoTip, VisuallyHidden } from "./ui";
+import { displayRelaxedValue } from "./displayNames";
 
 type Constraint = components["schemas"]["Constraint"];
 type ConstraintKind = components["schemas"]["ConstraintKind"];
@@ -69,7 +70,7 @@ export function RedlineText({ requestText, constraints, constraintOrder, mask }:
           {requestText.slice(c.span_start, c.span_end)}
         </mark>
         {relaxed && c.relaxed_value && (
-          <span className="ml-1 text-sm text-muted">{c.relaxed_value}</span>
+          <span className="ml-1 text-sm text-muted">{displayRelaxedValue(c.kind, c.relaxed_value)}</span>
         )}
       </InfoTip>,
     );

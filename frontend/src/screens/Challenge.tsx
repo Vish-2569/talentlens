@@ -79,8 +79,14 @@ export function Challenge() {
           </div>
 
           {/* Redline + Déjà Req */}
-          <section id="redline-section" aria-label="Requisition redline" className="mt-6">
-            <div className="lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
+          <section id="redline-section" aria-labelledby="redline-heading" className="mt-6">
+            <h3 id="redline-heading" className="font-serif text-lg font-semibold text-ink">
+              Requisition Redline
+            </h3>
+            <p className="mt-1 font-sans text-sm text-muted">
+              What each assumption costs — toggle any constraint to see how it changes supply, time and price.
+            </p>
+            <div className="mt-4 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
               <div>
                 <RedlineText
                   requestText={requestText}
