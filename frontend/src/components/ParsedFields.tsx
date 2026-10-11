@@ -1,6 +1,6 @@
 import type { components } from "../api/types";
 import { Badge, InfoTip } from "./ui";
-import { displayValue, skillName } from "./displayNames";
+import { displayValue } from "./displayNames";
 
 type ParsedRequisition = components["schemas"]["ParsedRequisition"];
 type ParsedField = components["schemas"]["ParsedField"];
@@ -53,9 +53,10 @@ function formatValue(key: string, value: string | number): string {
 
 interface Props {
   parsed: ParsedRequisition;
+  skillNames: Record<string, string>;
 }
 
-export function ParsedFields({ parsed }: Props) {
+export function ParsedFields({ parsed, skillNames }: Props) {
   const nonNullFields: { key: string; field: ParsedField; label: string }[] =
     [];
   const nullFieldNames: string[] = [];
@@ -76,7 +77,6 @@ export function ParsedFields({ parsed }: Props) {
           const isInferred = field.label === "inferred";
           const chip = (
             <span
-              role="listitem"
               className={[
                 "inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-sans text-sm",
                 isInferred ? "border-dashed border-amber" : "border-hairline",
@@ -100,21 +100,22 @@ export function ParsedFields({ parsed }: Props) {
 
           if (field.span) {
             return (
-              <InfoTip
-                key={key}
-                content={
-                  <span>
-                    From request: &ldquo;{field.span}&rdquo;
-                  </span>
-                }
-                aria-label={`${label} source`}
-              >
-                {chip}
-              </InfoTip>
+              <span key={key} role="listitem">
+                <InfoTip
+                  content={
+                    <span>
+                      From request: &ldquo;{field.span}&rdquo;
+                    </span>
+                  }
+                  aria-label={`${label} source`}
+                >
+                  {chip}
+                </InfoTip>
+              </span>
             );
           }
 
-          return <span key={key}>{chip}</span>;
+          return <span key={key} role="listitem">{chip}</span>;
         })}
 
         {parsed.skills.map((skill) => (
@@ -123,7 +124,7 @@ export function ParsedFields({ parsed }: Props) {
             role="listitem"
             className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-2 py-1 font-sans text-sm"
           >
-            <span className="text-ink">{skillName(skill.skill_id)}</span>
+            <span className="text-ink">{skillNames[skill.skill_id] ?? skill.skill_id}</span>
             <Badge variant={skill.importance === "must" ? "accent" : "muted"}>
               {skill.importance}
             </Badge>

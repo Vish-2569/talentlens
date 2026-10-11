@@ -132,3 +132,7 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 - 2026-10-11 | Unrecognized skill-like tokens near "must know"/"nice to have" cues (e.g. SpringBoot, Django) are detected by a heuristic regex (CamelCase, dotted/hyphenated patterns) and listed in parsed.unrecognized_skills. They do not participate in matching or scoring. | Section 12
 - 2026-10-11 | The /api/analyze endpoint wraps _run_analysis in a try/except: any unhandled exception logs the full traceback server-side (with the API key redaction filter still active) and returns HTTP 422 with a short error ID (ERR-XXXXXXXX) in both the log and the response detail, never 500. | Section 12
 - 2026-10-11 | LLM cache SQLite connection uses check_same_thread=False plus a threading.Lock guarding all reads/writes to avoid thread-affinity and concurrent-write errors. | Section 8
+
+## Phase F10b-3: Skill Names via API
+
+- 2026-10-12 | skill_names dict added to AnalysisResult; the API returns the full id→display-name map. Frontend reads skill names from the analysis result in app state instead of a module-level mutable variable, preventing stale names across analyses. | Section 12

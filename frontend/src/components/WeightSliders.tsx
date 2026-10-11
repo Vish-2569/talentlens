@@ -178,7 +178,10 @@ export function WeightSliders({
             <Slider.Track className="relative h-1 w-full rounded-full bg-hairline">
               <Slider.Range className="absolute h-full rounded-full bg-accent" />
             </Slider.Track>
-            <Slider.Thumb className="block h-4 w-4 rounded-full border-2 border-accent bg-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />
+            <Slider.Thumb
+              aria-label={`${LABELS[key]} weight`}
+              className="block h-4 w-4 rounded-full border-2 border-accent bg-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            />
           </Slider.Root>
           <span className="w-10 text-right font-mono text-xs text-muted">
             {(weights[key] * 100).toFixed(0)}%

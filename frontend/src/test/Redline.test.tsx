@@ -130,6 +130,31 @@ describe("TC04: Redline marks rendering", () => {
   });
 });
 
+describe("TC07: All 32 scenarios present in fixture and have required fields", () => {
+  const scenarios = FIXTURE_ANALYSIS.redline.scenarios;
+  const keys = Object.keys(scenarios);
+
+  it("fixture contains exactly 32 scenario keys", () => {
+    expect(keys).toHaveLength(32);
+  });
+
+  it("every 5-bit mask from 00000 to 11111 is present", () => {
+    for (let i = 0; i < 32; i++) {
+      const mask = i.toString(2).padStart(5, "0");
+      expect(scenarios[mask]).toBeDefined();
+    }
+  });
+
+  it("each scenario has panel_text, top_option_id, and at least one option", () => {
+    for (const mask of keys) {
+      const s = scenarios[mask];
+      expect(s.panel_text).toBeTruthy();
+      expect(s.top_option_id).toBeTruthy();
+      expect(s.options.length).toBeGreaterThanOrEqual(1);
+    }
+  });
+});
+
 describe("TC07: Toggle interactions", () => {
   it("toggling 2 constraints makes zero fetch calls and panel updates", async () => {
     const user = await submitAndWait();

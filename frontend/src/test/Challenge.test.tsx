@@ -142,7 +142,7 @@ describe("Post-success view", () => {
     expect(details).toBeInTheDocument();
   });
 
-  it("XSS: script tag in request text renders as literal text", async () => {
+  it("TC18: XSS — script tag in request text renders as literal text", async () => {
     const user = userEvent.setup();
     globalThis.fetch = mockFetch(200, FIXTURE_ANALYSIS);
     renderChallenge();
@@ -163,7 +163,7 @@ describe("Post-success view", () => {
     expect(injectedScripts).toHaveLength(0);
   });
 
-  it("XSS: script tag in chip values renders as text", async () => {
+  it("TC18: XSS — script tag in chip values renders as text", async () => {
     const xssFixture = structuredClone(FIXTURE_ANALYSIS);
     (xssFixture.parsed.location.value as string) =
       '<script>alert(1)</script>';

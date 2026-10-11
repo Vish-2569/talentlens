@@ -1,9 +1,3 @@
-let apiSkillNames: Record<string, string> = {};
-
-export function setApiSkillNames(names: Record<string, string>) {
-  apiSkillNames = names;
-}
-
 const LOCATION_NAMES: Record<string, string> = {
   bengaluru: "Bengaluru",
   hyderabad: "Hyderabad",
@@ -23,10 +17,6 @@ const WORK_MODE_NAMES: Record<string, string> = {
   remote: "Remote",
   hybrid: "Hybrid",
 };
-
-export function skillName(id: string): string {
-  return apiSkillNames[id] ?? id;
-}
 
 export function locationName(id: string): string {
   return LOCATION_NAMES[id] ?? id;

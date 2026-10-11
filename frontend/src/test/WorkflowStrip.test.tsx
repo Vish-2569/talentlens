@@ -5,6 +5,33 @@ import { WorkflowStrip } from "../components/WorkflowStrip";
 import { getStepStates, STEP_DEFS } from "../components/workflowSteps";
 import { FIXTURE_ANALYSIS } from "../fixtures";
 
+describe("TC37: Workflow strip — 9 data groups present in fixture", () => {
+  it("fixture has all 9 data groups that light the 9 steps", () => {
+    expect(FIXTURE_ANALYSIS.parsed).toBeTruthy(); // step 1
+    expect(FIXTURE_ANALYSIS.redline).toBeTruthy(); // step 2
+    expect(FIXTURE_ANALYSIS.ripple.candidates.length).toBeGreaterThan(0); // step 3
+    expect(FIXTURE_ANALYSIS.options.contractor_cards.length).toBeGreaterThan(0); // step 4
+    expect(FIXTURE_ANALYSIS.options.market_card).toBeTruthy(); // step 5
+    expect(FIXTURE_ANALYSIS.options.relocate_card.length).toBeGreaterThan(0); // step 6
+    expect(FIXTURE_ANALYSIS.options.five.length).toBeGreaterThan(0); // step 7
+    // steps 8/9 require a decision (tested below)
+    expect(FIXTURE_ANALYSIS.brief.sections.length).toBeGreaterThan(0); // step 9 data
+  });
+
+  it("steps 1-7 light when fixture is loaded; 8-9 light after decision", () => {
+    const before = getStepStates(FIXTURE_ANALYSIS, false);
+    for (let i = 0; i < 7; i++) {
+      expect(before[i].lit, `step ${i + 1} lit`).toBe(true);
+    }
+    expect(before[7].lit).toBe(false);
+    expect(before[8].lit).toBe(false);
+
+    const after = getStepStates(FIXTURE_ANALYSIS, true);
+    expect(after[7].lit).toBe(true);
+    expect(after[8].lit).toBe(true);
+  });
+});
+
 describe("getStepStates (pure function)", () => {
   it("all steps unlit when result is null", () => {
     const steps = getStepStates(null, false);

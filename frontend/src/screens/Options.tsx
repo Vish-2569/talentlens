@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { lazy, Suspense, useCallback, useState } from "react";
 import { EmptyState, SectionHeader } from "../components/ui";
 import { DataQualityLine } from "../components/DataQualityLine";
 import { RippleComparison } from "../components/RippleComparison";
@@ -9,7 +9,10 @@ import {
   type RankedOption,
   type RankedMix,
 } from "../components/WeightSliders";
-import { RelocateCard } from "../components/RelocateCard";
+
+const RelocateCard = lazy(() =>
+  import("../components/RelocateCard").then((m) => ({ default: m.RelocateCard })),
+);
 import { MarketCard } from "../components/MarketCard";
 import { ContractorCards } from "../components/ContractorCards";
 import { SourcingPanel } from "../components/SourcingPanel";
@@ -161,7 +164,9 @@ export function Options() {
       <div id="relocate-section">
         <SectionHeader as="h3">Location alternatives</SectionHeader>
       </div>
-      <RelocateCard rows={opts.relocate_card} />
+      <Suspense fallback={<div className="h-48 animate-pulse rounded bg-surface" />}>
+        <RelocateCard rows={opts.relocate_card} />
+      </Suspense>
 
       <div id="market-section">
         <SectionHeader as="h3">Market snapshot</SectionHeader>

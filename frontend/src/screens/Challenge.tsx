@@ -75,7 +75,7 @@ export function Challenge() {
       {status === "ready" && result && (
         <>
           <div className="mb-6">
-            <ParsedFields parsed={result.parsed} />
+            <ParsedFields parsed={result.parsed} skillNames={result.skill_names} />
           </div>
 
           {/* Redline + Déjà Req */}
