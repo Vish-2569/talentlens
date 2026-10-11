@@ -187,11 +187,90 @@ One line per entry added since Phase 12:
 
 ---
 
+## Frontend Integration
+
+### Vitest sync test (`src/test/sync.test.tsx`)
+
+Renders the full `<App>` with the captured fixture and asserts every number shown across all three tabs equals its fixture field (no hard-coded literals). 16 tests, 0 failures.
+
+| Test group | What it checks | Count |
+|------------|----------------|-------|
+| LiveRecommendation panel | panel_text, ready-by, cost from `scenarios["00000"]`; no scores shown | 2 |
+| Déjà Req | banner_text, insight_text, timeline costs, avg tenure (after expanding) | 4 |
+| Redline constraints | all constraint phrases present | 1 |
+| Five-option table | name, cost, score (or Add-on), risk_label, reason for all 5 options | 1 |
+| Recommended mix | top mix score, cost, ready-by | 1 |
+| Relocate card | all 4 location rows' supply, P50, P80 (table view) | 1 |
+| Ripple net impact | match %, last-gap days, total cost, promotions for each candidate | 1 |
+| Sourcing | channel names, past-finalist count | 2 |
+| Score consistency | same option shows same score everywhere on Tab 2 | 1 |
+| Brief header | heading text, all section titles | 2 |
+
+### Smoke test (`scripts/smoke.mjs`)
+
+Manual end-to-end against the live backend. Run: `node scripts/smoke.mjs`
+
+```
+──────────────────────────────────────────────────────────────
+  1. GET /api/health
+──────────────────────────────────────────────────────────────
+  ok: true  cache: true  llm: true
+  PASS ✓
+
+──────────────────────────────────────────────────────────────
+  2. POST /api/analyze
+──────────────────────────────────────────────────────────────
+  HTTP 200
+  req_id: REQ-F6BF22D6
+
+  Five-option scores:
+    Borrow          score=87   ready=0d    cost=₹24L
+    Build           score=73   ready=42d   cost=₹12L
+    Relocate        score=62   ready=40d   cost=₹29L
+    Buy             score=42   ready=81d   cost=₹32L
+    Automate        score=add-on ready=7d  cost=₹1L
+
+  Mix scores:
+    Priya + Arjun   score=89   cost=₹18L
+    Priya + Arjun   score=88   cost=₹19L
+    Arjun           score=87   cost=₹24L
+
+  Panel text (00000 — as written):
+    "Buy: P50 62 days, ₹32L."
+
+  Panel text (10100 — location+skill relaxed):
+    "Borrow E-045 + C-17: available now, ₹18L in year one."
+
+  Tokens:
+    calls=0  in=0  out=0  cache_hit=false  est_cost=0
+
+──────────────────────────────────────────────────────────────
+  3. POST /api/decisions (verb=Approve, mask=00000, option=buy)
+──────────────────────────────────────────────────────────────
+  HTTP 201
+  Response: { status: "recorded", inputs_hash: "55aeb236…" }
+  PASS ✓
+```
+
+### Offline test
+
+**Pending** — user to switch Wi-Fi off and confirm the built app at `127.0.0.1:8000` loads fonts and runs the demo end-to-end.
+
+### Error paths (built app)
+
+**Pending** — user to test:
+1. Backend stopped → health banner appears
+2. Analyze 422 → field error message shown
+3. Decision 400 → field error message shown
+
+---
+
 ## Total Test Count
 
 | Suite | Count |
 |-------|-------|
-| `pytest backend/tests/` | **453** |
+| `pytest backend/tests/` | **477** |
+| `vitest` frontend tests | **189** (16 new in `sync.test.tsx`) |
 | TC-named tests (TC01–TC37) | 49 functions across 11 files |
 | Frontend-only TCs (no backend test) | TC30 |
 | Backend-support tests for frontend TCs | TC07 (`test_tc07_32_scenarios_in_response`), TC37 (`test_tc37_9_workflow_stages_present`) |
