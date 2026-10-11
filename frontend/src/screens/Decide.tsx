@@ -1,5 +1,9 @@
 import { EmptyState } from "../components/ui";
 import { useAppState } from "../state/context";
+import { DecisionPanel } from "../components/DecisionPanel";
+import { ActionsPanel } from "../components/ActionsPanel";
+
+export { parseActionItems } from "../components/ActionsPanel";
 
 export function Decide() {
   const { result } = useAppState();
@@ -19,13 +23,12 @@ export function Decide() {
   }
 
   return (
-    <section aria-labelledby="decide-heading">
+    <section aria-labelledby="decide-heading" className="space-y-6">
       <h2 id="decide-heading" className="sr-only">
         Decide
       </h2>
-      <p className="font-sans text-sm text-muted">
-        Decision screen arrives in Phase F6.
-      </p>
+      <DecisionPanel />
+      <ActionsPanel />
     </section>
   );
 }

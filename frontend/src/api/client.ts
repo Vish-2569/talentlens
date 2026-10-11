@@ -82,9 +82,11 @@ export async function getPersonSkills(personId: string): Promise<SkillScore[]> {
   return request<SkillScore[]>(`${BASE}/people/${encodeURIComponent(personId)}/skills`);
 }
 
-export async function postDecision(body: DecisionRequest): Promise<void> {
+export async function postDecision(
+  body: DecisionRequest,
+): Promise<Record<string, unknown>> {
   // No retry: a double-submit would record two decisions in the append-only log.
-  await request<unknown>(`${BASE}/decisions`, {
+  return request<Record<string, unknown>>(`${BASE}/decisions`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
