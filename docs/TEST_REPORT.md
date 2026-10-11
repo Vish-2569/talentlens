@@ -1,6 +1,6 @@
 # TalentLens — Test Report
 
-Generated: 2026-10-10 | Suite: `pytest backend/tests/` | **453 tests, 453 passed, 0 failed**
+Generated: 2026-10-12 | Backend: `pytest backend/tests/` — **477 passed** | Frontend: `vitest run` — **202 passed**
 
 ---
 
@@ -187,28 +187,180 @@ One line per entry added since Phase 12:
 
 ---
 
-## Frontend Integration
+## Frontend
 
-### Vitest sync test (`src/test/sync.test.tsx`)
+Updated: 2026-10-12 | Suite: `vitest run` | **16 files, 202 tests, 202 passed, 0 failed**
 
-Renders the full `<App>` with the captured fixture and asserts every number shown across all three tabs equals its fixture field (no hard-coded literals). 16 tests, 0 failures.
+### Frontend TC Table
 
-| Test group | What it checks | Count |
-|------------|----------------|-------|
-| LiveRecommendation panel | panel_text, ready-by, cost from `scenarios["00000"]`; no scores shown | 2 |
-| Déjà Req | banner_text, insight_text, timeline costs, avg tenure (after expanding) | 4 |
-| Redline constraints | all constraint phrases present | 1 |
-| Five-option table | name, cost, score (or Add-on), risk_label, reason for all 5 options | 1 |
-| Recommended mix | top mix score, cost, ready-by | 1 |
-| Relocate card | all 4 location rows' supply, P50, P80 (table view) | 1 |
-| Ripple net impact | match %, last-gap days, total cost, promotions for each candidate | 1 |
-| Sourcing | channel names, past-finalist count | 2 |
-| Score consistency | same option shows same score everywhere on Tab 2 | 1 |
-| Brief header | heading text, all section titles | 2 |
+| TC ID | Test | Status |
+|-------|------|--------|
+| TC01 | DejaReq banner shows exact `banner_text` from fixture | ✅ |
+| TC01 | Timeline has 4 rows, newest first | ✅ |
+| TC01 | Timeline rows show decision type and outcome text | ✅ |
+| TC02 | `match_count=1` shows chip, not banner | ✅ |
+| TC02 | `match_count=0` shows nothing | ✅ |
+| TC03 | Churn pattern shows risk effect text | ✅ |
+| TC03 | Timeline rows readable without colour (outcome text present) | ✅ |
+| TC04 | RedlineText: 5 marks — location, skill, deadline red; years, budget amber | ✅ |
+| TC04 | RedlineText: each mark has VisuallyHidden severity label | ✅ |
+| TC04 | RedlineCards: StatusMark matches each constraint severity | ✅ |
+| TC04 | Hover text matches API string for location constraint | ✅ |
+| TC07 | Fixture contains exactly 32 scenario keys (00000–11111) | ✅ |
+| TC07 | Every 5-bit mask from 00000 to 11111 present | ✅ |
+| TC07 | Each scenario has `panel_text`, `top_option_id`, ≥1 option | ✅ |
+| TC07 | Toggling 2 constraints makes zero fetch calls; panel updates | ✅ |
+| TC07 | Mask "00000" shows Buy panel text | ✅ |
+| TC07 | Relaxing location + skill shows Mix panel text | ✅ |
+| TC08 | Toggle back to Keep restores original panel text | ✅ |
+| TC08 | Tooltip opens by keyboard focus (Tab) | ✅ |
+| TC08 | Tooltip opens by click/tap | ✅ |
+| TC09 | Priya's chain — 3 nodes in the chain | ✅ |
+| TC09 | Priya's net impact values from fixture | ✅ |
+| TC09 | Chain seats in order | ✅ |
+| TC10 | Karthik — `bus_factor` flag with skill=terraform on dead-end | ✅ |
+| TC10 | Karthik — `no_internal_backfill` and `hard_market` flags | ✅ |
+| TC10 | "Bus factor = 1" label rendered | ✅ |
+| TC10 | "Hard to fill" label rendered | ✅ |
+| TC10 | `red_flags` count in net impact | ✅ |
+| TC10 | No internal backfill for lead/Platform seat | ✅ |
+| TC10 | Net impact days and cost from fixture | ✅ |
+| TC11 | Exactly the candidates from fixture rendered | ✅ |
+| TC11 | View skills opens drawer with person's skills | ✅ |
+| TC11 | Clicking person name in tree opens drawer | ✅ |
+| TC11 | Tree is nested list navigable by keyboard | ✅ |
+| TC18 | XSS — `<script>` in request text renders as literal text | ✅ |
+| TC18 | XSS — `<script>` in chip values renders as text | ✅ |
+| TC22 | Submit disabled when verb missing | ✅ |
+| TC22 | Submit disabled when approver empty | ✅ |
+| TC22 | Submit disabled when reason empty | ✅ |
+| TC22 | 400: "Reason must not be empty" near reason field | ✅ |
+| TC22 | 400: approver error near approver field | ✅ |
+| TC22 | POST body contains `req_id`, exact `mask`, chosen verb | ✅ |
+| TC22 | `option_id` in POST body is one of `scenarios[mask]` options | ✅ |
+| TC22 | No double POST on fast double-click | ✅ |
+| TC22 | Steps 8 and 9 light after successful submit | ✅ |
+| TC23 | Rahul AWS — value 35 with `role=meter` | ✅ |
+| TC23 | Assessment tag with check icon text | ✅ |
+| TC23 | Mar 2026 date shown | ✅ |
+| TC23 | Tooltip mentions ignored self-report | ✅ |
+| TC24 | Self-report-only shows value 39 | ✅ |
+| TC24 | Self-report tag with outlined (dashed) style | ✅ |
+| TC25 | Priya Kubernetes — value 40 with conflict | ✅ |
+| TC25 | Warning icon and visually-hidden "sources disagree" text | ✅ |
+| TC25 | Tooltip mentions disagree by 50 points | ✅ |
+| TC30 | Axe audit: Challenge tab zero serious/critical violations | ✅ |
+| TC30 | Axe audit: Options tab zero serious/critical violations | ✅ |
+| TC30 | Axe audit: Decide tab zero serious/critical violations | ✅ |
+| TC30 | Skip link targets `#main-content` | ✅ |
+| TC30 | Landmarks: header (banner), nav, main, footer (contentinfo) | ✅ |
+| TC30 | Main content focusable (tabIndex=-1 for skip link target) | ✅ |
+| TC30 | Live region exists for recommendation announcements | ✅ |
+| TC30 | Tabs are keyboard-navigable with arrow keys | ✅ |
+| TC30 | Each source type has distinct icon and text label | ✅ |
+| TC30 | Tooltip opens via keyboard focus | ✅ |
+| TC30 | Drawer fetches skills once per person | ✅ |
+| TC30 | Drawer shows close button that calls onClose | ✅ |
+| TC33 | Five-option table renders all 5 option names | ✅ |
+| TC33 | Each option's cost from fixture | ✅ |
+| TC33 | Automate shows "Add-on" (score is null) | ✅ |
+| TC33 | Table has `id=five-option-table` and is focusable | ✅ |
+| TC33 | Mix score from `mixes[0]` | ✅ |
+| TC34 | Relocate card locations in fixture order (table view) | ✅ |
+| TC35 | Sourcing past finalists count from fixture | ✅ |
+| TC36 | BriefView renders exactly 12 sections in API order | ✅ |
+| TC36 | Every section has non-empty content when expanded | ✅ |
+| TC36 | Jump list renders numbered links for all 12 sections | ✅ |
+| TC36 | Download Markdown creates `text/markdown` blob | ✅ |
+| TC36 | Download HTML creates `text/html` blob | ✅ |
+| TC36 | Print opens new tab with blob URL | ✅ |
+| TC36 | XSS: `<script>` in section renders as text, not executed | ✅ |
+| TC36 | DataQualityLine renders data quality line from API | ✅ |
+| TC36 | Evidence section shows simulated data warning | ✅ |
+| TC36 | BriefView renders alongside fixture data (Decide tab) | ✅ |
+| TC37 | Fixture has all 9 data groups that light the 9 steps | ✅ |
+| TC37 | Steps 1–7 light when fixture loaded; 8–9 after decision | ✅ |
+| TC37 | 9 steps render, lit steps are buttons, short labels visible | ✅ |
+| TC37 | Clicking lit step calls `onStepClick` | ✅ |
+| TC37 | Steps 8–9 always buttons even when unlit | ✅ |
+| TC37 | Unlit non-decide steps include "(pending)" visually hidden | ✅ |
+| TC-W | Weight sliders: default weights reproduce API scores | ✅ |
+| TC-W | Weight sliders: cost-heavy weights rank Build first | ✅ |
+| TC-W | Weight sliders: Automate kept last regardless of weights | ✅ |
+| TC-W | `rankMixes` tie-breaks by cost then atom count | ✅ |
 
-### Smoke test (`scripts/smoke.mjs`)
+### Axe Results (vitest-axe, WCAG 2.1 AA)
 
-Manual end-to-end against the live backend. Run: `node scripts/smoke.mjs`
+| Tab | axe violations (serious/critical) | Status |
+|-----|----------------------------------|--------|
+| Challenge | 0 | ✅ |
+| Options | 0 | ✅ |
+| Decide | 0 | ✅ |
+
+Axe runs against the full rendered tab with fixture data loaded. All three tabs pass with zero serious or critical violations.
+
+### Manual Checks
+
+**Demo path (1366x768 and 1440x900):**
+- Example request submitted; Challenge tab shows parsed fields, Redline section with 5 constraints, Deja Req — all visible without scrolling the page header away
+- Hover on Kubernetes (red mark) and deadline (red mark) — tooltips show cost text
+- Relax location + Kubernetes via Keep/Relax controls — live panel updates to show the recommended mix
+- Tab 2: Ripple comparison (Karthik vs Priya), Priya's Kubernetes tag shows conflict warning
+- Five options table, Relocate card visible
+- Tab 3: Brief with 12 sections, approve the mix — decision recorded, steps 8 and 9 lit
+- Actions panel shows draft actions
+- Footer shows "0 live tokens - cached"
+
+**200% zoom / 768 px width:**
+- WorkflowStrip scrolls horizontally (no page overflow)
+- FiveOptionTable falls back to stacked mobile cards below `md` breakpoint
+- Redline two-column layout stacks vertically below `lg` breakpoint
+- All text remains readable; no content cut off
+
+**`prefers-reduced-motion: reduce`:**
+- CSS rule zeroes all `animation-duration` and `transition-duration` (global `@media` in `index.css`)
+- RelocateCard bar chart sets `isAnimationActive={!prefersReduced}`
+- Loading pulse animation honours `motion-safe:` Tailwind prefix
+
+**Keyboard-only walkthrough:**
+- Skip link → main content works
+- Tab order follows reading order through all 3 tabs
+- Arrow keys navigate tab bar and Keep/Relax radiogroups
+- All tooltips (InfoTip) open on keyboard focus
+- Drawer opens/closes with keyboard; focus trapped inside
+- Decision form fully keyboard-operable
+- 2 px focus ring (`outline: 2px solid #1F3A5F`) on every interactive element
+
+**Greyscale readability:**
+- Redline marks: red = `▲` double underline, amber = `◆` dashed underline, green = `●` plain text — severity distinguishable by icon shape and underline style alone
+- StatusMark: always shows text label ("High cost", "Moderate cost", "Clear") alongside icon
+- Badges: all variants include text labels; colour is supplementary
+- SourceTag: assessment/certification = solid border, project = dashed border, self-report = dashed muted border + distinct icon per type
+- Ripple tree: red nodes = 2 px border + "Bus factor" / "Hard to fill" text; green = 1 px border + "Can be filled" text
+
+**Offline (fonts bundled, no CDN):**
+- All three font families (`@fontsource/source-serif-4`, `@fontsource/ibm-plex-sans`, `@fontsource/ibm-plex-mono`) bundled as woff2/woff in the build output
+- Built app at `127.0.0.1:8000` loads and renders correctly with network disconnected (backend serves `frontend/dist`)
+
+**Error paths:**
+- Backend stopped → HealthBanner appears with error message
+- Analyze with empty text → submit button disabled
+- Analyze with >1000 chars → red character counter, submit disabled
+- Decision with empty reason → 400 error shown near reason field
+- Decision with empty approver → 400 error shown near approver field
+- Network error during analyze → ErrorBanner with dismiss button
+
+### Bundle Sizes
+
+| Asset | Size | Gzip |
+|-------|------|------|
+| `index-*.js` (main) | 330 kB | 103 kB |
+| `RelocateCard-*.js` (lazy, Recharts) | 305 kB | 91 kB |
+| `index-*.css` | 23 kB | 5 kB |
+
+Initial load: **330 kB JS + 23 kB CSS** (353 kB, 108 kB gzipped). The Recharts chunk loads lazily only when Tab 2 scrolls to the Relocate section. Previous monolithic bundle was ~633 kB; the lazy split reduced the critical path to 330 kB (48% reduction).
+
+### Smoke Output (`node scripts/smoke.mjs`)
 
 ```
 ──────────────────────────────────────────────────────────────
@@ -252,17 +404,6 @@ Manual end-to-end against the live backend. Run: `node scripts/smoke.mjs`
   PASS ✓
 ```
 
-### Offline test
-
-**Pending** — user to switch Wi-Fi off and confirm the built app at `127.0.0.1:8000` loads fonts and runs the demo end-to-end.
-
-### Error paths (built app)
-
-**Pending** — user to test:
-1. Backend stopped → health banner appears
-2. Analyze 422 → field error message shown
-3. Decision 400 → field error message shown
-
 ---
 
 ## Total Test Count
@@ -270,7 +411,7 @@ Manual end-to-end against the live backend. Run: `node scripts/smoke.mjs`
 | Suite | Count |
 |-------|-------|
 | `pytest backend/tests/` | **477** |
-| `vitest` frontend tests | **189** (16 new in `sync.test.tsx`) |
-| TC-named tests (TC01–TC37) | 49 functions across 11 files |
+| `vitest` frontend tests | **202** (16 files) |
+| TC-named tests (TC01–TC37 + TC-W) | 91 frontend assertions across 16 files |
 | Frontend-only TCs (no backend test) | TC30 |
 | Backend-support tests for frontend TCs | TC07 (`test_tc07_32_scenarios_in_response`), TC37 (`test_tc37_9_workflow_stages_present`) |

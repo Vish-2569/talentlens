@@ -83,7 +83,7 @@ export function RelocateCard({ rows }: Props) {
               />
               <Bar
                 dataKey="score"
-                fill="var(--color-accent, #3B82F6)"
+                fill="#1F3A5F"
                 radius={[0, 4, 4, 0]}
                 isAnimationActive={!prefersReduced}
                 animationDuration={200}

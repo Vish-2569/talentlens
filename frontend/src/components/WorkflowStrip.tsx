@@ -9,8 +9,8 @@ interface Props {
 export function WorkflowStrip({ steps, onStepClick }: Props) {
   return (
     <Tooltip.Provider delayDuration={200}>
-      <nav aria-label="Workflow progress" className="border-b border-hairline bg-surface">
-        <ol className="mx-auto flex max-w-[1280px] items-stretch px-2">
+      <nav aria-label="Workflow progress" className="border-b border-hairline bg-surface overflow-x-auto">
+        <ol className="mx-auto flex max-w-[1280px] items-stretch px-2 min-w-max">
           {steps.map((step, i) => {
             const isLast = i === steps.length - 1;
             const isDecideStep = step.id === 8 || step.id === 9;

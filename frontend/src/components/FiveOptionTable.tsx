@@ -31,19 +31,19 @@ export function FiveOptionTable({ options }: Props) {
         tabIndex={-1}
         className="overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
-        <table className="hidden w-full text-left font-sans text-sm md:table">
+        <table className="hidden w-full min-w-[900px] text-left font-sans text-sm md:table">
           <caption className="sr-only">
             Five option comparison: {options.filter((o) => o.score != null).length} scored options plus Automate add-on
           </caption>
           <thead>
             <tr className="border-b border-hairline text-xs text-muted">
-              <th className="pb-2 pr-3 font-semibold">Option</th>
+              <th className="pb-2 pr-3 font-semibold whitespace-nowrap">Option</th>
               <th className="pb-2 pr-3 font-semibold">What it means</th>
-              <th className="pb-2 pr-3 font-semibold text-right">Ready by</th>
-              <th className="pb-2 pr-3 font-semibold text-right">Year-one cost</th>
-              <th className="pb-2 pr-3 font-semibold text-right">Fit</th>
-              <th className="pb-2 pr-3 font-semibold">Risk</th>
-              <th className="pb-2 pr-3 font-semibold text-right">Score</th>
+              <th className="pb-2 pr-3 font-semibold text-right whitespace-nowrap">Ready by</th>
+              <th className="pb-2 pr-3 font-semibold text-right whitespace-nowrap">Year-one cost</th>
+              <th className="pb-2 pr-3 font-semibold text-right whitespace-nowrap">Fit</th>
+              <th className="pb-2 pr-3 font-semibold whitespace-nowrap">Risk</th>
+              <th className="pb-2 pr-3 font-semibold text-right whitespace-nowrap">Score</th>
               <th className="pb-2 font-semibold">Reason</th>
             </tr>
           </thead>
@@ -53,15 +53,15 @@ export function FiveOptionTable({ options }: Props) {
                 key={opt.id}
                 className="border-b border-hairline last:border-0"
               >
-                <td className="py-2 pr-3 font-semibold text-ink">{opt.name}</td>
+                <td className="py-2 pr-3 font-semibold text-ink whitespace-nowrap">{opt.name}</td>
                 <td className="py-2 pr-3 text-xs text-muted">{displayOptionText(opt.what_it_means)}</td>
-                <td className="py-2 pr-3 text-right font-mono text-xs">
+                <td className="py-2 pr-3 text-right font-mono text-xs whitespace-nowrap">
                   {formatReadyBy(opt.ready_by_p80_days)}
                 </td>
-                <td className="py-2 pr-3 text-right font-mono text-xs">
+                <td className="py-2 pr-3 text-right font-mono text-xs whitespace-nowrap">
                   {opt.year_one_cost_lpa != null ? `₹${opt.year_one_cost_lpa}L` : "—"}
                 </td>
-                <td className="py-2 pr-3 text-right font-mono text-xs">
+                <td className="py-2 pr-3 text-right font-mono text-xs whitespace-nowrap">
                   {opt.fit ?? "—"}
                 </td>
                 <td className="py-2 pr-3">

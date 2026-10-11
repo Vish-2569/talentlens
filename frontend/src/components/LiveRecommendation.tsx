@@ -28,7 +28,7 @@ export function LiveRecommendation({ scenario, fiveOptions, mask, onReset }: Pro
   return (
     <aside
       aria-label="Live recommendation"
-      className="rounded border border-hairline bg-surface p-4 lg:sticky lg:top-4"
+      className="rounded border border-hairline bg-surface p-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
     >
       <p className="font-sans text-sm font-semibold text-ink">
         {displayOptionText(scenario.panel_text)}

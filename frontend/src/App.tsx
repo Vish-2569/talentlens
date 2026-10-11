@@ -50,7 +50,7 @@ export function App() {
 
         {/* Header */}
         <header className="border-b border-hairline bg-surface" role="banner">
-          <div className="mx-auto flex max-w-[1280px] items-baseline gap-3 px-4 py-3">
+          <div className="mx-auto flex max-w-[1280px] items-baseline gap-3 px-4 py-2">
             <h1 className="font-serif text-lg font-semibold text-ink">
               TalentLens
             </h1>
@@ -100,7 +100,7 @@ export function App() {
 
           <main
             id="main-content"
-            className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-6"
+            className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-4"
             tabIndex={-1}
           >
             <Tabs.Content value="challenge" tabIndex={-1}>
@@ -120,7 +120,7 @@ export function App() {
           className="border-t border-hairline bg-surface"
           role="contentinfo"
         >
-          <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-2 px-4 py-2 text-xs font-sans text-muted">
+          <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-2 px-4 py-1.5 text-xs font-sans text-muted">
             <div aria-label="LLM token usage" className="flex items-center gap-3 font-mono">
               {tokens ? (
                 tokens.cache_hit ? (

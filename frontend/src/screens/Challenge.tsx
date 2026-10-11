@@ -47,7 +47,7 @@ export function Challenge() {
         Challenge the request
       </h2>
 
-      <div id="challenge-input" className="mb-6">
+      <div id="challenge-input" className="mb-4">
         {composerVisible && (
           <div className={composerHidden ? "hidden" : undefined}>
             <RequestComposer
@@ -74,12 +74,12 @@ export function Challenge() {
 
       {status === "ready" && result && (
         <>
-          <div className="mb-6">
+          <div className="mb-4">
             <ParsedFields parsed={result.parsed} skillNames={result.skill_names} />
           </div>
 
           {/* Redline + Déjà Req */}
-          <section id="redline-section" aria-labelledby="redline-heading" className="mt-6">
+          <section id="redline-section" aria-labelledby="redline-heading" className="mt-4">
             <h3 id="redline-heading" className="font-serif text-lg font-semibold text-ink">
               Requisition Redline
             </h3>
