@@ -49,11 +49,12 @@ function NetImpactStrip({ impact }: { impact: NetImpact }) {
   );
 }
 
-function parseSeat(seat: string): { level: string; team: string } | null {
-  const parts = seat.split("/");
-  if (parts.length < 2) return null;
-  return { level: parts[0], team: parts[1] };
-}
+const LEVEL_DISPLAY: Record<string, string> = {
+  junior: "Junior",
+  mid: "Mid",
+  senior: "Senior",
+  lead: "Lead",
+};
 
 export function RippleComparison({ candidates }: Props) {
   const [drawerId, setDrawerId] = useState<string | null>(null);
@@ -77,9 +78,8 @@ export function RippleComparison({ candidates }: Props) {
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {top2.map((c) => {
-          const seat = parseSeat(c.chain.seat);
-          const subtitle = seat
-            ? `${seat.level.charAt(0).toUpperCase() + seat.level.slice(1)}, ${seat.team}`
+          const subtitle = c.current_level
+            ? `${LEVEL_DISPLAY[c.current_level] ?? c.current_level}, ${c.current_team}`
             : "";
 
           return (

@@ -7,10 +7,28 @@ import {
   LabelList,
   ResponsiveContainer,
 } from "recharts";
+import type { Props as LabelProps } from "recharts/types/component/Label";
 import type { components } from "../api/types";
 import { Card } from "./ui";
 
 type RelocateRow = components["schemas"]["RelocateRow"];
+
+function ScoreLabel(props: LabelProps) {
+  const { x, y, width, height, value } = props as Record<string, unknown>;
+  const num = typeof value === "number" ? value : 0;
+  const xPos = Number(x ?? 0) + Number(width ?? 0) + 4;
+  const yPos = Number(y ?? 0) + Number(height ?? 0) / 2;
+  return (
+    <text
+      x={xPos}
+      y={yPos}
+      dominantBaseline="central"
+      style={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+    >
+      {num.toFixed(2)}
+    </text>
+  );
+}
 
 interface Props {
   rows: RelocateRow[];
@@ -91,10 +109,7 @@ export function RelocateCard({ rows }: Props) {
                 <LabelList
                   dataKey="score"
                   position="right"
-                  formatter={(v: unknown) =>
-                    typeof v === "number" ? v.toFixed(2) : ""
-                  }
-                  style={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+                  content={ScoreLabel}
                 />
               </Bar>
             </BarChart>

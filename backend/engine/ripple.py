@@ -501,6 +501,8 @@ def analyze_ripple(
         candidates_out.append({
             "person_id": pid,
             "match": cand["match"],
+            "current_level": mover_level,
+            "current_team": mover_team,
             "chain": chain,
             "bus_factor_flags": bf_flags,
             "readiness_weeks": bp["readiness_weeks"],

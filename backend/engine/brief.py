@@ -22,6 +22,29 @@ SECTION_KEYS = [
     "data_quality", "decision",
 ]
 
+
+def _mix_display_name(atoms: list[dict], name_map: dict[str, str]) -> str:
+    """Build a human-readable mix name from its atoms."""
+    parts: list[str] = []
+    for a in atoms:
+        atype = a.get("type", "")
+        pid = a.get("person_id")
+        if atype == "automate":
+            continue
+        if pid:
+            person = name_map.get(pid, pid)
+            if atype == "bridge":
+                parts.append(f"Borrow {person} (3-month bridge)")
+            elif atype == "build":
+                parts.append(f"Build {person}")
+            else:
+                parts.append(person)
+        elif a.get("location"):
+            parts.append(a["location"].replace("_", "-").title())
+        else:
+            parts.append(atype.title())
+    return " + ".join(parts) if parts else "Mix"
+
 SECTION_TITLES = {
     "request": "The request, as received and as challenged",
     "history": "What happened last time",
@@ -61,19 +84,26 @@ def _section_request(raw_text: str, redline_result: dict,
     ledger = options_result.get("assumption_ledger", {})
     sr_risks = ledger.get("self_report_risks", [])
     dj_adj = ledger.get("dejareq_adjustments", [])
+    ws = ledger.get("weight_shifts", [])
+
+    lines.append("**Assumption Ledger:**")
     if sr_risks:
         lines.append(
-            f"**Self-report risk items:** {len(sr_risks)} skill(s) "
-            "with self-report-only evidence."
+            f"- Self-report risk: {len(sr_risks)} skill(s) "
+            "with self-report-only evidence (+0.05 risk each)."
         )
     if dj_adj:
         for adj in dj_adj:
             lines.append(
-                f"**Déjà Req penalty:** {adj.get('option', '?')} "
+                f"- Déjà Req penalty: {adj.get('option', '?')} "
                 f"+{adj.get('delta', 0):.2f} risk ({adj.get('reason', '')})."
             )
+    if ws:
+        for shift in ws:
+            lines.append(f"- Weight shift: {shift.get('shift', '')} → {shift.get('effect', '')}.")
+    if not sr_risks and not dj_adj and not ws:
+        lines.append("- No adjustments.")
 
-    lines.append("**Assumption Ledger:** see Redline details above.")
     return "\n\n".join(lines)
 
 
@@ -92,11 +122,13 @@ def _section_history(dejareq_result: dict) -> str:
 
     avgs = dejareq_result.get("averages", {})
     buy_avg = avgs.get("buy", {})
-    if buy_avg and buy_avg.get("avg_tenure_months") is not None:
+    buy_count = buy_avg.get("count", 0) if buy_avg else 0
+    buy_tenure = buy_avg.get("avg_tenure_months") if buy_avg else None
+    if buy_avg and buy_tenure is not None:
         parts.append(
             f"External hires left in under a year "
-            f"(avg {buy_avg['avg_tenure_months']:.0f} months, "
-            f"{buy_avg['count']} of {buy_avg['count']})."
+            f"(avg {buy_tenure:.0f} months, "
+            f"{buy_count} of {buy_count})."
         )
 
     build_avg = avgs.get("build", {})
@@ -120,15 +152,35 @@ def _section_history(dejareq_result: dict) -> str:
 
     insight = dejareq_result.get("insight")
     if insight:
-        parts.append(insight)
+        seen_lower = " ".join(parts).lower()
+        sentences = [s.strip() for s in insight.split(".") if s.strip()]
+        novel = []
+        for sent in sentences:
+            lower = sent.lower()
+            if "pattern:" in lower and "external hire" in seen_lower:
+                continue
+            if "still in role" in lower and "still in role" in seen_lower:
+                continue
+            novel.append(sent)
+        if novel:
+            parts.append(". ".join(novel) + ".")
 
     return " ".join(parts)
+
+
+def _loc_display_name(loc_id: str) -> str:
+    return {
+        "remote_india": "Remote-India",
+        "bengaluru": "Bengaluru",
+        "hyderabad": "Hyderabad",
+        "pune": "Pune",
+    }.get(loc_id, loc_id.replace("_", "-").title())
 
 
 def _section_supply(relocate_card: list[dict], market_card: dict) -> str:
     rows = ["| Location | Supply | P50 TTF | P80 TTF |", "|---|---|---|---|"]
     for loc in relocate_card:
-        name = loc.get("location", "")
+        name = _loc_display_name(loc.get("location", ""))
         rows.append(
             f"| {name} | {loc['supply']} "
             f"| {loc['ttf_p50']} days | {loc['ttf_p80']} days |"
@@ -182,7 +234,8 @@ def _section_contractors(contractor_cards: list[dict]) -> str:
     for cc in contractor_cards:
         name = cc.get("display_name", cc["person_id"])
         fit = cc.get("fit", 0)
-        avail = cc.get("availability", "")
+        avail_raw = cc.get("availability", "")
+        avail = avail_raw.replace("1 weeks", "1 week")
         ext_cost = cc.get("extend_cost_lpa", 0)
 
         bullet = (
@@ -224,9 +277,10 @@ def _section_compensation(market_card: dict, parsed_req: dict) -> str:
             f"Budget ₹{budget:.0f}L is {gap_pct:.1f}% {direction} P50."
         )
         if budget < p50:
-            ratio = p50 / budget if budget > 0 else 1
+            budget_gap = max(0.0, (p50 - budget) / p50)
+            budget_factor = 1.0 + 2.0 * budget_gap
             lines.append(
-                f"Expect ~{ratio:.2f}× longer time to fill and lower offer acceptance."
+                f"Expect ~{budget_factor:.2f}× longer time to fill and lower offer acceptance."
             )
 
     return " ".join(lines)
@@ -238,7 +292,7 @@ def _section_locations(relocate_card: list[dict]) -> str:
 
     lines: list[str] = []
     for loc in relocate_card:
-        name = loc.get("location", "")
+        name = _loc_display_name(loc.get("location", ""))
         supply = loc["supply"]
         p50 = loc["ttf_p50"]
         pay = loc.get("pay_p50_lpa", 0)
@@ -258,15 +312,22 @@ def _section_locations(relocate_card: list[dict]) -> str:
             )
             if pct_diff > 5:
                 lines.append(
-                    f"{top['location']} P50 pay is "
+                    f"{_loc_display_name(top['location'])} P50 pay is "
                     f"{pct_diff:.0f}% {'below' if top['pay_p50_lpa'] < bottom['pay_p50_lpa'] else 'above'} "
-                    f"{bottom['location']}."
+                    f"{_loc_display_name(bottom['location'])}."
                 )
 
     return " ".join(lines)
 
 
-def _section_options(options_result: dict) -> str:
+def _format_ready_by(days: int | None) -> str:
+    if days is None:
+        return "—"
+    return f"Day {days}"
+
+
+def _section_options(options_result: dict, name_map: dict[str, str] | None = None) -> str:
+    nm = name_map or {}
     opts = options_result.get("options", [])
     rows = [
         "| Option | Score | Ready by | Cost | Risk |",
@@ -275,10 +336,7 @@ def _section_options(options_result: dict) -> str:
     for o in opts:
         score = o.get("score", "")
         score_str = f"{score}" if score != "add-on" else "add-on"
-        ready = o.get("ready_by_p80_days")
-        ready_str = f"Day {ready}" if ready is not None and ready <= 7 else f"Week {(ready or 0) // 7}" if ready else "—"
-        if ready is not None and ready == 0:
-            ready_str = "Day 0"
+        ready_str = _format_ready_by(o.get("ready_by_p80_days"))
         cost = o.get("year_one_cost_lpa")
         cost_str = f"₹{cost:.0f}L" if cost is not None else "—"
         risk = o.get("risk_label", "")
@@ -288,9 +346,11 @@ def _section_options(options_result: dict) -> str:
     mixes = options_result.get("top_mixes", [])
     if mixes:
         top_mix = mixes[0]
+        atoms = top_mix.get("atoms", [])
+        mix_label = _mix_display_name(atoms, nm)
         rows.append("")
         rows.append(
-            f"**Recommended mix:** {top_mix.get('name', top_mix.get('mix_id', ''))} — "
+            f"**Recommended mix:** {mix_label} — "
             f"score {top_mix.get('score', 0)}, ₹{top_mix.get('cost_lpa', 0):.0f}L."
         )
 
@@ -379,7 +439,7 @@ _BUILDERS = {
     "compensation": lambda kw: _section_compensation(
         kw["market_card"], kw["parsed_req"]),
     "locations": lambda kw: _section_locations(kw["relocate_card"]),
-    "options": lambda kw: _section_options(kw["options_result"]),
+    "options": lambda kw: _section_options(kw["options_result"], kw.get("name_map")),
     "sourcing": lambda kw: _section_sourcing(kw["sourcing_result"]),
     "actions": lambda kw: _section_actions(kw["actions_list"]),
     "data_quality": lambda kw: _section_data_quality(
@@ -516,6 +576,7 @@ def generate_brief(
     actions_list: list[dict],
     decision_rows: list[dict],
     reference_meta: dict,
+    name_map: dict[str, str] | None = None,
     polish_fn: Optional[Callable] = None,
 ) -> dict:
     """Build the 12-section Workforce Intelligence Brief.
@@ -543,6 +604,7 @@ def generate_brief(
         "actions_list": actions_list,
         "decision_rows": decision_rows,
         "reference_meta": reference_meta,
+        "name_map": name_map or {},
     }
 
     sections: list[dict] = []

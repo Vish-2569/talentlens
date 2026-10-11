@@ -124,7 +124,9 @@ export function App() {
             <div aria-label="LLM token usage" className="flex items-center gap-3 font-mono">
               {tokens ? (
                 tokens.cache_hit ? (
-                  <span>0 live tokens · cached</span>
+                  <span>0 live tokens — cached</span>
+                ) : tokens.calls === 0 ? (
+                  <span>0 live tokens — parsed by rules, Gemini not needed</span>
                 ) : (
                   <span>
                     {tokens.calls} call{tokens.calls !== 1 ? "s" : ""} ·{" "}

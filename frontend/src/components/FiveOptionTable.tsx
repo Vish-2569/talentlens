@@ -31,7 +31,8 @@ export function FiveOptionTable({ options }: Props) {
         tabIndex={-1}
         className="overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
-        <table className="hidden w-full min-w-[900px] text-left font-sans text-sm md:table">
+        <div className="hidden md:block">
+        <table className="w-full min-w-[900px] text-left font-sans text-sm">
           <caption className="sr-only">
             Five option comparison: {options.filter((o) => o.score != null).length} scored options plus Automate add-on
           </caption>
@@ -95,6 +96,7 @@ export function FiveOptionTable({ options }: Props) {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Stacked cards for mobile */}
         <div className="flex flex-col gap-3 md:hidden">

@@ -546,6 +546,10 @@ export interface components {
             person_id: string;
             /** Display Name */
             display_name: string;
+            /** Current Level */
+            current_level: string;
+            /** Current Team */
+            current_team: string;
             /** Match */
             match: number;
             chain: components["schemas"]["RippleNode"];

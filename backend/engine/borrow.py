@@ -43,7 +43,7 @@ def compliance_flag(
 def availability_text(end_date: date, today: date) -> str:
     days = (end_date - today).days
     weeks = max(1, round(days / 7))
-    return f"Contract ends in {weeks} weeks"
+    return f"Contract ends in {weeks} {'week' if weeks == 1 else 'weeks'}"
 
 
 def analyze_contractor(

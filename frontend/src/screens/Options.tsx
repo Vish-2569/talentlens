@@ -134,8 +134,7 @@ export function Options() {
       {maskMismatch && (
         <p className="font-sans text-xs text-amber">
           Tab 1&apos;s live panel reflects your current choices; the detailed
-          options below assume: {assumeText}.
-          {keptText && <> Kept: {keptText}.</>}
+          options below use a different constraint set.
         </p>
       )}
 

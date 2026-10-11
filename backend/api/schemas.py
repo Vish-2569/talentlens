@@ -294,6 +294,8 @@ class RippleCandidate(BaseModel):
     model_config = ConfigDict(extra="forbid")
     person_id: str
     display_name: str
+    current_level: str
+    current_team: str
     match: float
     chain: RippleNode
     net_impact: NetImpact

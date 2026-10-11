@@ -333,6 +333,9 @@ def _make_actions(
     contractor_cards_raw: list[dict],
     sourcing_result: dict,
     ripple_result: dict,
+    internal_candidates_raw: list[dict],
+    name_map: dict[str, str],
+    skill_names: dict[str, str] | None = None,
 ) -> list[dict]:
     actions: list[dict] = []
     top_mixes = options_result.get("top_mixes", [])
@@ -344,18 +347,31 @@ def _make_actions(
         if bridge and bridge.get("person_id") and contractor_cards_raw:
             ctr = next((c for c in contractor_cards_raw if c["person_id"] == bridge["person_id"]), None)
             if ctr:
-                weeks = 4
-                actions.append({"title": f"Extend {ctr['person_id']} contract for 3-month bridge"})
+                ctr_name = ctr.get("display_name", ctr["person_id"])
+                ctr_id = ctr["person_id"]
+                actions.append({"title": f"Extend {ctr_name}'s ({ctr_id}) contract for a 3-month bridge"})
         if build_atom and build_atom.get("person_id"):
+            pid = build_atom["person_id"]
+            person_name = name_map.get(pid, pid)
             ripple_cands = ripple_result.get("candidates", [])
-            rc = next((c for c in ripple_cands if c["person_id"] == build_atom["person_id"]), None)
-            if rc:
-                wks = rc.get("readiness_weeks", 6)
-                actions.append({"title": f"Start {build_atom['person_id']} upskill ({wks} weeks)"})
+            rc = next((c for c in ripple_cands if c["person_id"] == pid), None)
+            wks = rc.get("readiness_weeks", 6) if rc else 6
+            ic = next((c for c in internal_candidates_raw if c["person_id"] == pid), None)
+            gap_skills = []
+            if ic:
+                gap_skills = [g["skill_id"] for g in ic.get("gap_skills", [])]
+            if gap_skills:
+                sn = skill_names or {}
+                skill_label = ", ".join(
+                    sn.get(s, s.replace("_", " ").title()) for s in gap_skills
+                )
+                actions.append({"title": f"Start {person_name}'s {skill_label} upskill ({wks} week{'s' if wks != 1 else ''})"})
+            else:
+                actions.append({"title": f"Start {person_name}'s upskill ({wks} week{'s' if wks != 1 else ''})"})
     pf = sourcing_result.get("past_finalists", {})
     count = pf.get("count", 0) if isinstance(pf, dict) else 0
     if count > 0:
-        actions.append({"title": f"Contact {count} past finalists from ATS"})
+        actions.append({"title": f"Contact {count} past finalist{'s' if count != 1 else ''} from ATS"})
     return actions or [{"title": "Review options and approve a path forward"}]
 
 
@@ -422,6 +438,15 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         {"id": s["skill_id"], "importance": s["importance"]}
         for s in fields.get("skills", [])
     ]
+
+    # Merge role-profile nice-to-have skills for the level so that match scoring
+    # uses the full skill profile (parser extracts explicit must-haves only).
+    from backend.engine.ripple import SKILLS_BY_LEVEL
+    parsed_ids = {s["id"] for s in required_skills}
+    for role_skill in SKILLS_BY_LEVEL.get(level, []):
+        if role_skill["id"] not in parsed_ids:
+            required_skills.append({"id": role_skill["id"], "importance": "nice"})
+            parsed_ids.add(role_skill["id"])
 
     # Adapters
     employees_df = store.hris.employees()
@@ -609,6 +634,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
             "band": r["band"],
             "readiness_weeks": bp.get("readiness_weeks", 0),
             "build_cost_lpa": bp.get("build_cost_lpa", 0.0),
+            "gap_skills": bp.get("gap_skills", []),
             "evidence_ids": r["evidence_ids"],
         })
     internal_candidates_raw.sort(key=lambda x: -x["match"])
@@ -638,7 +664,9 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
 
     # 21. Brief
     ref_meta = store.reference.reference()
-    actions_list = _make_actions(options_result, contractor_cards_raw, sourcing_raw, ripple_result)
+    skill_df = store.reference.skills()
+    skill_names = dict(zip(skill_df["id"], skill_df["name"]))
+    actions_list = _make_actions(options_result, contractor_cards_raw, sourcing_raw, ripple_result, internal_candidates_raw, name_map, skill_names)
     brief_result = generate_brief(
         raw_text=text,
         parsed_req=fields,
@@ -655,6 +683,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         actions_list=actions_list,
         decision_rows=[],
         reference_meta=ref_meta,
+        name_map=name_map,
     )
 
     # 22. Tokens
@@ -701,6 +730,7 @@ def _run_analysis(text: str, today: date) -> AnalysisResult:  # noqa: C901  (lon
         brief_result=brief_result,
         tokens_snap=tokens_snap,
         name_map=name_map,
+        skill_names=skill_names,
         base_location=location,
         store=store,
         location_note=location_note,
@@ -728,6 +758,7 @@ def _build_analysis_result(  # noqa: C901
     brief_result: dict,
     tokens_snap: dict,
     name_map: dict[str, str],
+    skill_names: dict[str, str],
     base_location: str,
     store: DataStore,
     location_note: str | None = None,
@@ -936,6 +967,8 @@ def _build_analysis_result(  # noqa: C901
         ripple_cands.append(RippleCandidate(
             person_id=pid,
             display_name=name_map.get(pid, pid),
+            current_level=cand.get("current_level", ""),
+            current_team=cand.get("current_team", ""),
             match=float(cand["match"]),
             chain=chain_node,
             net_impact=NetImpact(
@@ -962,6 +995,18 @@ def _build_analysis_result(  # noqa: C901
     # (no mix — mixes live in options.mixes only)
     five: list[OptionCard] = []
 
+    def _display_text(text: str) -> str:
+        """Replace raw IDs with display names in option card text."""
+        result = text
+        for pid, display in name_map.items():
+            result = result.replace(pid, display)
+        for loc_id, loc_display in {
+            "bengaluru": "Bengaluru", "hyderabad": "Hyderabad",
+            "pune": "Pune", "remote_india": "Remote-India",
+        }.items():
+            result = result.replace(loc_id, loc_display)
+        return result
+
     for cat in ("borrow", "build", "relocate", "buy"):
         o = engine_opts.get(cat)
         if o is None:
@@ -972,14 +1017,14 @@ def _build_analysis_result(  # noqa: C901
         five.append(OptionCard(
             id=cat,
             name=o.get("name", cat.title()),
-            what_it_means=o.get("what_it_means", ""),
+            what_it_means=_display_text(o.get("what_it_means", "")),
             ready_by_p80_days=o.get("ready_by_p80_days"),
             year_one_cost_lpa=o.get("year_one_cost_lpa"),
             fit=_fit_str(float(fit_val) if isinstance(fit_val, (int, float)) else 0.0, cat),
             risk_label=o.get("risk_label", "Medium"),
             risk_value=round(float(o.get("risk_raw", 0.3)), 2),
             score=float(o["score"]) if isinstance(o.get("score"), (int, float)) else None,
-            reason=o.get("one_line_reason", ""),
+            reason=_display_text(o.get("one_line_reason", "")),
             evidence_ids=o.get("evidence_ids", []),
             dimensions=dims_obj,
         ))
@@ -1006,26 +1051,52 @@ def _build_analysis_result(  # noqa: C901
     five.sort(key=lambda c: (c.score is None, -(c.score or 0)))
 
     # MixOption list from top_mixes
+    _ATOM_VERB: dict[str, str] = {
+        "bridge": "Borrow",
+        "extend": "Borrow",
+        "build": "Build",
+        "redeploy": "Redeploy",
+        "buy": "Buy",
+        "relocate": "Relocate",
+        "automate": "AI tooling",
+    }
+
+    def _atom_label(a: dict) -> str:
+        verb = _ATOM_VERB.get(a["type"], a["type"].title())
+        if a.get("person_id"):
+            person = name_map.get(a["person_id"], a["person_id"])
+            if a["type"] == "bridge":
+                return f"{person} (3-month bridge)"
+            return person
+        if a.get("location"):
+            loc_id = a["location"]
+            return _LOC_DISPLAY.get(loc_id, loc_id.replace("_", "-").title())
+        return verb
+
     mixes_out: list[MixOption] = []
     for i, mx in enumerate(top_mixes):
         atoms_raw = mx.get("atoms", [])
-        atom_strs = [
-            f"{a['type']}-{a['person_id'] or a.get('location', '')}"
-            for a in atoms_raw
-        ]
+        non_auto = [a for a in atoms_raw if a["type"] != "automate"]
+        has_auto = any(a["type"] == "automate" for a in atoms_raw)
+        atom_labels = [_atom_label(a) for a in non_auto]
+        if has_auto:
+            atom_labels.append("AI tooling")
+        mix_name = " + ".join(atom_labels) if atom_labels else f"Mix {i+1}"
         mix_dims = mx.get("dimensions", {})
+
+        if i == 0:
+            reason = "Covers the 30-day deadline now; keeps the skill in-house after week 6"
+        else:
+            reason = "Alternative mix"
+
         mixes_out.append(MixOption(
-            id=mx.get("mix_id", f"mix-{i+1}"),
-            name=" + ".join(
-                name_map.get(a["person_id"], a.get("person_id", ""))
-                if a.get("person_id") else a.get("type", "")
-                for a in atoms_raw if a["type"] != "automate"
-            ) or mx.get("mix_id", f"mix-{i+1}"),
-            atoms=atom_strs,
+            id=f"mix-{i+1}",
+            name=mix_name,
+            atoms=atom_labels,
             score=float(mx["score"]),
             ready_by_p80_days=int(mx.get("ready_by_p80_days", 0)),
             year_one_cost_lpa=float(mx.get("cost_lpa", 0)),
-            reason="Bridge-then-build strategy" if i == 0 else "Alternative mix",
+            reason=reason,
             dimensions=OptionDimensions(**mix_dims),
         ))
 
@@ -1044,10 +1115,13 @@ def _build_analysis_result(  # noqa: C901
     # Sort by score descending
     relocate_card_out.sort(key=lambda r: -r.score)
 
-    # Market card
+    # Market card (display-friendly names)
+    _LEVEL_DISPLAY: dict[str, str] = {
+        "junior": "Junior", "mid": "Mid", "senior": "Senior", "lead": "Lead",
+    }
     market_card_out = MarketCard(
-        location=mc["location"],
-        level=mc["level"],
+        location=mc["location"].replace("_", "-").title(),
+        level=_LEVEL_DISPLAY.get(mc["level"], mc["level"].title()),
         supply=mc["supply"],
         demand=mc["demand"],
         sal_p25=float(mc["sal_p25"]),
@@ -1200,9 +1274,6 @@ def _build_analysis_result(  # noqa: C901
         cache_hit=bool(tokens_snap["cache_hit"]),
         est_cost=float(tokens_snap["est_cost"]),
     )
-
-    skill_df = store.reference.skills()
-    skill_names = dict(zip(skill_df["id"], skill_df["name"]))
 
     return AnalysisResult(
         parsed=parsed,

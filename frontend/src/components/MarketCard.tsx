@@ -1,5 +1,6 @@
 import type { components } from "../api/types";
 import { Card, Figure } from "./ui";
+import { locationName, levelName } from "./displayNames";
 
 type MarketCardData = components["schemas"]["MarketCard"];
 
@@ -12,7 +13,7 @@ export function MarketCard({ data }: Props) {
     <Card
       header={{
         title: "Market snapshot",
-        meaning: `${data.location} · ${data.level}`,
+        meaning: `${locationName(data.location)} · ${levelName(data.level)}`,
       }}
     >
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
