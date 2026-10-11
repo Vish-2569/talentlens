@@ -130,5 +130,5 @@ Format: `YYYY-MM-DD | Decision | Doc section`
 
 - 2026-10-11 | Unsupported locations (e.g. Chennai, Mumbai) are detected by regex for common Indian cities, mapped to "other" in parsed output, and proxied to Remote-India for all engine market data lookups. A location_note field on ParsedRequisition explains the proxy. The 4 supported market-data locations remain Bengaluru, Hyderabad, Pune, Remote-India. | Section 12
 - 2026-10-11 | Unrecognized skill-like tokens near "must know"/"nice to have" cues (e.g. SpringBoot, Django) are detected by a heuristic regex (CamelCase, dotted/hyphenated patterns) and listed in parsed.unrecognized_skills. They do not participate in matching or scoring. | Section 12
-- 2026-10-11 | The /api/analyze endpoint wraps _run_analysis in a try/except: any unhandled exception returns HTTP 422 with a human-readable detail message, never 500. | Section 12
-- 2026-10-11 | LLM cache SQLite connection uses check_same_thread=False to avoid thread-affinity errors in sync TestClient and production worker threads. | Section 8
+- 2026-10-11 | The /api/analyze endpoint wraps _run_analysis in a try/except: any unhandled exception logs the full traceback server-side (with the API key redaction filter still active) and returns HTTP 422 with a short error ID (ERR-XXXXXXXX) in both the log and the response detail, never 500. | Section 12
+- 2026-10-11 | LLM cache SQLite connection uses check_same_thread=False plus a threading.Lock guarding all reads/writes to avoid thread-affinity and concurrent-write errors. | Section 8

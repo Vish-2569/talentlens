@@ -134,6 +134,34 @@ export function ParsedFields({ parsed }: Props) {
         ))}
       </div>
 
+      {parsed.unrecognized_skills.length > 0 && (
+        <div
+          className="flex flex-wrap items-center gap-1.5"
+          role="list"
+          aria-label="Unrecognised skills"
+        >
+          <span className="font-sans text-xs text-muted">Not recognised:</span>
+          {parsed.unrecognized_skills.map((s) => (
+            <span
+              key={s}
+              role="listitem"
+              className="inline-flex items-center rounded-md border border-dashed border-hairline px-2 py-0.5 font-sans text-xs text-muted"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {parsed.location_note && (
+        <p
+          className="rounded border border-dashed border-amber bg-amber/5 px-3 py-2 font-sans text-xs text-amber"
+          role="status"
+        >
+          {parsed.location_note}
+        </p>
+      )}
+
       {nullFieldNames.length > 0 && (
         <p className="font-sans text-xs text-muted">
           Not in the request: {nullFieldNames.join(", ")}

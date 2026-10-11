@@ -191,6 +191,89 @@ describe("Post-success view", () => {
   });
 });
 
+describe("Location note and unrecognised skills", () => {
+  function makeFixtureWithNote() {
+    const fixture = structuredClone(FIXTURE_ANALYSIS);
+    fixture.parsed.location_note =
+      "Chennai is outside the market data (Bengaluru, Hyderabad, Pune, Remote-India); location constraint priced against Remote-India as nearest proxy.";
+    fixture.parsed.unrecognized_skills = ["SpringBoot", "Django"];
+    return fixture;
+  }
+
+  it("shows location_note as a visible notice under parsed chips", async () => {
+    const user = userEvent.setup();
+    globalThis.fetch = mockFetch(200, makeFixtureWithNote());
+    renderChallenge();
+
+    await user.click(
+      screen.getByRole("button", { name: "Use the example request" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Challenge this request" }),
+    );
+
+    const notices = await screen.findAllByText(/Chennai is outside the market data/);
+    expect(notices.length).toBeGreaterThanOrEqual(1);
+    const statusNotice = notices.find((el) => el.getAttribute("role") === "status");
+    expect(statusNotice).toBeDefined();
+  });
+
+  it("shows unrecognized_skills as muted chips", async () => {
+    const user = userEvent.setup();
+    globalThis.fetch = mockFetch(200, makeFixtureWithNote());
+    renderChallenge();
+
+    await user.click(
+      screen.getByRole("button", { name: "Use the example request" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Challenge this request" }),
+    );
+
+    await screen.findByText("Not recognised:");
+    expect(screen.getByText("SpringBoot")).toBeInTheDocument();
+    expect(screen.getByText("Django")).toBeInTheDocument();
+  });
+
+  it("does not show notice or unrecognised chips when absent", async () => {
+    const user = userEvent.setup();
+    globalThis.fetch = mockFetch(200, FIXTURE_ANALYSIS);
+    renderChallenge();
+
+    await user.click(
+      screen.getByRole("button", { name: "Use the example request" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Challenge this request" }),
+    );
+
+    await screen.findByText(DEMO_SENTENCE);
+    expect(screen.queryByText("Not recognised:")).not.toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("shows location_note inside the Redline location card", async () => {
+    const user = userEvent.setup();
+    globalThis.fetch = mockFetch(200, makeFixtureWithNote());
+    renderChallenge();
+
+    await user.click(
+      screen.getByRole("button", { name: "Use the example request" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Challenge this request" }),
+    );
+
+    const constraintList = await screen.findByRole("list", {
+      name: "Redline constraints",
+    });
+    const noteInCard = within(constraintList).getByText(
+      /Chennai is outside the market data/,
+    );
+    expect(noteInCard).toBeInTheDocument();
+  });
+});
+
 describe("Error handling", () => {
   it("422 shows field error message next to textarea", async () => {
     const user = userEvent.setup();

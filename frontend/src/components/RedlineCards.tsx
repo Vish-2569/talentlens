@@ -11,6 +11,7 @@ interface Props {
   constraintOrder: ConstraintKind[];
   mask: string;
   onToggle: (index: number, relaxed: boolean) => void;
+  locationNote?: string | null;
 }
 
 function formatCost(cost: components["schemas"]["ConstraintCost"]): string {
@@ -87,7 +88,7 @@ function KeepRelaxControl({
   );
 }
 
-export function RedlineCards({ constraints, constraintOrder, mask, onToggle }: Props) {
+export function RedlineCards({ constraints, constraintOrder, mask, onToggle, locationNote }: Props) {
   const byKind = new Map(constraints.map((c) => [c.kind, c]));
 
   return (
@@ -116,6 +117,11 @@ export function RedlineCards({ constraints, constraintOrder, mask, onToggle }: P
                 {c.relaxed_value && (
                   <p className="mt-1 font-sans text-xs text-muted">
                     Relax to: {c.relaxed_value}
+                  </p>
+                )}
+                {kind === "location" && locationNote && (
+                  <p className="mt-1 font-sans text-xs text-amber">
+                    {locationNote}
                   </p>
                 )}
               </div>

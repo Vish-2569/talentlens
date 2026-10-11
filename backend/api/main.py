@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import statistics
 from datetime import date
 from pathlib import Path
 from typing import Any
+
+_logger = logging.getLogger(__name__)
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -1231,11 +1234,12 @@ def analyze(req: AnalyzeRequest, stub: bool = Query(default=False)) -> AnalysisR
     except HTTPException:
         raise
     except Exception as exc:
-        import logging as _logging
-        _logging.getLogger(__name__).exception("Unhandled error in analysis")
+        import uuid as _uuid
+        error_id = "ERR-" + _uuid.uuid4().hex[:8].upper()
+        _logger.exception("Unhandled error in analysis [%s]", error_id)
         raise HTTPException(
             status_code=422,
-            detail=f"Could not analyse this requisition: {exc}",
+            detail=f"Could not analyse this requisition ({error_id}): {exc}",
         ) from exc
 
 

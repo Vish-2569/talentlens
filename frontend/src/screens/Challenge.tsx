@@ -99,6 +99,7 @@ export function Challenge() {
                         payload: { index, relaxed },
                       })
                     }
+                    locationNote={result.parsed.location_note}
                   />
                 </div>
                 <AssumptionLedger

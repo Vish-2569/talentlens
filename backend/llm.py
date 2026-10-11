@@ -5,6 +5,7 @@ import hashlib
 import json
 import logging
 import sqlite3
+import threading
 import time
 from pathlib import Path
 from typing import Any, Optional
@@ -107,6 +108,7 @@ class LLMCache:
     def __init__(self, db_path: Path) -> None:
         db_path.parent.mkdir(parents=True, exist_ok=True)
         self._conn = sqlite3.connect(str(db_path), check_same_thread=False)
+        self._lock = threading.Lock()
         self._conn.execute(
             "CREATE TABLE IF NOT EXISTS llm_cache "
             "(key TEXT PRIMARY KEY, response TEXT, created_at REAL)"
@@ -114,21 +116,24 @@ class LLMCache:
         self._conn.commit()
 
     def get(self, key: str) -> Optional[str]:
-        row = self._conn.execute(
-            "SELECT response FROM llm_cache WHERE key = ?", (key,)
-        ).fetchone()
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT response FROM llm_cache WHERE key = ?", (key,)
+            ).fetchone()
         return row[0] if row else None
 
     def put(self, key: str, response: str) -> None:
-        self._conn.execute(
-            "INSERT OR REPLACE INTO llm_cache (key, response, created_at) "
-            "VALUES (?, ?, ?)",
-            (key, response, time.time()),
-        )
-        self._conn.commit()
+        with self._lock:
+            self._conn.execute(
+                "INSERT OR REPLACE INTO llm_cache (key, response, created_at) "
+                "VALUES (?, ?, ?)",
+                (key, response, time.time()),
+            )
+            self._conn.commit()
 
     def close(self) -> None:
-        self._conn.close()
+        with self._lock:
+            self._conn.close()
 
 
 # ── Thinking-config helper ────────────────────────────────────────────
