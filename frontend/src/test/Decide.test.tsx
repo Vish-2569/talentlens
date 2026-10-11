@@ -298,11 +298,14 @@ describe("TC22: Steps 8 and 9 light after decision", () => {
     await fillAndSubmit(user);
     await screen.findByText("Decision recorded");
 
-    // After decision: step 8 and 9 are buttons (lit)
-    const step8 = await screen.findByRole("button", { name: /Human decision/ });
+    // After decision: step 8 and 9 are buttons (lit) within the workflow strip
+    const strip = screen.getByRole("navigation", {
+      name: "Workflow progress",
+    });
+    const step8 = within(strip).getByRole("button", { name: /Human decision/ });
     expect(step8).toBeTruthy();
 
-    const step9 = await screen.findByRole("button", {
+    const step9 = within(strip).getByRole("button", {
       name: /Recruiting action/,
     });
     expect(step9).toBeTruthy();
@@ -317,17 +320,18 @@ describe("ActionsPanel", () => {
     );
     const items = parseActionItems(actionsSection?.markdown ?? "");
 
-    // Wait for the form to appear (state injected), then check actions
     await screen.findByLabelText(/Approver/);
+    const panel = document.getElementById("actions-section")!;
     for (const item of items) {
-      expect(screen.getByText(item)).toBeTruthy();
+      expect(within(panel).getByText(item)).toBeTruthy();
     }
   });
 
   it("labels each action card 'Draft, not sent'", async () => {
     renderDecide();
     await screen.findByLabelText(/Approver/);
-    const labels = screen.getAllByText("Draft, not sent");
+    const panel = document.getElementById("actions-section")!;
+    const labels = within(panel).getAllByText("Draft, not sent");
     const actionsSection = FIXTURE_ANALYSIS.brief.sections.find(
       (s) => s.key === "actions",
     );
